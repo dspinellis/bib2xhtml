@@ -1,6 +1,6 @@
 #!/local/bin/perl -w
 #
-# $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\gen-bst,v 1.2 2004/01/14 19:48:11 dds Exp $
+# $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\gen-bst,v 1.3 2004/01/19 08:41:00 dds Exp $
 #
 
 $DEFS = "html-btxbst.doc";
@@ -124,7 +124,7 @@ line:
 		next line;
 	    }
 	}
-	
+
 	if (m/^$/) {
 	    next line if ($blank);
 	    $blank = 1;
@@ -132,4 +132,11 @@ line:
 	    $blank = 0;
 	}
 
-	print OUTFILE if 
+	print OUTFILE if (!$skipping);
+    }
+
+    die "#ifdef/#endif mismatch!\n" if ($skipping != 0);
+
+    close(FILE);
+    close(OUTFILE);
+}
