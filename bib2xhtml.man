@@ -1,4 +1,4 @@
-.\" $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml.man,v 1.9 2004/04/07 13:54:42 dds Exp $
+.\" $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml.man,v 1.10 2004/05/28 07:59:14 dds Exp $
 .TH BIB2XHTML L "03 April 2004"
 .SH NAME
 bib2xhtml \- BibTeX bibliography to HTML converter
@@ -112,7 +112,7 @@ HTML comments containing the citations (one citation per line), for example
 -->
 .IP
 .br
-<-- \\citation{knuth:1997}
+<!-- \\citation{knuth:1997}
 .br
     \\citation{knuth:1984} -->
 .br
