@@ -2,7 +2,7 @@
 eval 'exec /usr/bin/perl -w -S $0 ${1+"$@"}'
     if 0;
 
-$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.5 2004/04/04 14:29:55 dds Exp $';
+$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.6 2004/04/07 13:53:34 dds Exp $';
 
 #
 # Convert from bibtex to HTML.
@@ -222,7 +222,7 @@ sub html_encode {
 $opt_a = $opt_b = $opt_c = $opt_D = $opt_d = $opt_h = $opt_m = $opt_r = undef;
 $opt_i = $opt_s = $opt_t = $opt_v = $opt_3 = undef;
 
-#macrofile='';
+$macrofile = '';
 
 $command_line = &html_encode(join(' ', $0, @ARGV));
 
@@ -287,6 +287,11 @@ style: {
 	 last style);
     print STDERR "Unknown style: $_\n";
     &usage;
+}
+
+if ($bstfile eq "html-u" && ($opt_r || $opt_c)) {
+    print STDERR "Unsorted styles do not support a sort specification\n";
+    exit(1);
 }
 
 $bstfile .= "c" if (defined ($opt_c));
