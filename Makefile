@@ -1,5 +1,5 @@
 #
-# $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\Makefile,v 1.8 2004/06/02 07:35:24 dds Exp $
+# $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\Makefile,v 1.9 2004/06/05 20:17:44 dds Exp $
 #
 
 NAME=bib2xhtml
@@ -19,7 +19,7 @@ SSH=plink
 default: $(DOCFILES) ${BSTFILES} syntax
 
 dist: default $(NAME)-$(VERSION).tar.gz
-	cp $(NAME)-$(VERSION).tar.gz $(DISTDIR)
+	cp $(NAME)-$(VERSION).tar.gz $(NAME)-$(VERSION).zip $(DISTDIR)
 	cp $(DOCFILES) $(DISTDIR)
 	cp ChangeLog $(DISTDIR)/ChangeLog.txt
 	sed -e "s/VERSION/${VERSION}/" index.html >${DISTDIR}/index.html
@@ -33,6 +33,7 @@ $(NAME)-$(VERSION).tar.gz: $(FILES)
 	mkdir $(NAME)-$(VERSION)
 	cp ${FILES} $(NAME)-$(VERSION)
 	tar cf - ${FILES:%=$(NAME)-$(VERSION)/%} | gzip -c >$(NAME)-$(VERSION).tar.gz
+	zip -r  $(NAME)-$(VERSION).zip $(NAME)-$(VERSION)
 	cmd /c "rd /s/q $(NAME)-$(VERSION)"
 
 $(NAME).ps: $(NAME).man
