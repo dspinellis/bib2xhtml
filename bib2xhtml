@@ -2,7 +2,7 @@
 eval 'exec /local/bin/perl -S $0 ${1+"$@"}'
 	if 0;
 
-$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 1.2 2003/11/21 18:46:31 dds Exp $';
+$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 1.3 2003/11/21 21:51:20 dds Exp $';
 
 #
 # Convert from bibtex to HTML.
@@ -43,6 +43,8 @@ usage: $program [-A] [-a] [-b bibtex-options] [-d delim] [-h heading]
     -c	Sort chronologically, by year and then by author.
     -d delim
 	Specify bibliography delimiter.
+    -m macro file
+	Specify an additional macro file.
     -h heading
 	String to use instead of default title when creating a new htmlfile.
 	If updating an existing htmlfile, this option is ignored.
@@ -213,12 +215,14 @@ sub html_encode {
 }
 
 # Prevent "identifier used only once" warnings.
-$opt_a = $opt_b = $opt_c = $opt_D = $opt_d = $opt_h = $opt_r = undef;
+$opt_a = $opt_b = $opt_c = $opt_D = $opt_d = $opt_h = $opt_m = $opt_r = undef;
 $opt_s = $opt_t = $opt_v = $opt_3 = undef;
+
+#macrofile='';
 
 $command_line = &html_encode(join(' ', $0, @ARGV));
 
-&Getopts("ab:cD:d:h:rs:tv3") || &usage;
+&Getopts("ab:cD:d:h:m:rs:tv3") || &usage;
 
 print STDERR "$version\n" if (defined($opt_v));
 
@@ -242,6 +246,7 @@ $htmlfile = $ARGV[1] if ($#ARGV == 1);
 
 $delimiter = $opt_d if (defined($opt_d));
 $title = (defined($opt_h) ? $opt_h : "Bibliography generated from $ARGV[0]");
+$macrofile = "$opt_m," if (defined($opt_m));
 
 $opt_s = 'empty' if (! defined $opt_s);
 style: {
@@ -318,7 +323,7 @@ if (defined($citefile)) {
     }
     close(CITEFILE);
 } else {
-    print AUXFILE "\\citation{*}\n\\bibdata{$bibfile}\n";
+    print AUXFILE "\\citation{*}\n\\bibdata{$macrofile$bibfile}\n";
 }
 
 close(AUXFILE);
