@@ -1,8 +1,8 @@
 #
-# $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\Makefile,v 1.2 2004/01/14 19:47:01 dds Exp $
+# $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\Makefile,v 1.3 2004/03/29 12:09:17 dds Exp $
 #
 
-NAME=bib2html
+NAME=bib2xhtml
 BINDIR=$(HOME)/bin/
 BIBTEXDIR=$(HOME)/texmf/bibtex/bst/
 CGIDIR=/usr/dcs/www/cgi-bin/
@@ -18,7 +18,7 @@ SSH=plink
 
 default: $(DOCFIL')
 
-UXHOST=spiti
+UXHOST=istlab
 SSH=plink
 
 default: $(DOCFILES) ${BSTFILES} syntax

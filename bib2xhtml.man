@@ -1,9 +1,9 @@
-.\" $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml.man,v 1.4 2004/01/19 08:43:16 dds Exp $
+.\" $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml.man,v 1.5 2004/03/29 12:09:17 dds Exp $
 .TH BIB2HTML L "14 January 2004"
 .SH NAME
-bib2html \- BibTeX bibliography to HTML converter
+bib2xhtml \- BibTeX bibliography to HTML converter
 .SH SYNOPSIS
-.B bib2html
+.B bib2xhtml
 [
 .B \-a
 ] [
@@ -38,7 +38,7 @@ bib2html \- BibTeX bibliography to HTML converter
 ]
 .SH DESCRIPTION
 .LP
-.B bib2html
+.B bib2xhtml
 converts a bibtex-format bibliography file to HTML.
 .I sourcefile
 may be either a BibTeX-format bibliography
@@ -48,7 +48,7 @@ file or a LaTeX-fomatted bibliography auxillary file
 .I htmlfile
 will often be just part of a larger
 HTML file;
-.B bib2html
+.B bib2xhtml
 attempts to update the HTML file in place.  It does this
 by searching
 .I htmlfile
@@ -93,7 +93,7 @@ and
 fields are relative to the
 .I htmlfile
 directory.  In addition,
-.B bib2html
+.B bib2xhtml
 recognizes compressed or gzipped files
 (those with filenames ending in
 .BR .Z ,
@@ -125,7 +125,7 @@ The bibliography entry's author name is the source of the link.
 If the
 .B postscript
 field exists, its value is used as the name of a PostScript file.
-.B bib2html
+.B bib2xhtml
 creates a link to the file.
 , and updates
 .I htmlfile
@@ -136,7 +136,7 @@ If the
 .B pdf
 field exists, its value is used as the name of a PDF (portable document
 format) file.
-.B bib2html
+.B bib2xhtml
 creates a link to the file and updates
 .I htmlfile
 with the size of the PDF file.
@@ -145,7 +145,7 @@ with the size of the PDF file.
 If the
 .B dvi
 field exists, its value is used as the name of a TeX DVI file.
-.B bib2html
+.B bib2xhtml
 creates a link to the file and updates
 .I htmlfile
 with the number of pages and size of the DVI file.
@@ -161,11 +161,11 @@ as HTML comments, and may be used by CGI scripts (such as
 .BR bibsearch ,
 which is supplied) to select only certain entries.
 .SS Hints
-.BR bib2html 's
+.BR bib2xhtml 's
 LaTeX to HTML conversion is not very smart.
 If something isn't being converted correctly, try doing it in a different way.
 .P
-.B bib2html
+.B bib2xhtml
 does not currently understand \fI\\verb\fR.
 To get a tilde into a filename or URL, use \fI\\~{}\fR.
 .SH OPTIONS
@@ -291,17 +291,23 @@ Diomidis Spinellis
 Athens University of Economics and Business.
 
 .SH HISTORY
-The program was originally written by David Hull in 1996, who
+The program was originally written as
+.B bib2html
+by David Hull in 1996, who
 maintained it until 1998 (version 1.33).
 In 2002, due to the lack of visible updates on the web,
 the program was adopted for maintenance, distribution, and further evolution
 by Diomidis Spinellis.
 Changes made by him include support for XHTML 1.0 and documentation bug fixes.
 The first public release of the maintenance effort was in 2004 (version 2.1).
+On March 2004 the program was renamed into
+.B bib2xhtml
+to avoid confusion with projects using the name
+.B bib2html .
 
 .LP
 See
-.I http://www.spinellis.gr/sw/textproc/bib2html
+.I http://www.spinellis.gr/sw/textproc/bib2xhtml
 for the latest version.
 This is free software, and may be modified or redistributed under
 the terms of the GNU Public License.
