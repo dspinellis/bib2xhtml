@@ -1,5 +1,5 @@
-.\" $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml.man,v 1.6 2004/03/29 12:17:06 dds Exp $
-.TH BIB2XHTML L "29 March 2004"
+.\" $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml.man,v 1.7 2004/04/03 09:07:47 dds Exp $
+.TH BIB2XHTML L "03 April 2004"
 .SH NAME
 bib2xhtml \- BibTeX bibliography to HTML converter
 .SH SYNOPSIS
@@ -11,6 +11,8 @@ bib2xhtml \- BibTeX bibliography to HTML converter
 .I bibtex-options
 ] [
 .B \-c
+] [
+.B \-i
 ] [
 .B \-d
 .I delimiter
@@ -82,6 +84,43 @@ The tag of each BibTeX bibliography entry is converted into a name
 anchor (<A NAME="tag">) in
 .IR htmlfile ,
 and may be used to construct a link to this particular entry.
+.P
+By default the contents of the bibliography are determined by
+the contents of the
+.IR sourcefile .
+It is also possible to specify the contents of the bibliography in the
+.I htmlfile
+itself by setting the
+.B \-i
+option and using two special strings to delimit
+the citations to be used for generating the bibliography.
+These strings are the HTML comments
+.IP
+<!-- BEGIN CITATIONS
+.I delimiter
+-->
+.IP
+<!-- END CITATIONS
+.I delimiter
+-->
+.P
+If these delimiters are found, the contents between them are searched for
+HTML comments containing the citations (one citation per line), for example
+.IP
+<!-- BEGIN CITATIONS
+.I delimiter
+-->
+.IP
+<-- \\citation{knuth:1997}
+    \\citation{knuth:1984} -->
+.IP
+<!-- END CITATIONS
+.I delimiter
+-->
+.P
+These citations are then used for choosing the bibliography entries from
+the
+.IR sourcefile .
 .SS Special Field Processing
 .P
 Several BibTeX fields are treated specially.  The filenames specified
@@ -181,6 +220,13 @@ Sort chronologically.  Normally, the bibliography is ordered first by
 author and then by year.  With this option, the bibliography is
 ordered by year and then author.
 .TP
+.BI \-i
+The citations are included in the
+.IR htmlfile .
+When this option is set, the
+.I sourcefile
+must be a .bib file.
+.TP
 .BI \-d " delimiter"
 Specify the delimiter that sets the bibliography off from the rest
 of the HTML file.  The default delimiter is the name of the bibliography
@@ -242,7 +288,7 @@ bibliography has labels of the form [name, year].
 .TP
 .B \-t
 Write a timestamp with the date at which the bibliography was
-updated to 
+updated to
 .IR htmlfile .
 .TP
 .B \-v
@@ -304,7 +350,10 @@ On March 2004 the program was renamed into
 .B bib2xhtml
 to avoid confusion with projects using the name
 .B bib2html .
-
+Panos Louridas
+.RI ( louridas@aueb.gr )
+added the functionality for including the citations in the
+.I htmlfile .
 .LP
 See
 .I http://www.spinellis.gr/sw/textproc/bib2xhtml
