@@ -1,5 +1,5 @@
 #
-# $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\Makefile,v 1.7 2004/04/22 09:22:03 dds Exp $
+# $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\Makefile,v 1.8 2004/06/02 07:35:24 dds Exp $
 #
 
 NAME=bib2xhtml
@@ -72,4 +72,27 @@ example:
 			perl bib2xhtml -c -r -s $$i -h "Example: bib2xhtml -c -r -s $$i" example.bib ex-$${i}-cr.html ;\
 			;; \
 		esac ;\
+	done
+
+# Regression test
+test:
+	cd testdir ; \
+	rm * ; \
+	cp ../ex*.html ../*.bst ../example.bib ../bib2xhtml . ; \
+	for i in empty plain alpha named unsort unsortlist ; \
+	do \
+		perl bib2xhtml -s $$i -h "Example: bib2xhtml -s $$i" example.bib ex-$$i.html ;\
+		case $$i in ; \
+		unsort*) ;; \
+		*) \
+			perl bib2xhtml -c -s $$i -h "Example: bib2xhtml -c -s $$i" example.bib ex-$${i}-c.html ;\
+			perl bib2xhtml -r -s $$i -h "Example: bib2xhtml -r -s $$i" example.bib ex-$${i}-r.html ;\
+			perl bib2xhtml -c -r -s $$i -h "Example: bib2xhtml -c -r -s $$i" example.bib ex-$${i}-cr.html ;\
+			;; \
+		esac ;\
+	done ; \
+	for i in *.html ; \
+	do \
+		echo $$i ; \
+		diff $$i ../$$i ; \
 	done
