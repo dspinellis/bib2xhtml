@@ -2,7 +2,7 @@
 eval 'exec /local/bin/perl -S $0 ${1+"$@"}'
 	if 0;
 
-$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.1 2004/01/14 19:48:38 dds Exp $';
+$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.2 2004/01/19 08:42:44 dds Exp $';
 
 #
 # Convert from bibtex to HTML.
@@ -342,7 +342,7 @@ push(@tmpfiles, "$auxfile.bbl");
 # fork is not implemented on some non-Unix platforms.
 # fork || (open(STDOUT, ">&STDERR"), exec("bibtex $opt_b $auxfile"));
 # wait;
-eval { fork || (open(STDOUT, ">&STDERR"), exec('bibtex', $auxfile)); wait; };
+eval { fork || (open(STDOUT, ">&STDERR"), exec('bibtex', (split(/\s+/, $opt_b), $auxfile))); wait; };
 if ($@) {
     # The fork failed (perhaps not implemented on this system).
     system("bibtex $opt_b $auxfile 1>&2");
