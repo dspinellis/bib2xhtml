@@ -1,5 +1,5 @@
-.\" $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml.man,v 1.5 2004/03/29 12:09:17 dds Exp $
-.TH BIB2HTML L "14 January 2004"
+.\" $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml.man,v 1.6 2004/03/29 12:17:06 dds Exp $
+.TH BIB2XHTML L "29 March 2004"
 .SH NAME
 bib2xhtml \- BibTeX bibliography to HTML converter
 .SH SYNOPSIS
