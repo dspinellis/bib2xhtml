@@ -1,5 +1,5 @@
 #
-# $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\Makefile,v 1.10 2004/06/06 20:12:37 dds Exp $
+# $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\Makefile,v 1.11 2004/07/01 18:36:13 dds Exp $
 #
 
 NAME=bib2xhtml
@@ -11,7 +11,7 @@ DISTDIR=/dds/pubs/web/home/sw/textproc/$(NAME)
 BSTFILES=$(wildcard *.bst)
 DOCFILES=$(NAME).html $(NAME).txt $(NAME).pdf index.html $(wildcard ex-*.html) example.bib
 FILES=README COPYING $(NAME) ${BSTFILES} $(DOCFILES) bibsearch Makefile $(NAME).man ChangeLog html-btxbst.doc gen-bst
-VERSION=$(shell ident $(NAME) | awk '/Id:/{print $$3} ')
+VERSION=$(shell ident $(NAME) | awk '/Id:/{print $$3; exit 0} ')
 
 UXHOST=spiti
 SSH=plink
@@ -65,15 +65,18 @@ example:
 	-rm -f ex-*.html
 	for i in empty plain alpha named unsort unsortlist ; \
 	do \
-		perl bib2xhtml -s $$i -h "Example: bib2xhtml -s $$i" example.bib ex-$$i.html ;\
-		case $$i in ; \
-		unsort*) ;; \
-		*) \
-			perl bib2xhtml -c -s $$i -h "Example: bib2xhtml -c -s $$i" example.bib ex-$${i}-c.html ;\
-			perl bib2xhtml -r -s $$i -h "Example: bib2xhtml -r -s $$i" example.bib ex-$${i}-r.html ;\
-			perl bib2xhtml -c -r -s $$i -h "Example: bib2xhtml -c -r -s $$i" example.bib ex-$${i}-cr.html ;\
-			;; \
-		esac ;\
+		for j in "" -u ; \
+		do \
+			perl bib2xhtml $$j -s $$i -h "Example: bib2xhtml $$j -s $$i" example.bib ex-$${i}$${j}.html ;\
+			case $$i in ; \
+			unsort*) ;; \
+			*) \
+				perl bib2xhtml $$j -c -s $$i -h "Example: bib2xhtml $$j -c -s $$i" example.bib ex-$${i}-c$${j}.html ;\
+				perl bib2xhtml $$j -r -s $$i -h "Example: bib2xhtml $$j -r -s $$i" example.bib ex-$${i}-r$${j}.html ;\
+				perl bib2xhtml $$j -c -r -s $$i -h "Example: bib2xhtml $$j -c -r -s $$i" example.bib ex-$${i}-cr$${j}.html ;\
+				;; \
+			esac ;\
+		done ; \
 	done
 
 # Regression test
