@@ -1,5 +1,5 @@
 #
-# $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\Makefile,v 1.9 2004/06/05 20:17:44 dds Exp $
+# $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\Makefile,v 1.10 2004/06/06 20:12:37 dds Exp $
 #
 
 NAME=bib2xhtml
@@ -62,6 +62,7 @@ install:
 	done
 
 example:
+	-rm -f ex-*.html
 	for i in empty plain alpha named unsort unsortlist ; \
 	do \
 		perl bib2xhtml -s $$i -h "Example: bib2xhtml -s $$i" example.bib ex-$$i.html ;\
