@@ -1,5 +1,5 @@
 % BibTeX `plain/html' family
-	% $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\html-btxbst.doc,v 1.1 2003/11/21 18:21:55 dds Exp $
+	% $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\html-btxbst.doc,v 1.2 2003/11/21 21:52:28 dds Exp $
 	% 
 	% This file is either "html-btxbst.doc" or was derived from
 	% "html-btxbst.doc" using cpp.  "html-btxbst.doc" itself was edited
@@ -546,7 +546,7 @@ FUNCTION {output.bibitem}
     'skip$
     { "<!-- Keywords: " keywords * " -->" * write$ newline$ }
   if$
-  "<DT><A NAME=" quote$ * cite$ * quote$ * ">[" * label * "]</A><DD>" * write$
+  "<dt><a name=" quote$ * cite$ * quote$ * ">[" * label * "]</a></dt><dd>" * write$
 #endif
   ""
   before.all 'output.state :=
@@ -573,14 +573,14 @@ FUNCTION {fin.entry}
 #ifdef ABSTRACT
   abstract empty$
     'skip$
-    { newline$ "<BLOCKQUOTE>" abstract * "</BLOCKQUOTE>" * write$ }
+    { newline$ "<blockquote>" abstract * "</blockquote>" * write$ }
   if$
 #endif /* ABSTRACT */
   % There's some disagreement as to whether a bibliography entry is
   % a paragraph-like entity or not.  I happen to believe that it is,
-  % and so this style file inserts a <P> tag here.  If you disagree,
+  % and so this style file inserts a <p> tag here.  If you disagree,
   % feel free to remove it.
-  "<P>" write$
+  "<p /></dd>" write$
   newline$
 #endif	/* HTML */
   newline$
@@ -792,7 +792,7 @@ FUNCTION {emphasize}
 #ifndef HTML
     { "{\em " swap$ * "}" * }
 #else /* HTML */
-    { "<CITE>" swap$ * "</CITE>" * }
+    { "<cite>" swap$ * "</cite>" * }
 #endif /* HTML */
   if$
 }
@@ -806,9 +806,9 @@ FUNCTION {add.link} % title
     { url empty$
 	{ html empty$
 	    { t }
-	    { "<A HREF=" quote$ * html * quote$ * ">" * t * "</A>" * }
+	    { "<a href=" quote$ * html * quote$ * ">" * t * "</a>" * }
 	  if$ }
-	{ "<A HREF=" quote$ * url * quote$ * ">" * t * "</A>" * }
+	{ "<a href=" quote$ * url * quote$ * ">" * t * "</a>" * }
       if$
     }
   if$
@@ -821,7 +821,7 @@ FUNCTION {add.mailto} % authors
     { "" }
     { mailto empty$
         { t }
-        { "<A HREF=" quote$ * "mailto:" * mailto * quote$ * ">" * t * "</A>" * }
+        { "<a href=" quote$ * "mailto:" * mailto * quote$ * ">" * t * "</a>" * }
       if$
     }
   if$
@@ -1306,7 +1306,7 @@ FUNCTION {format.tr.number}
 FUNCTION {format.article.crossref}
 {
 #ifdef HTML
-  "In <A HREF=" quote$ * "#" * crossref * quote$ * ">" *
+  "In <a href=" quote$ * "#" * crossref * quote$ * ">" *
 #endif /* HTML */
   key empty$
     { journal empty$
@@ -1317,7 +1317,7 @@ FUNCTION {format.article.crossref}
 #ifndef HTML
 	{ "In {\em " journal * "\/}" * }
 #else /* HTML */
-        { "<CITE>" * journal * "</CITE>" * }
+        { "<cite>" * journal * "</cite>" * }
 #endif /* HTML */
       if$
     }
@@ -1330,7 +1330,7 @@ FUNCTION {format.article.crossref}
 #ifndef HTML
   " \cite{" * crossref * "}" *
 #else /* HTML */
-  " \citelabel{" * crossref * "}</A>" *
+  "</a> \citelabel{" * crossref * "}" *
 #endif /* HTML */
 }
 
@@ -1371,7 +1371,7 @@ FUNCTION {format.book.crossref}
     }
   if$
 #ifdef HTML
-  "<A HREF=" * quote$ * "#" * crossref * quote$ * ">" *
+  "<a href=" * quote$ * "#" * crossref * quote$ * ">" *
 #endif /* HTML */
   editor empty$
   editor field.or.null author field.or.null =
@@ -1385,7 +1385,7 @@ FUNCTION {format.book.crossref}
 #ifndef HTML
 	    { "{\em " * series * "\/}" * }
 #else /* HTML */
-            { "<CITE>" * series * "</CITE>" * }
+            { "<cite>" * series * "</cite>" * }
 #endif /* HTML */
 	  if$
 	}
@@ -1397,7 +1397,7 @@ FUNCTION {format.book.crossref}
 #ifndef HTML
   " \cite{" * crossref * "}" *
 #else /* HTML */
-  " \citelabel{" * crossref * "}</A>" *
+  "</a> \citelabel{" * crossref * "}" *
 #endif /* HTML */
 }
 
@@ -1410,7 +1410,7 @@ FUNCTION {format.book.crossref}
 FUNCTION {format.incoll.inproc.crossref}
 {
 #ifdef HTML
-  "In <A HREF=" quote$ * "#" * crossref * quote$ * ">" *
+  "In <a href=" quote$ * "#" * crossref * quote$ * ">" *
 #endif /* HTML */
   editor empty$
   editor field.or.null author field.or.null =
@@ -1424,7 +1424,7 @@ FUNCTION {format.incoll.inproc.crossref}
 #ifndef HTML
 	    { "In {\em " booktitle * "\/}" * }
 #else /* HTML */
-            { "<CITE>" * booktitle * "</CITE>" * }
+            { "<cite>" * booktitle * "</cite>" * }
 #endif /* HTML */
 	  if$
 	}
@@ -1444,7 +1444,7 @@ FUNCTION {format.incoll.inproc.crossref}
 #ifndef HTML
   " \cite{" * crossref * "}" *
 #else /* HTML */
-  " \citelabel{" * crossref * "}</A>" *
+  "</a> \citelabel{" * crossref * "}" *
 #endif /* HTML */
 }
 
