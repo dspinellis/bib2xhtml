@@ -1,5 +1,5 @@
 #
-# $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\Makefile,v 1.5 2004/04/07 14:06:17 dds Exp $
+# $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\Makefile,v 1.6 2004/04/07 14:08:25 dds Exp $
 #
 
 NAME=bib2xhtml
@@ -9,8 +9,8 @@ CGIDIR=/usr/dcs/www/cgi-bin/
 DISTDIR=/dds/pubs/web/home/sw/textproc/$(NAME)
 
 BSTFILES=html-a.bst html-aa.bst html-n.bst html-na.bst html-u.bst html-ua.bst html-nr.bst
-DOCFILES=$(NAME).html $(NAME).txt $(NAME).pdf
-FILES=README COPYING $(NAME) ${BSTFILES} $(DOCFILES) bibsearch Makefile $(NAME).man ChangeLog html-btxbst.doc gen-bst index.html $(wildcard ex-*.html) example.bib
+DOCFILES=$(NAME).html $(NAME).txt $(NAME).pdf index.html $(wildcard ex-*.html) example.bib
+FILES=README COPYING $(NAME) ${BSTFILES} $(DOCFILES) bibsearch Makefile $(NAME).man ChangeLog html-btxbst.doc gen-bst
 VERSION=$(shell ident $(NAME) | awk '/Id:/{print $$3} ')
 
 UXHOST=spiti
