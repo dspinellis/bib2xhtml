@@ -2,7 +2,7 @@
 eval 'exec /usr/bin/perl -w -S $0 ${1+"$@"}'
     if 0;
 
-$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.8 2004/06/06 20:03:27 dds Exp $';
+$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.9 2004/06/06 20:30:50 dds Exp $';
 
 #
 # Convert from bibtex to HTML.
@@ -1044,10 +1044,16 @@ sub domath {
     # Remove \mbox.
     s/\\mbox(\001\d+)\{([^\001]*)\1\}/$2/g;		# \mbox{x}
 
-    s/([^\\])~/$1&nbsp;/g;			# ~ -> non-breaking space
-    s/\\\,/ /g;					# \, (thin space)
+    if ($opt_e) {
+        s/([^\\])~/$1&nbsp;/g;			# ~  non-breaking space
+        s/\\\,/ /g;				# \, thin space
+        s/\\ldots\b\s*/.../g;			# \ldots
+    } else {
+        s/([^\\])~/$1 /g;			# ~  non-breaking space - &#xa0;
+        s/\\\,/ /g;				# \, thin space - &#x2009;
+        s/\\ldots\b\s*/…/g;			# Ellipsis
+    }
     s/\\ / /g;					# \  (normal space)
-    s/\\ldots\b\s*/.../g;			# \ldots
     s/\\textasciitilde\b\s*/~/g;		# \textasciitilde -> ~
 
     # Non-alphabetic macros that we keep.
