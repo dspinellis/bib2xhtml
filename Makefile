@@ -1,38 +1,57 @@
+#
+# $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\Makefile,v 1.2 2004/01/14 19:47:01 dds Exp $
+#
+
+NAME=bib2html
 BINDIR=$(HOME)/bin/
 BIBTEXDIR=$(HOME)/texmf/bibtex/bst/
 CGIDIR=/usr/dcs/www/cgi-bin/
-FTPDIR=dist
+DISTDIR=/dds/pubs/web/home/sw/textproc/$(NAME)
 
-FILES=README COPYING bib2html html*.bst bibsearch Makefile bib2html.man ChangeLog html-btxbst.doc gen-bst
-VERSION=1.33
+BSTFILES=html-a.bst html-aa.bst html-n.bst html-na.bst html-u.bst html-ua.bst html-nr.bst
+DOCFILES=$(NAME).html $(NAME).txt $(NAME).pdf
+FILES=README COPYING $(NAME) ${BSTFILES} $(DOCFILES) bibsearch Makefile $(NAME).man ChangeLog html-btxbst.doc gen-bst
+VERSION=$(shell ident $(NAME) | awk '/Id:/{print $$3} ')
 
-default: bib2html.man.html html-a.bst html-aa.bst html-n.bst html-na.bst html-u.bst html-ua.bst syntax
+UXHOST=spiti
+SSH=plink
 
-dist: default bib2html-$(VERSION).tar.gz bib2html-$(VERSION).shar
-	install -m 644 bib2html-$(VERSION).tar.gz $(FTPDIR)
-	install -m 644 bib2html-$(VERSION).shar $(FTPDIR)
+default: $(DOCFIL')
+
+UXHOST=spiti
+SSH=plink
+
+default: $(DOCFILES) ${BSTFILES} syntax
+
 dist: default $(NAME)-$(VERSION).tar.gz
-bib2html-$(VERSION).shar: $(FILES)
+	cp $(NAME)-$(VERSION).tar.gz $(DISTDIR)
 	cp $(DOCFILES) $(DISTDIR)
 	cp ChangeLog $(DISTDIR)/ChangeLog.txt
 	sed -e "s/VERSION/${VERSION}/" index.html >${DISTDIR}/index.html
-bib2html-$(VERSION).tar.gz: $(FILES)
-	rm -f bib2html-$(VERSION).tar.gz
-	ln -s . bib2html-$(VERSION)
-	tar cf bib2html-$(VERSION).tar ${FILES:%=bib2html-$(VERSION)/%}
-	rm bib2html-$(VERSION)
-	gzip -9 bib2html-$(VERSION).tar
-	chmod 644 bib2html-$(VERSION).tar.gz
 
-bib2html.man.html: bib2html.man
-	nroff -man bib2html.man | man2html -sun -title bib2html> bib2html.man.html
-	chmod 644 bib2html.man.html
+$(NAME)-$(VERSION).shar: $(FILES)
+	gshar -s hull@cs.uiuc.edu $(FILES) > $@
+	chmod 644 $@
+
+$(NAME)-$(VERSION).tar.gz: $(FILES)
+	-cmd /c "rd /s/q $(NAME)-$(VERSION)"
+	mkdir $(NAME)-$(VERSION)
+	cp ${FILES} $(NAME)-$(VERSION)
+	tar cf - ${FILES:%=$(NAME)-$(VERSION)/%} | gzip -c >$(NAME)-$(VERSION).tar.gz
+	cmd /c "rd /s/q $(NAME)-$(VERSION)"
+
+$(NAME).ps: $(NAME).man
+	$(SSH) $(UXHOST) groff -man -Tps <$? > $@
+
+$(NAME).txt: $(NAME).man
+	$(SSH) $(UXHOST) groff -man -Tascii <$? | $(SSH) $(UXHOST) col -b > $@
+
 $(NAME).pdf: $(NAME).ps
-html-a.bst html-aa.bst html-n.bst html-na.bst html-u.bst html-ua.bst html-nr.bst : html-btxbst.doc
+	ps2pdf $? $@
 
 $(NAME).html: $(NAME).man
-syntax: bib2html bibsearch
-	-perl -w -c bib2html >syntax 2>&1
+	$(SSH) $(UXHOST) groff -mhtml -Thtml -man <$? | sed -e 's/&minus;/-/g;s/&bull;/\&#8226;/g' >$@
+
 ${BSTFILES} : html-btxbst.doc
 	./gen-bst
 
@@ -40,7 +59,7 @@ syntax: $(NAME) bibsearch
 	-perl -w -c $(NAME) >syntax 2>&1
 	-perl -T -w -c bibsearch >>syntax 2>&1
 	-perl -w -c gen-bst >>syntax 2>&1
-	install -m 755 bib2html $(BINDIR)
+
 install:
 	for i in *.bst; do\
 	    install -m 644 $$i $(BIBTEXDIR);\
