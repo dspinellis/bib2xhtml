@@ -1,4 +1,4 @@
-.\" $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml.man,v 1.3 2004/01/18 15:36:41 dds Exp $
+.\" $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml.man,v 1.4 2004/01/19 08:43:16 dds Exp $
 .TH BIB2HTML L "14 January 2004"
 .SH NAME
 bib2html \- BibTeX bibliography to HTML converter
@@ -43,8 +43,8 @@ converts a bibtex-format bibliography file to HTML.
 .I sourcefile
 may be either a BibTeX-format bibliography
 .RB ( .bib )
-file or a LaTeX-fomatted bibliography auxillary file.
-.RB ( .aux )
+file or a LaTeX-fomatted bibliography auxillary file
+.RB ( .aux ).
 .I htmlfile
 will often be just part of a larger
 HTML file;
