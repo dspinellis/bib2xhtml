@@ -2,7 +2,7 @@
 eval 'exec /local/bin/perl -S $0 ${1+"$@"}'
 	if 0;
 
-$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 1.3 2003/11/21 21:51:20 dds Exp $';
+$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 1.4 2003/11/21 22:09:42 dds Exp $';
 
 #
 # Convert from bibtex to HTML.
@@ -50,7 +50,8 @@ usage: $program [-A] [-a] [-b bibtex-options] [-d delim] [-h heading]
 	If updating an existing htmlfile, this option is ignored.
     -r	Sort in reverse chronological order.
     -s style
-	Control style of bibliography (empty, plain, alpha, named, or unsort).
+	Control style of bibliography:
+	(empty, plain, alpha, named, unsort, or unsortlist).
     -t  Write timestamp to htmlfile.
     -v  Report the version number.
     -3  Perform HTML 3.0 character entity mappings.
@@ -269,6 +270,10 @@ style: {
     ($opt_s eq 'unsort') &&
 	($bstfile = "html-u",
 	 $label_style = $LABEL_NUMBERED,
+	 last style);
+    ($opt_s eq 'unsortlist') &&
+	($bstfile = "html-u",
+	 $label_style = $LABEL_PLAIN,
 	 last style);
     ($opt_s =~ s/\.bst$//) &&
 	($bstfile = $opt_s,
