@@ -1,4 +1,4 @@
-.\" $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml.man,v 1.8 2004/04/05 11:16:16 dds Exp $
+.\" $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml.man,v 1.9 2004/04/07 13:54:42 dds Exp $
 .TH BIB2XHTML L "03 April 2004"
 .SH NAME
 bib2xhtml \- BibTeX bibliography to HTML converter
@@ -256,6 +256,10 @@ definitions.
 Reverse the chronological sorting order.  Normally, the bibliography
 is sorted from the earliest entry to the latest entry.  With this
 option, the order is reversed.
+Note that to obtain a bibliography ordered by chronological order you
+must also specify the
+.B \-c
+option.
 .TP
 .BI \-s " style"
 Create a
