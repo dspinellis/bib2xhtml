@@ -1,7 +1,7 @@
-.\" $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml.man,v 1.10 2004/05/28 07:59:14 dds Exp $
-.TH BIB2XHTML L "03 April 2004"
+.\" $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml.man,v 1.11 2004/06/06 20:03:27 dds Exp $
+.TH BIB2XHTML L "06 June 2004"
 .SH NAME
-bib2xhtml \- BibTeX bibliography to HTML converter
+bib2xhtml \- BibTeX bibliography to XHTML converter
 .SH SYNOPSIS
 .B bib2xhtml
 [
@@ -32,7 +32,7 @@ bib2xhtml \- BibTeX bibliography to HTML converter
 ] [
 .B \-v
 ] [
-.B \-3
+.B \-e
 ]
 .I sourcefile
 [
@@ -41,7 +41,7 @@ bib2xhtml \- BibTeX bibliography to HTML converter
 .SH DESCRIPTION
 .LP
 .B bib2xhtml
-converts a bibtex-format bibliography file to HTML.
+converts a bibtex-format bibliography file to XHTML.
 .I sourcefile
 may be either a BibTeX-format bibliography
 .RB ( .bib )
@@ -49,14 +49,14 @@ file or a LaTeX-fomatted bibliography auxillary file
 .RB ( .aux ).
 .I htmlfile
 will often be just part of a larger
-HTML file;
+XHTML file;
 .B bib2xhtml
-attempts to update the HTML file in place.  It does this
+attempts to update the XHTML file in place.  It does this
 by searching
 .I htmlfile
 for two special strings, which delimit
 the bibliography part of the file.
-These strings are the HTML comments
+These strings are the XHTML comments
 .IP
 <!-- BEGIN BIBLIOGRAPHY
 .I delimiter
@@ -94,7 +94,7 @@ itself by setting the
 .B \-i
 option and using two special strings to delimit
 the citations to be used for generating the bibliography.
-These strings are the HTML comments
+These strings are the XHTML comments
 .IP
 <!-- BEGIN CITATIONS
 .I delimiter
@@ -105,7 +105,7 @@ These strings are the HTML comments
 -->
 .P
 If these delimiters are found, the contents between them are searched for
-HTML comments containing the citations (one citation per line), for example
+XHTML comments containing the citations (one citation per line), for example
 .IP
 <!-- BEGIN CITATIONS
 .I delimiter
@@ -151,7 +151,7 @@ of the link is the
 .B url
 tag's value.
 The bibliography entry's title is the source of the link.
-This can be used to create a link to a HTML version of the paper,
+This can be used to create a link to a XHTML version of the paper,
 or to a version that is available by ftp.
 .TP
 .B mailto
@@ -199,12 +199,12 @@ and
 .B keywords
 fields of each BibTeX entry are included in
 .I htmlfile
-as HTML comments, and may be used by CGI scripts (such as
+as XHTML comments, and may be used by CGI scripts (such as
 .BR bibsearch ,
 which is supplied) to select only certain entries.
 .SS Hints
 .BR bib2xhtml 's
-LaTeX to HTML conversion is not very smart.
+LaTeX to XHTML conversion is not very smart.
 If something isn't being converted correctly, try doing it in a different way.
 .P
 .B bib2xhtml
@@ -232,7 +232,7 @@ must be a .bib file.
 .TP
 .BI \-d " delimiter"
 Specify the delimiter that sets the bibliography off from the rest
-of the HTML file.  The default delimiter is the name of the bibliography
+of the XHTML file.  The default delimiter is the name of the bibliography
 file with the
 .B .bib
 extension stripped.
@@ -281,7 +281,7 @@ bibliography is a numbered list.
 .B unsort
 is like
 .B plain
-except that the entries in the HTML file are in the same order as
+except that the entries in the XHTML file are in the same order as
 as they are in the source file.
 .B unsortlist
 is like
@@ -301,19 +301,24 @@ updated to
 .B \-v
 Report version number on stderr.
 .TP
-.B \-3
-Perform some HTML 3.0 mappings.
+.B \-e
+Convert the LaTeX special characters into HTML entities, and output
+ASCII-coded XML.
+Starting with version 2.8
+the default is to convert LaTeX special characters into the corresponding
+Unicode characters, and output XML coded in UTF-8.
+Note that the output produced by this option is probably not valid XML.
 .SH FILES
 .PD 0
 .TP 14
 .B html-a.bst
-alpha HTML BibTeX style file
+alpha XHTML BibTeX style file
 .TP
 .B html-n.bst
-named HTML BibTeX style file
+named XHTML BibTeX style file
 .TP
 .B html-u.bst
-unsort HTML BibTeX style file
+unsort XHTML BibTeX style file
 .TP
 .BR html-aa.bst ", " html-na.bst ", " html-ua.bst
 versions of the above style files with abstracts
@@ -328,10 +333,10 @@ a CGI script for performing bibliography searches
 .ne 8
 .SH BUGS
 .LP
-The LaTeX to HTML translation, while decent, is not perfect.
+The LaTeX to XHTML translation, while decent, is not perfect.
 .LP
 Requires bibtex and perl.  However, I think that most
-sites that would want to convert BibTeX to HTML will already
+sites that would want to convert BibTeX to XHTML will already
 have both programs installed.
 .LP
 Relies on dviselect to count the number of pages in a DVI file.

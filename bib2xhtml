@@ -2,7 +2,7 @@
 eval 'exec /usr/bin/perl -w -S $0 ${1+"$@"}'
     if 0;
 
-$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.7 2004/06/05 20:08:09 dds Exp $';
+$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.8 2004/06/06 20:03:27 dds Exp $';
 
 #
 # Convert from bibtex to HTML.
@@ -37,7 +37,7 @@ sub usage {
     $program =~ s+^.*/++;
     print STDERR <<_EOF_;
 usage: $program [-A] [-a] [-b bibtex-options] [-c] [-i] [-d delim]
-		[-h heading] [-m macro file] [-s style] [-r] [-t] [-v] [-3]
+		[-h heading] [-m macro file] [-s style] [-r] [-t] [-v] [-e]
 		sourcefile [htmlfile]
     -a  Write abstract to htmlfile.
     -b bibtex-options
@@ -57,7 +57,7 @@ usage: $program [-A] [-a] [-b bibtex-options] [-c] [-i] [-d delim]
 	(empty, plain, alpha, named, unsort, or unsortlist).
     -t  Write timestamp to htmlfile.
     -v  Report the version number.
-    -3  Perform HTML 3.0 character entity mappings.
+    -e  Perform HTML character entity mappings.
 _EOF_
     exit(1);
 }
@@ -218,15 +218,428 @@ sub html_encode {
     $_;
 }
 
+# Convert $_ into an HTML entity representation
+sub html_ent {
+	# Accents.
+	s/\\i\b/i/g;					# dotless i.
+	s/\\\'(\001\d+)\{([AEIOUaeiou])\1\}/&$2acute;/g;	# acute accent \'{x}
+	s/\\\'([AEIOUaeiou])/&$1acute;/g;			# acute accent \'x
+	s/\\\`(\001\d+)\{([AEIOUaeiou])\1\}/&$2grave;/g;	# grave accent \`{x}
+	s/\\\`([AEIOUaeiou])/&$1grave;/g;			# grave accent \`x
+	s/\\\"(\001\d+)\{([AEIOUaeiouy])\1\}/&$2uml;/g;	# umlaut \"{x}
+	s/\\\"([AEIOUaeiouy])/&$1uml;/g;			# umlaut \"x
+	s/\\\~(\001\d+)\{([ANOano])\1\}/&$2tilde;/g;	# tilde \~{x}
+	s/\\\~([ANOano])/&$1tilde;/g;			# tilde \~x
+	s/\\\^(\001\d+)\{([AEIOUaeiou])\1\}/&$2circ;/g;	# circumflex \^{x}
+	s/\\\^(AEIOUaeiou])/&$1circ;/g;			# circumflex \^x
+	s/\\c(\001\d+)\{([Cc])\1\}/&$2cedil;/g;		# cedilla \c{x}
+	# The following accents have no HTML equivalent.
+	# (This list is still not complete.)
+	s/\\u(\001\d+)\{(.)\1\}/$2/g;			# breve accent \u{x}
+	s/\\v(\001\d+)\{(.)\1\}/$2/g;			# hacek accent \v{x}
+	s/\\([lL])\b/$1/g;					# slashed l
+	s/\\\=(\001\d+)\{(.)\1\}/$2/g;			# macron \={x}
+	s/\\\=(.)/$1/g;					# macron accent \=x
+	s/\\\.(\001\d+)\{(.)\1\}/$2/g;			# dot \.{x}
+	s/\\\.(.)/$1/g;					# dot accent \.x
+
+	# Other special characters.
+	s/\\([Oo])\b\s*/&$1slash;/g;	# \[Oo] -> &[Oo]slash;
+	s/\\AA\b\s*/&Aring;/g;		# \AA -> &Aring;
+	s/\\aa\b\s*/&aring;/g;		# \aa -> &aring;
+	s/\\AE\b\s*/&AElig;/g;		# \AE -> &AElig;
+	s/\\ae\b\s*/&aelig;/g;		# \ae -> &aelig;
+	s/\\ss\b\s*/&szlig;/g;		# \ss -> &szlig;
+	s/\\S\b\s*/&#167;/g;		# \S -> &sect;
+	s/\\P\b\s*/&#182;/g;		# \P -> &para;
+	s/\\pounds\b\s*/&163;/g;		# \pounds -> &pound;
+	s/\?\`/&191;/g;			# ?` -> &iquest;
+	s/\!\`/&161;/g;			# !` -> &iexcl;
+
+	# Other special characters.
+	# Try to be careful to not change the dashes in HTML comments
+	# (<!-- comment -->) to &ndash;s.
+	s/\-\-\-/&mdash;/g;		# --- -> &mdash;
+	s/([^\!])\-\-([^\>])/$1&ndash;$2/g;	# -- -> &ndash;
+	#s/\-\-\-/\227/g;		# --- -> &mdash;
+	#s/([^\!])\-\-([^\>])/$1\226$2/g;	# -- -> &ndash;
+
+	# Upper and lower case greek
+	s/\\([aA]lpha)\b/&$1;/g;
+	s/\\([bB]eta)\b/&$1;/g;
+	s/\\([gG]amma)\b/&$1;/g;
+	s/\\([dD]elta)\b/&$1;/g;
+	s/\\varepsilon\b/&epsilon;/g;
+	s/\\([eE]psilon)\b/&$1;/g;
+	s/\\([zZ]eta)\b/&$1;/g;
+	s/\\([eE]ta)\b/&$1;/g;
+	s/\\([tT]heta)\b/&$1;/g;
+	s/\\vartheta\b/&theta;/g;
+	s/\\([iI]ota)\b/&$1;/g;
+	s/\\([kK]appa)\b/&$1;/g;
+	s/\\([lL]ambda)\b/&$1;/g;
+	s/\\([mM]u)\b/&$1;/g;
+	s/\\([nN]u)\b/&$1;/g;
+	s/\\([xX]i)\b/&$1;/g;
+	s/\\([oO]micron)\b/&$1;/g;
+	s/\\([pP]i)\b/&$1;/g;
+	s/\\varpi\b/&pi;/g;
+	s/\\([rR]ho)\b/&$1;/g;
+	s/\\varrho\b/&rho;/g;
+	s/\\([sS]igma)\b/&$1;/g;
+	s/\\varsigma\b/&sigmaf;/g;
+	s/\\([tT]au)\b/&$1;/g;
+	s/\\([uU]psilon)\b/&$1;/g;
+	s/\\([pP]hi)\b/&$1;/g;
+	s/\\varphi\b/&phi;/g;
+	s/\\([cC]hi)\b/&$1;/g;
+	s/\\([pP]si)\b/&$1;/g;
+	s/\\([oO]mega)\b/&$1;/g;
+}
+
+# Convert $_ into a UTF-8 character
+sub utf_ent {
+	# Accents.
+	s/\\i\b/ı/g;					# dotless i.
+
+	# acute accent \'{x}
+	s/\\\'(\001\d+)\{A\1\}/Á/g;
+	s/\\\'(\001\d+)\{C\1\}/Ć/g;
+	s/\\\'(\001\d+)\{E\1\}/É/g;
+	s/\\\'(\001\d+)\{I\1\}/Í/g;
+	s/\\\'(\001\d+)\{L\1\}/Ĺ/g;
+	s/\\\'(\001\d+)\{N\1\}/Ń/g;
+	s/\\\'(\001\d+)\{O\1\}/Ó/g;
+	s/\\\'(\001\d+)\{R\1\}/Ŕ/g;
+	s/\\\'(\001\d+)\{S\1\}/Ś/g;
+	s/\\\'(\001\d+)\{U\1\}/Ú/g;
+	s/\\\'(\001\d+)\{Z\1\}/Ź/g;
+	s/\\\'(\001\d+)\{a\1\}/á/g;
+	s/\\\'(\001\d+)\{c\1\}/ć/g;
+	s/\\\'(\001\d+)\{e\1\}/é/g;
+	s/\\\'(\001\d+)\{i\1\}/í/g;
+	s/\\\'(\001\d+)\{l\1\}/ĺ/g;
+	s/\\\'(\001\d+)\{n\1\}/ń/g;
+	s/\\\'(\001\d+)\{o\1\}/ó/g;
+	s/\\\'(\001\d+)\{r\1\}/ŕ/g;
+	s/\\\'(\001\d+)\{s\1\}/ś/g;
+	s/\\\'(\001\d+)\{u\1\}/ú/g;
+	s/\\\'(\001\d+)\{z\1\}/ź/g;
+
+	# acute accent \'x
+	s/\\\'A/Á/g;
+	s/\\\'C/Ć/g;
+	s/\\\'E/É/g;
+	s/\\\'I/Í/g;
+	s/\\\'L/Ĺ/g;
+	s/\\\'N/Ń/g;
+	s/\\\'O/Ó/g;
+	s/\\\'R/Ŕ/g;
+	s/\\\'S/Ś/g;
+	s/\\\'U/Ù/g;
+	s/\\\'Z/Ź/g;
+	s/\\\'a/á/g;
+	s/\\\'c/ć/g;
+	s/\\\'e/é/g;
+	s/\\\'i/í/g;
+	s/\\\'l/ĺ/g;
+	s/\\\'n/ń/g;
+	s/\\\'o/ó/g;
+	s/\\\'r/ŕ/g;
+	s/\\\'s/ś/g;
+	s/\\\'u/ú/g;
+	s/\\\'z/ź/g;
+
+	# grave accent \`{x}
+	s/\\\`(\001\d+)\{A\1\}/À/g;
+	s/\\\`(\001\d+)\{E\1\}/È/g;
+	s/\\\`(\001\d+)\{I\1\}/Ì/g;
+	s/\\\`(\001\d+)\{O\1\}/Ò/g;
+	s/\\\`(\001\d+)\{U\1\}/Ù/g;
+	s/\\\`(\001\d+)\{a\1\}/à/g;
+	s/\\\`(\001\d+)\{e\1\}/è/g;
+	s/\\\`(\001\d+)\{i\1\}/ì/g;
+	s/\\\`(\001\d+)\{o\1\}/ò/g;
+	s/\\\`(\001\d+)\{u\1\}/ù/g;
+
+	# grave accent \`x
+	s/\\\`A/À/g;
+	s/\\\`E/È/g;
+	s/\\\`I/Ì/g;
+	s/\\\`O/Ò/g;
+	s/\\\`U/Ù/g;
+	s/\\\`a/à/g;
+	s/\\\`e/è/g;
+	s/\\\`i/ì/g;
+	s/\\\`o/ò/g;
+	s/\\\`u/ù/g;
+
+	# umlaut \"{x}
+	s/\\\"(\001\d+)\{A\1\}/Ä/g;
+	s/\\\"(\001\d+)\{E\1\}/Ë/g;
+	s/\\\"(\001\d+)\{I\1\}/Ï/g;
+	s/\\\"(\001\d+)\{O\1\}/Ö/g;
+	s/\\\"(\001\d+)\{U\1\}/Ü/g;
+	s/\\\"(\001\d+)\{Y\1\}/Ÿ/g;
+	s/\\\"(\001\d+)\{a\1\}/ä/g;
+	s/\\\"(\001\d+)\{e\1\}/ë/g;
+	s/\\\"(\001\d+)\{i\1\}/ï/g;
+	s/\\\"(\001\d+)\{o\1\}/ö/g;
+	s/\\\"(\001\d+)\{u\1\}/ü/g;
+	s/\\\"(\001\d+)\{y\1\}/ÿ/g;
+
+	# umlaut \"x
+	s/\\\"A/Ä/g;
+	s/\\\"E/Ë/g;
+	s/\\\"I/Ï/g;
+	s/\\\"O/Ö/g;
+	s/\\\"U/Ü/g;
+	s/\\\"Y/Ÿ/g;
+	s/\\\"a/ä/g;
+	s/\\\"e/ë/g;
+	s/\\\"i/ï/g;
+	s/\\\"o/ö/g;
+	s/\\\"u/ü/g;
+	s/\\\"y/ÿ/g;
+
+	# tilde \~{x}
+	s/\\\~(\001\d+)\{A\1\}/Ã/g;
+	s/\\\~(\001\d+)\{N\1\}/Ñ/g;
+	s/\\\~(\001\d+)\{O\1\}/Õ/g;
+	s/\\\~(\001\d+)\{a\1\}/ã/g;
+	s/\\\~(\001\d+)\{n\1\}/ñ/g;
+	s/\\\~(\001\d+)\{o\1\}/õ/g;
+
+	# tilde \~x
+	s/\\\~A/Ã/g;
+	s/\\\~N/Ñ/g;
+	s/\\\~O/Õ/g;
+	s/\\\~a/ã/g;
+	s/\\\~n/ñ/g;
+	s/\\\~O/õ/g;
+
+	# circumflex \^{x}
+	s/\\\^(\001\d+)\{A\1\}/Â/g;
+	s/\\\^(\001\d+)\{E\1\}/Ê/g;
+	s/\\\^(\001\d+)\{G\1\}/Ĝ/g;
+	s/\\\^(\001\d+)\{H\1\}/Ĥ/g;
+	s/\\\^(\001\d+)\{I\1\}/Î/g;
+	s/\\\^(\001\d+)\{J\1\}/Ĵ/g;
+	s/\\\^(\001\d+)\{O\1\}/Ô/g;
+	s/\\\^(\001\d+)\{U\1\}/Û/g;
+	s/\\\^(\001\d+)\{W\1\}/Ŵ/g;
+	s/\\\^(\001\d+)\{Y\1\}/Ŷ/g;
+	s/\\\^(\001\d+)\{a\1\}/â/g;
+	s/\\\^(\001\d+)\{e\1\}/ê/g;
+	s/\\\^(\001\d+)\{g\1\}/ĝ/g;
+	s/\\\^(\001\d+)\{h\1\}/ĥ/g;
+	s/\\\^(\001\d+)\{i\1\}/î/g;
+	s/\\\^(\001\d+)\{j\1\}/ĵ/g;
+	s/\\\^(\001\d+)\{o\1\}/ô/g;
+	s/\\\^(\001\d+)\{u\1\}/û/g;
+	s/\\\^(\001\d+)\{w\1\}/ŵ/g;
+	s/\\\^(\001\d+)\{y\1\}/ŷ/g;
+
+	# circumflex \^x
+	s/\\\^A/Â/g;
+	s/\\\^E/Ê/g;
+	s/\\\^G/Ĝ/g;
+	s/\\\^H/Ĥ/g;
+	s/\\\^I/Î/g;
+	s/\\\^J/Ĵ/g;
+	s/\\\^O/Ô/g;
+	s/\\\^U/Û/g;
+	s/\\\^W/Ŵ/g;
+	s/\\\^Y/Ŷ/g;
+	s/\\\^a/â/g;
+	s/\\\^e/ê/g;
+	s/\\\^g/ĝ/g;
+	s/\\\^h/ĥ/g;
+	s/\\\^i/î/g;
+	s/\\\^J/ĵ/g;
+	s/\\\^o/ô/g;
+	s/\\\^u/û/g;
+	s/\\\^w/ŵ/g;
+	s/\\\^y/ŷ/g;
+
+	# cedilla \c{x}
+	s/\\c(\001\d+)\{C\1\}/Ç/g;
+	s/\\c(\001\d+)\{c\1\}/ç/g;
+	s/\\c(\001\d+)\{K\1\}/Ķ/g;
+	s/\\c(\001\d+)\{k\1\}/ķ/g;
+	s/\\c(\001\d+)\{L\1\}/Ļ/g;
+	s/\\c(\001\d+)\{l\1\}/ļ/g;
+	s/\\c(\001\d+)\{N\1\}/Ņ/g;
+	s/\\c(\001\d+)\{n\1\}/ņ/g;
+	s/\\c(\001\d+)\{N\1\}/Ŗ/g;
+	s/\\c(\001\d+)\{n\1\}/ŗ/g;
+
+	# double acute accent \H{x}
+	s/\\H(\001\d+)\{O\1\}/Ő/g;
+	s/\\H(\001\d+)\{U\1\}/Ű/g;
+	s/\\H(\001\d+)\{o\1\}/ő/g;
+	s/\\H(\001\d+)\{u\1\}/ű/g;
+
+	# breve accent \u{x}
+	s/\\u(\001\d+)\{A\1\}/Ă/g;
+	s/\\u(\001\d+)\{E\1\}/Ĕ/g;
+	s/\\u(\001\d+)\{G\1\}/Ğ/g;
+	s/\\u(\001\d+)\{I\1\}/Ĭ/g;
+	s/\\u(\001\d+)\{O\1\}/Ŏ/g;
+	s/\\u(\001\d+)\{U\1\}/Ŭ/g;
+	s/\\u(\001\d+)\{a\1\}/ă/g;
+	s/\\u(\001\d+)\{e\1\}/ĕ/g;
+	s/\\u(\001\d+)\{g\1\}/ğ/g;
+	s/\\u(\001\d+)\{i\1\}/ĭ/g;
+	s/\\u(\001\d+)\{o\1\}/ŏ/g;
+	s/\\u(\001\d+)\{u\1\}/ŭ/g;
+
+	# hacek/caron? accent \v{x}
+	s/\\v(\001\d+)\{C\1\}/Č/g;
+	s/\\v(\001\d+)\{D\1\}/Ď/g;
+	s/\\v(\001\d+)\{E\1\}/Ě/g;
+	s/\\v(\001\d+)\{L\1\}/Ľ/g;
+	s/\\v(\001\d+)\{N\1\}/Ň/g;
+	s/\\v(\001\d+)\{Z\1\}/Ž/g;
+	s/\\v(\001\d+)\{c\1\}/č/g;
+	s/\\v(\001\d+)\{d\1\}/ď/g;
+	s/\\v(\001\d+)\{e\1\}/ě/g;
+	s/\\v(\001\d+)\{l\1\}/ľ/g;
+	s/\\v(\001\d+)\{n\1\}/ň/g;
+	s/\\v(\001\d+)\{z\1\}/ž/g;
+
+	# macron \={x}
+	s/\\\=(\001\d+)\{A\1\}/Ā/g;
+	s/\\\=(\001\d+)\{E\1\}/Ē/g;
+	s/\\\=(\001\d+)\{O\1\}/Ō/g;
+	s/\\\=(\001\d+)\{U\1\}/Ū/g;
+	s/\\\=(\001\d+)\{a\1\}/ā/g;
+	s/\\\=(\001\d+)\{e\1\}/ē/g;
+	s/\\\=(\001\d+)\{o\1\}/ō/g;
+	s/\\\=(\001\d+)\{u\1\}/ū/g;
+
+	# macron \=x
+	s/\\\=A/Ā/g;
+	s/\\\=E/Ē/g;
+	s/\\\=O/Ō/g;
+	s/\\\=U/Ū/g;
+	s/\\\=a/ā/g;
+	s/\\\=e/ē/g;
+	s/\\\=o/ō/g;
+	s/\\\=u/ū/g;
+
+	# dot \.{x}
+	s/\\\.(\001\d+)\{G\1\}/Ġ/g;
+	s/\\\.(\001\d+)\{L\1\}/Ŀ/g;
+	s/\\\.(\001\d+)\{Z\1\}/Ż/g;
+	s/\\\.(\001\d+)\{g\1\}/ġ/g;
+	s/\\\.(\001\d+)\{l\1\}/ŀ/g;
+	s/\\\.(\001\d+)\{z\1\}/ż/g;
+
+	# dot \.x
+	s/\\\.G/Ġ/g;
+	s/\\\.L/Ŀ/g;
+	s/\\\.Z/Ż/g;
+	s/\\\.g/ġ/g;
+	s/\\\.l/ŀ/g;
+	s/\\\.z/ż/g;
+
+
+	# slashed l
+	s/\\l\b/ł/g;
+	s/\\L\b/Ł/g;
+
+	# Other special characters.
+	s/\\O\b\s*/Ø/g;
+	s/\\o\b\s*/ø/g;
+	s/\\AA\b\s*/Å/g;
+	s/\\aa\b\s*/å/g;
+	s/\\AE\b\s*/Æ/g;
+	s/\\ae\b\s*/æ/g;
+	s/\\OE\b\s*/Œ/g;
+	s/\\oe\b\s*/œ/g;
+	s/\\ss\b\s*/ß/g;
+	s/\\S\b\s*/§/g;
+	s/\\P\b\s*/¶/g;
+	s/\\pounds\b\s*/£/g;
+	s/\?\`/¿/g;
+	s/\!\`/¡/g;
+
+	# en and em dashes
+	# Try to be careful to not change the dashes in HTML comments
+	# (<!-- comment -->) to &ndash;s.
+	s/\-\-\-/—/g;			# --- -> &#x2014
+	s/([^\!])\-\-([^\>])/$1–$2/g;	# -- -> &#x2013
+
+	# Upper case Greek
+	s/\\Alpha\b/Α/g;
+	s/\\Beta\b/Β/g;
+	s/\\Gamma\b/Γ/g;
+	s/\\Delta\b/Δ/g;
+	s/\\Epsilon\b/Ε/g;
+	s/\\Zeta\b/Ζ/g;
+	s/\\Eta\b/Η/g;
+	s/\\Theta\b/Θ/g;
+	s/\\Iota\b/Ι/g;
+	s/\\Kappa\b/Κ/g;
+	s/\\Lambda\b/Λ/g;
+	s/\\Mu\b/Μ/g;
+	s/\\Nu\b/Ν/g;
+	s/\\Xi\b/Ξ/g;
+	s/\\Omicron\b/Ο/g;
+	s/\\Pi\b/Π/g;
+	s/\\Rho\b/Ρ/g;
+	s/\\Sigma\b/Σ/g;
+	s/\\Tau\b/Τ/g;
+	s/\\Upsilon\b/Υ/g;
+	s/\\Phi\b/Φ/g;
+	s/\\Chi\b/Χ/g;
+	s/\\Psi\b/Ψ/g;
+	s/\\Omega\b/Ω/g;
+
+	# Lower case Greek
+	s/\\alpha\b/α/g;
+	s/\\beta\b/β/g;
+	s/\\gamma\b/γ/g;
+	s/\\delta\b/δ/g;
+	s/\\varepsilon\b/ε/g;
+	s/\\epsilon\b/ε/g;
+	s/\\zeta\b/ζ/g;
+	s/\\eta\b/η/g;
+	s/\\theta\b/θ/g;
+	s/\\vartheta\b/θ/g;
+	s/\\iota\b/ι/g;
+	s/\\kappa\b/κ/g;
+	s/\\lambda\b/λ/g;
+	s/\\mu\b/μ/g;
+	s/\\nu\b/ν/g;
+	s/\\xi\b/ξ/g;
+	s/\\omicron\b/ο/g;
+	s/\\pi\b/π/g;
+	s/\\varpi\b/π/g;
+	s/\\rho\b/ρ/g;
+	s/\\varrho\b/ρ/g;
+	s/\\sigma\b/σ/g;
+	s/\\varsigma\b/ς/g;
+	s/\\tau\b/τ/g;
+	s/\\upsilon\b/υ/g;
+	s/\\phi\b/φ/g;
+	s/\\varphi\b/φ/g;
+	s/\\chi\b/χ/g;
+	s/\\psi\b/ψ/g;
+	s/\\omega\b/ω/g;
+}
+
+
 # Prevent "identifier used only once" warnings.
 $opt_a = $opt_b = $opt_c = $opt_D = $opt_d = $opt_h = $opt_m = $opt_r = undef;
-$opt_i = $opt_s = $opt_t = $opt_v = $opt_3 = undef;
+$opt_i = $opt_s = $opt_t = $opt_v = $opt_e = undef;
 
 $macrofile = '';
 
 $command_line = &html_encode(join(' ', $0, @ARGV));
 
-getopts("ab:cD:id:h:m:rs:tv3") || &usage;
+getopts("ab:cD:id:h:m:rs:tve") || &usage;
 
 print STDERR "$version\n" if (defined($opt_v));
 
@@ -327,9 +740,13 @@ if (defined($htmlfile) && open(OHTMLFILE, "$htmlfile")) {
     $updating = 0;
 
     # An existing HTML file does not exist, so output some boilerplate.
+    if ($opt_e) {
+        print HTMLFILE qq{<?xml version="1.0" encoding="US-ASCII"?>\n};
+    } else {
+        print HTMLFILE qq{<?xml version="1.0" encoding="UTF-8"?>\n};
+    }
     print HTMLFILE <<_EOF_;
-<?xml version="1.0" encoding="us-ascii"?>
-<!DOCTYPE html 
+<!DOCTYPE html
 	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
@@ -555,97 +972,10 @@ while (<BBLFILE>) {
 
     s/\\&/&amp;/g;			# \& -> &amp;
 
-    # Accents.
-    s/\\i\b/i/g;					# dotless i.
-    s/\\\'(\001\d+)\{([AEIOUaeiou])\1\}/&$2acute;/g;	# acute accent \'{x}
-    s/\\\'([AEIOUaeiou])/&$1acute;/g;			# acute accent \'x
-    s/\\\`(\001\d+)\{([AEIOUaeiou])\1\}/&$2grave;/g;	# grave accent \`{x}
-    s/\\\`([AEIOUaeiou])/&$1grave;/g;			# grave accent \`x
-    s/\\\"(\001\d+)\{([AEIOUaeiouy])\1\}/&$2uml;/g;	# umlaut \"{x}
-    s/\\\"([AEIOUaeiouy])/&$1uml;/g;			# umlaut \"x
-    s/\\\~(\001\d+)\{([ANOano])\1\}/&$2tilde;/g;	# tilde \~{x}
-    s/\\\~([ANOano])/&$1tilde;/g;			# tilde \~x
-    s/\\\^(\001\d+)\{([AEIOUaeiou])\1\}/&$2circ;/g;	# circumflex \^{x}
-    s/\\\^(AEIOUaeiou])/&$1circ;/g;			# circumflex \^x
-    s/\\c(\001\d+)\{([Cc])\1\}/&$2cedil;/g;		# cedilla \c{x}
-    # The following accents have no HTML equivalent.
-    # (This list is still not complete.)
-    s/\\u(\001\d+)\{(.)\1\}/$2/g;			# breve accent \u{x}
-    s/\\v(\001\d+)\{(.)\1\}/$2/g;			# hacek accent \v{x}
-    s/\\([lL])\b/$1/g;					# slashed l
-    s/\\\=(\001\d+)\{(.)\1\}/$2/g;			# macron \={x}
-    s/\\\=(.)/$1/g;					# macron accent \=x
-    s/\\\.(\001\d+)\{(.)\1\}/$2/g;			# dot \.{x}
-    s/\\\.(.)/$1/g;					# dot accent \.x
-
-    # Other special characters.
-    s/\\([Oo])\b\s*/&$1slash;/g;	# \[Oo] -> &[Oo]slash;
-    s/\\AA\b\s*/&Aring;/g;		# \AA -> &Aring;
-    s/\\aa\b\s*/&aring;/g;		# \aa -> &aring;
-    s/\\AE\b\s*/&AElig;/g;		# \AE -> &AElig;
-    s/\\ae\b\s*/&aelig;/g;		# \ae -> &aelig;
-    s/\\ss\b\s*/&szlig;/g;		# \ss -> &szlig;
-    s/\\S\b\s*/&#167;/g;		# \S -> &sect;
-    s/\\P\b\s*/&#182;/g;		# \P -> &para;
-    s/\\pounds\b\s*/&163;/g;		# \pounds -> &pound;
-    s/\?\`/&191;/g;			# ?` -> &iquest;
-    s/\!\`/&161;/g;			# !` -> &iexcl;
-
-    # Other special characters.
-    if (defined($opt_3)) {
-	# Try to be careful to not change the dashes in HTML comments
-	# (<!-- comment -->) to &ndash;s.
-	#s/\-\-\-/&mdash;/g;		# --- -> &mdash;
-	#s/([^\!])\-\-([^\>])/$1&ndash;$2/g;	# -- -> &ndash;
-	s/\-\-\-/\227/g;		# --- -> &mdash;
-	s/([^\!])\-\-([^\>])/$1\226$2/g;	# -- -> &ndash;
-
-	# lower case greek
-	s/\\alpha\b/&agr;/g;		# \alpha -> &agr;
-	s/\\beta\b/&bgr;/g;		# \beta -> &bgr;
-	s/\\gamma\b/&ggr;/g;		# \gamma -> &ggr;
-	s/\\delta\b/&dgr;/g;		# \delta -> &dgr;
-	s/\\varepsilon\b/&egr;/g;	# \varepsilon -> &Egr;
-	s/\\epsilon\b/&egr;/g;		# \epsilon -> &egr;
-	s/\\zeta\b/&zgr;/g;		# \zeta -> &zgr;
-	s/\\eta\b/&eegr;/g;		# \eta -> &eegr;
-	s/\\theta\b/&thgr;/g;		# \theta -> &thgr;
-	s/\\vartheta\b/&thgr;/g;	# \vartheta -> &thgr;
-	s/\\iota\b/&igr;/g;		# \iota -> &igr;
-	s/\\kappa\b/&kgr;/g;		# \kappa -> &kgr;
-	s/\\lambda\b/&lgr;/g;		# \lambda -> &lgr;
-	s/\\mu\b/&mgr;/g;		# \mu -> &mgr;
-	s/\\nu\b/&ngr;/g;		# \nu -> &ngr;
-	s/\\xi\b/&xgr;/g;		# \xi -> &xgr;
-	s/\\pi\b/&pgr;/g;		# \pi -> &pgr;
-	s/\\varpi\b/&pgr;/g;		# \varpi -> &pgr;
-	s/\\rho\b/&rgr;/g;		# \rho -> &rgr;
-	s/\\varrho\b/&rgr;/g;		# \varrho -> &rgr;
-	s/\\sigma\b/&sgr;/g;		# \sigma -> &sgr;
-	s/\\varsigma\b/&sfgr;/g;	# \varsigma -> &sfgr; ???
-	s/\\tau\b/&tgr;/g;		# \tau -> &tgr;
-	s/\\upsilon\b/&ugr;/g;		# \upsilon -> &ugr;
-	s/\\phi\b/&phgr;/g;		# \phi -> &phgr;
-	s/\\varphi\b/&phgr;/g;		# \varphi -> &phgr;
-	s/\\chi\b/&khgr;/g;		# \chi -> &khgr;
-	s/\\psi\b/&psgr;/g;		# \psi -> &psgr;
-	s/\\omega\b/&ohgr;/g;		# \omega -> &ohgr;
-
-	# upper case greek
-	s/\\Gamma\b/&Ggr;/g;		# \Gamma -> &Ggr;
-	s/\\Delta\b/&Dgr;/g;		# \Delta -> &Dgr;
-	s/\\Zeta\b/&Zgr;/g;		# \Zeta -> &Zgr;
-	s/\\Lambda\b/&Lgr;/g;		# \Lambda -> &Lgr;
-	s/\\Xi\b/&Xgr;/g;		# \Xi -> &Xgr;
-	s/\\Pi\b/&Pgr;/g;		# \Pi -> &Pgr;
-	s/\\Sigma\b/&Sgr;/g;		# \Sigma -> &Sgr;
-	s/\\Upsilon\b/&Ugr;/g;		# \Upsilon -> &Ugr;
-	s/\\Phi\b/&PHgr;/g;		# \Phi -> &PHgr;
-	s/\\Psi\b/&PSgr;/g;		# \Psi -> &PSgr;
-	s/\\Omega\b/&OHgr;/g;		# \Omega -> &OHgr;
+    if ($opt_e) {
+    	html_ent();
     } else {
-	s/\b--\b/-/g;			# -- -> -
-	s/\b---\b/--/g;			# --- -> --
+        utf_ent();
     }
 
     # Handle \char123 -> &123;.
