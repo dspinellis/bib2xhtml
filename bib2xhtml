@@ -2,7 +2,7 @@
 eval 'exec /usr/bin/perl -w -S $0 ${1+"$@"}'
     if 0;
 
-$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.9 2004/06/06 20:30:50 dds Exp $';
+$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.10 2004/06/06 20:53:12 dds Exp $';
 
 #
 # Convert from bibtex to HTML.
@@ -37,7 +37,7 @@ sub usage {
     $program =~ s+^.*/++;
     print STDERR <<_EOF_;
 usage: $program [-A] [-a] [-b bibtex-options] [-c] [-i] [-d delim]
-		[-h heading] [-m macro file] [-s style] [-r] [-t] [-v] [-e]
+		[-h heading] [-m macro file] [-s style] [-r] [-t] [-v] [-u]
 		sourcefile [htmlfile]
     -a  Write abstract to htmlfile.
     -b bibtex-options
@@ -57,7 +57,7 @@ usage: $program [-A] [-a] [-b bibtex-options] [-c] [-i] [-d delim]
 	(empty, plain, alpha, named, unsort, or unsortlist).
     -t  Write timestamp to htmlfile.
     -v  Report the version number.
-    -e  Perform HTML character entity mappings.
+    -u  Output a Unicode-coded document.
 _EOF_
     exit(1);
 }
@@ -633,13 +633,13 @@ sub utf_ent {
 
 # Prevent "identifier used only once" warnings.
 $opt_a = $opt_b = $opt_c = $opt_D = $opt_d = $opt_h = $opt_m = $opt_r = undef;
-$opt_i = $opt_s = $opt_t = $opt_v = $opt_e = undef;
+$opt_i = $opt_s = $opt_t = $opt_v = $opt_u = undef;
 
 $macrofile = '';
 
 $command_line = &html_encode(join(' ', $0, @ARGV));
 
-getopts("ab:cD:id:h:m:rs:tve") || &usage;
+getopts("ab:cD:id:h:m:rs:tvu") || &usage;
 
 print STDERR "$version\n" if (defined($opt_v));
 
@@ -740,10 +740,10 @@ if (defined($htmlfile) && open(OHTMLFILE, "$htmlfile")) {
     $updating = 0;
 
     # An existing HTML file does not exist, so output some boilerplate.
-    if ($opt_e) {
-        print HTMLFILE qq{<?xml version="1.0" encoding="US-ASCII"?>\n};
-    } else {
+    if ($opt_u) {
         print HTMLFILE qq{<?xml version="1.0" encoding="UTF-8"?>\n};
+    } else {
+        print HTMLFILE qq{<?xml version="1.0" encoding="US-ASCII"?>\n};
     }
     print HTMLFILE <<_EOF_;
 <!DOCTYPE html
@@ -972,10 +972,10 @@ while (<BBLFILE>) {
 
     s/\\&/&amp;/g;			# \& -> &amp;
 
-    if ($opt_e) {
-    	html_ent();
-    } else {
+    if ($opt_u) {
         utf_ent();
+    } else {
+    	html_ent();
     }
 
     # Handle \char123 -> &123;.
@@ -1044,14 +1044,14 @@ sub domath {
     # Remove \mbox.
     s/\\mbox(\001\d+)\{([^\001]*)\1\}/$2/g;		# \mbox{x}
 
-    if ($opt_e) {
-        s/([^\\])~/$1&nbsp;/g;			# ~  non-breaking space
-        s/\\\,/ /g;				# \, thin space
-        s/\\ldots\b\s*/.../g;			# \ldots
-    } else {
+    if ($opt_u) {
         s/([^\\])~/$1 /g;			# ~  non-breaking space - &#xa0;
         s/\\\,/ /g;				# \, thin space - &#x2009;
         s/\\ldots\b\s*/…/g;			# Ellipsis
+    } else {
+        s/([^\\])~/$1&nbsp;/g;			# ~  non-breaking space
+        s/\\\,/ /g;				# \, thin space
+        s/\\ldots\b\s*/.../g;			# \ldots
     }
     s/\\ / /g;					# \  (normal space)
     s/\\textasciitilde\b\s*/~/g;		# \textasciitilde -> ~
