@@ -1,5 +1,5 @@
 #
-# $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\Makefile,v 1.11 2004/07/01 18:36:13 dds Exp $
+# $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\Makefile,v 1.12 2004/07/01 22:05:27 dds Exp $
 #
 
 NAME=bib2xhtml
@@ -82,19 +82,23 @@ example:
 # Regression test
 test:
 	cd testdir ; \
+	attrib -r * ; \
 	rm * ; \
 	cp ../ex*.html ../*.bst ../example.bib ../bib2xhtml . ; \
 	for i in empty plain alpha named unsort unsortlist ; \
 	do \
-		perl bib2xhtml -s $$i -h "Example: bib2xhtml -s $$i" example.bib ex-$$i.html ;\
-		case $$i in ; \
-		unsort*) ;; \
-		*) \
-			perl bib2xhtml -c -s $$i -h "Example: bib2xhtml -c -s $$i" example.bib ex-$${i}-c.html ;\
-			perl bib2xhtml -r -s $$i -h "Example: bib2xhtml -r -s $$i" example.bib ex-$${i}-r.html ;\
-			perl bib2xhtml -c -r -s $$i -h "Example: bib2xhtml -c -r -s $$i" example.bib ex-$${i}-cr.html ;\
-			;; \
-		esac ;\
+		for j in "" -u ; \
+		do \
+			perl bib2xhtml $$j -s $$i -h "Example: bib2xhtml $$j -s $$i" example.bib ex-$${i}$${j}.html ;\
+			case $$i in ; \
+			unsort*) ;; \
+			*) \
+				perl bib2xhtml $$j -c -s $$i -h "Example: bib2xhtml $$j -c -s $$i" example.bib ex-$${i}-c$${j}.html ;\
+				perl bib2xhtml $$j -r -s $$i -h "Example: bib2xhtml $$j -r -s $$i" example.bib ex-$${i}-r$${j}.html ;\
+				perl bib2xhtml $$j -c -r -s $$i -h "Example: bib2xhtml $$j -c -r -s $$i" example.bib ex-$${i}-cr$${j}.html ;\
+				;; \
+			esac ;\
+		done ; \
 	done ; \
 	for i in *.html ; \
 	do \
