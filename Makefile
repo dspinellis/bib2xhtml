@@ -1,5 +1,5 @@
 #
-# $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\Makefile,v 1.3 2004/03/29 12:09:17 dds Exp $
+# $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\Makefile,v 1.4 2004/04/07 13:54:16 dds Exp $
 #
 
 NAME=bib2xhtml
@@ -9,16 +9,11 @@ CGIDIR=/usr/dcs/www/cgi-bin/
 DISTDIR=/dds/pubs/web/home/sw/textproc/$(NAME)
 
 BSTFILES=html-a.bst html-aa.bst html-n.bst html-na.bst html-u.bst html-ua.bst html-nr.bst
-DOCFILES=$(NAME).html $(NAME).txt $(NAME).pdf
+DOCFILES=$(NAME).html $(NAME).txt $(NAME).pdf index.html $(wildcard ex-*.html)
 FILES=README COPYING $(NAME) ${BSTFILES} $(DOCFILES) bibsearch Makefile $(NAME).man ChangeLog html-btxbst.doc gen-bst
 VERSION=$(shell ident $(NAME) | awk '/Id:/{print $$3} ')
 
 UXHOST=spiti
-SSH=plink
-
-default: $(DOCFIL')
-
-UXHOST=istlab
 SSH=plink
 
 default: $(DOCFILES) ${BSTFILES} syntax
@@ -64,4 +59,17 @@ install:
 	for i in *.bst; do\
 	    install -m 644 $$i $(BIBTEXDIR);\
 	done
-	install -m 755 $(NAME) $
+
+example:
+	for i in empty plain alpha named unsort unsortlist ; \
+	do \
+		perl bib2xhtml -s $$i -h "Example: bib2xhtml -s $$i" example.bib ex-$$i.html ;\
+		case $$i in ; \
+		unsort*) ;; \
+		*) \
+			perl bib2xhtml -c -s $$i -h "Example: bib2xhtml -c -s $$i" example.bib ex-$${i}-c.html ;\
+			perl bib2xhtml -r -s $$i -h "Example: bib2xhtml -r -s $$i" example.bib ex-$${i}-r.html ;\
+			perl bib2xhtml -c -r -s $$i -h "Example: bib2xhtml -c -r -s $$i" example.bib ex-$${i}-cr.html ;\
+			;; \
+		esac ;\
+	done
