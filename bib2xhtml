@@ -2,7 +2,7 @@
 eval 'exec /usr/bin/perl -w -S $0 ${1+"$@"}'
     if 0;
 
-$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.12 2004/07/01 22:17:49 dds Exp $';
+$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.13 2004/09/03 06:52:54 dds Exp $';
 
 #
 # Convert from bibtex to XHTML.
@@ -770,7 +770,7 @@ qq{<?xml version="1.0" encoding="$enc"?>
 <head>
 <title>$title</title>
 <meta http-equiv="Content-type" content="text/html; charset=$enc" />} . q{
-<meta name="Generator" content="$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.12 2004/07/01 22:17:49 dds Exp $" />
+<meta name="Generator" content="$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.13 2004/09/03 06:52:54 dds Exp $" />
 </head>
 <body>
 }
@@ -1011,6 +1011,8 @@ while (<BBLFILE>) {
     s/{\\etalchar\001(\d+)\{(.)}\001\1\}/$2/g;	# {\etalchar{x}} -> x
 
     s/\\par\b/<p \/>/g;
+
+    s/\\url(\001\d+)\{([^\001]*)\1\}/<a href="$2">$2<\/a>/g; #\url{text} -> <a href"text">text</a>
 
     # There's no way to easily handle \rm and \textrm because
     # HTML has no tag to convert back to plain text.  Since it's very

@@ -1,4 +1,4 @@
-.\" $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml.man,v 1.13 2004/07/01 22:17:49 dds Exp $
+.\" $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml.man,v 1.14 2004/09/03 06:52:54 dds Exp $
 .TH BIB2XHTML L "01 July 2004"
 .SH NAME
 bib2xhtml \- BibTeX bibliography to XHTML converter
@@ -234,6 +234,8 @@ If something isn't being converted correctly, try doing it in a different way.
 .B bib2xhtml
 does not currently understand \fI\\verb\fR.
 To get a tilde into a filename or URL, use \fI\\~{}\fR.
+On the other hand, entries containing \fI\\url{}\fR commands,
+are correctly converted into hyperlinks.
 .SH OPTIONS
 .TP
 .B \-a
