@@ -2,7 +2,7 @@
 eval 'exec /usr/bin/perl -w -S $0 ${1+"$@"}'
     if 0;
 
-$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.4 2004/04/03 09:07:47 dds Exp $';
+$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.5 2004/04/04 14:29:55 dds Exp $';
 
 #
 # Convert from bibtex to HTML.
@@ -390,8 +390,11 @@ push(@tmpfiles, "$auxfile.bbl");
 # fork || (open(STDOUT, ">&STDERR"), exec("bibtex $opt_b $auxfile"));
 # wait;
 eval { fork || (open(STDOUT, ">&STDERR"),
-       exec('bibtex', (split(/\s+/, ($opt_b ? $opt_b : "")), $auxfile)));
-       wait; };
+	# Handle leakage in Win32 prevents the final rename()
+	close(HTMLFILE),
+	close(OHTMLFILE),
+	exec('bibtex', (split(/\s+/, ($opt_b ? $opt_b : "")), $auxfile)));
+	wait; };
 if ($@) {
     # The fork failed (perhaps not implemented on this system).
     system("bibtex $opt_b $auxfile 1>&2");
