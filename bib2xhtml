@@ -2,7 +2,7 @@
 eval 'exec /local/bin/perl -S $0 ${1+"$@"}'
 	if 0;
 
-$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 1.4 2003/11/21 22:09:42 dds Exp $';
+$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.1 2004/01/14 19:48:38 dds Exp $';
 
 #
 # Convert from bibtex to HTML.
@@ -35,19 +35,20 @@ sub usage {
     $program = $0;
     $program =~ s+^.*/++;
     print STDERR <<_EOF_;
-usage: $program [-A] [-a] [-b bibtex-options] [-d delim] [-h heading]
-		[-s style] [-c] [-r] [-t] [-v] [-3] sourcefile [htmlfile]
+usage: $program [-A] [-a] [-b bibtex-options] [-c] [-d delim]
+		[-h heading] [-m macro file] [-s style] [-r] [-t] [-v] [-3]
+		sourcefile [htmlfile]
     -a  Write abstract to htmlfile.
     -b bibtex-options
 	Options to pass to bibtex.
     -c	Sort chronologically, by year and then by author.
     -d delim
 	Specify bibliography delimiter.
-    -m macro file
-	Specify an additional macro file.
     -h heading
 	String to use instead of default title when creating a new htmlfile.
 	If updating an existing htmlfile, this option is ignored.
+    -m macro file
+	Specify an additional macro file.
     -r	Sort in reverse chronological order.
     -s style
 	Control style of bibliography:
