@@ -2,7 +2,7 @@
 eval 'exec /usr/bin/perl -w -S $0 ${1+"$@"}'
     if 0;
 
-$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.11 2004/06/07 09:05:27 dds Exp $';
+$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.12 2004/07/01 22:17:49 dds Exp $';
 
 #
 # Convert from bibtex to XHTML.
@@ -88,7 +88,7 @@ command: {
     ($cmd, $cmp);
 }
 
-@paperTypes = ("PostScript", "PDF", "DVI");
+@paperTypes = ("PostScript", "PDF", "DVI", "DOI");
 
 sub PostScriptPageCount {
     local($cmd) = @_;
@@ -152,11 +152,13 @@ line:
 sub doPaperLinks {
     local($file);
     local($url);
+    local($paper, $ppaper);
     local($cstr, $pstr, $sstr);
 
 papertype:
     foreach $paper (@paperTypes) {
 
+	$ppaper = $paper;
 	$sstr = "";
 	$pstr = "";
 	$cstr = "";
@@ -165,7 +167,7 @@ papertype:
 
 	    # If $url looks like a file (doesn't begin with http://, ftp://, 
 	    # etc.), get more info.
-	    if ($url !~ m/^[^\:\/]+\:\//) {
+	    if ($paper ne 'DOI' && $url !~ m/^[^\:\/]+\:\//) {
 		local($file) = $url;
 		local($path);
 		local($dir);
@@ -204,11 +206,17 @@ papertype:
 
 		# Get compression type.
 		$cstr = "$cstr " if ($cstr ne "");
+	    } elsif ($paper eq 'DOI' &&
+	             (($url =~ m/^doi:(.*)/i) ||
+	              ($url =~ m/^http:\/\/[\w.]+\/(.*)/i))) {
+			# Convert the DOI URL into an HTTP link
+			$url = "http://dx.doi.org/$1";
+			$ppaper = "doi:$1";
 	    }
 
 	    #print STDERR "found $paper $file$pstr$sstr\n";
 
-	    s/\<\!\-\- $paper:[\s\n]+\S+[\s\n]+\-\-\>/(<a href=\"$url\">${cstr}$paper<\/a>$pstr$sstr)/;
+	    s/\<\!\-\- $paper:[\s\n]+\S+[\s\n]+\-\-\>/(<a href=\"$url\">${cstr}$ppaper<\/a>$pstr$sstr)/;
 	}
     }
 }
@@ -762,7 +770,7 @@ qq{<?xml version="1.0" encoding="$enc"?>
 <head>
 <title>$title</title>
 <meta http-equiv="Content-type" content="text/html; charset=$enc" />} . q{
-<meta name="Generator" content="$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.11 2004/06/07 09:05:27 dds Exp $" />
+<meta name="Generator" content="$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.12 2004/07/01 22:17:49 dds Exp $" />
 </head>
 <body>
 }

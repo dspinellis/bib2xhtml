@@ -1,5 +1,5 @@
 % BibTeX `plain/html' family
-	% $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\html-btxbst.doc,v 1.2 2003/11/21 21:52:28 dds Exp $
+	% $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\html-btxbst.doc,v 1.3 2004/07/01 22:17:49 dds Exp $
 	% 
 	% This file is either "html-btxbst.doc" or was derived from
 	% "html-btxbst.doc" using cpp.  "html-btxbst.doc" itself was edited
@@ -300,6 +300,9 @@ ENTRY
 %	    file in the HTML it generates.
     url
 %           URL of document.  Used by bib2html.
+    doi
+%           Digital Object Identifier of document.  Used by bib2html.
+%	    to append a doi entry link at the end of the citation.
     mailto
 %	    E-mail contact address for paper.  Used by bib2html to create a 
 %	    mailto link for authors.
@@ -569,6 +572,10 @@ FUNCTION {fin.entry}
   dvi empty$
     'skip$
     { newline$ "<!-- DVI: " dvi * " -->" * write$ }
+  if$
+  doi empty$
+    'skip$
+    { newline$ "<!-- DOI: " doi * " -->" * write$ }
   if$
 #ifdef ABSTRACT
   abstract empty$

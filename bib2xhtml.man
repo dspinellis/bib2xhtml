@@ -1,5 +1,5 @@
-.\" $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml.man,v 1.12 2004/06/06 20:53:12 dds Exp $
-.TH BIB2XHTML L "06 June 2004"
+.\" $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml.man,v 1.13 2004/07/01 22:17:49 dds Exp $
+.TH BIB2XHTML L "01 July 2004"
 .SH NAME
 bib2xhtml \- BibTeX bibliography to XHTML converter
 .SH SYNOPSIS
@@ -172,6 +172,30 @@ creates a link to the file.
 , and updates
 .I htmlfile
 with the number of pages and size of the PostScript file.
+.TP
+.B doi
+If the
+.B doi
+field exists, its value is used as the designation of a digital
+object identifier.
+.B bib2xhtml
+creates a link to the object through http://dx.doi.org and updates
+.I htmlfile
+with the
+.B doi
+as a hyperlink.
+The
+.B doi
+should normally be in a canonical form like the following:
+.I doi:10.1145/363347.363387.
+However,
+if the
+.B doi
+designator is formed as an HTTP hyperlink, it will be converted to the
+canonical form by replacing the HTTP protocol designation and the host
+name of the hyperlink with the
+.I doi:
+literal string.
 .TP
 .B pdf
 If the
