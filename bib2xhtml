@@ -2,7 +2,7 @@
 eval 'exec /usr/bin/perl -w -S $0 ${1+"$@"}'
     if 0;
 
-$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.13 2004/09/03 06:52:54 dds Exp $';
+$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.14 2005/05/01 14:29:56 dds Exp $';
 
 #
 # Convert from bibtex to XHTML.
@@ -208,7 +208,8 @@ papertype:
 		$cstr = "$cstr " if ($cstr ne "");
 	    } elsif ($paper eq 'DOI' &&
 	             (($url =~ m/^doi:(.*)/i) ||
-	              ($url =~ m/^http:\/\/[\w.]+\/(.*)/i))) {
+	              ($url =~ m/^http:\/\/[\w.]+\/(.*)/i) ||
+	              ($url =~ m/^(.*)$/))) {
 			# Convert the DOI URL into an HTTP link
 			$url = "http://dx.doi.org/$1";
 			$ppaper = "doi:$1";
@@ -770,7 +771,7 @@ qq{<?xml version="1.0" encoding="$enc"?>
 <head>
 <title>$title</title>
 <meta http-equiv="Content-type" content="text/html; charset=$enc" />} . q{
-<meta name="Generator" content="$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.13 2004/09/03 06:52:54 dds Exp $" />
+<meta name="Generator" content="$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.14 2005/05/01 14:29:56 dds Exp $" />
 </head>
 <body>
 }
