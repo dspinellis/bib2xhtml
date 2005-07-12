@@ -1,5 +1,5 @@
 #
-# $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\Makefile,v 1.13 2005/07/12 17:48:53 dds Exp $
+# $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\Makefile,v 1.14 2005/07/12 19:25:51 dds Exp $
 #
 
 NAME=bib2xhtml
@@ -76,6 +76,13 @@ example:
 				perl bib2xhtml $$j -c -r -s $$i -h "Example: bib2xhtml $$j -c -r -s $$i" example.bib ex-$${i}-cr$${j}.html ;\
 				;; \
 			esac ;\
+			case $$i in ; \
+			empty) ;; \
+			unsortlist) ;; \
+			*) \
+				perl bib2xhtml $$j -s $$i -k -h "Example: bib2xhtml $$j -s $$i -k" example.bib ex-$${i}$${j}-k.html ;\
+				;; \
+			esac ;\
 		done ; \
 	done
 
@@ -96,6 +103,13 @@ test:
 				perl bib2xhtml $$j -c -s $$i -h "Example: bib2xhtml $$j -c -s $$i" example.bib ex-$${i}-c$${j}.html ;\
 				perl bib2xhtml $$j -r -s $$i -h "Example: bib2xhtml $$j -r -s $$i" example.bib ex-$${i}-r$${j}.html ;\
 				perl bib2xhtml $$j -c -r -s $$i -h "Example: bib2xhtml $$j -c -r -s $$i" example.bib ex-$${i}-cr$${j}.html ;\
+				;; \
+			esac ;\
+			case $$i in ; \
+			empty) ;; \
+			unsortlist) ;; \
+			*) \
+				perl bib2xhtml $$j -s $$i -k -h "Example: bib2xhtml $$j -s $$i -k" example.bib ex-$${i}$${j}-k.html ;\
 				;; \
 			esac ;\
 		done ; \
