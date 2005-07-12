@@ -1,5 +1,5 @@
-.\" $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml.man,v 1.16 2005/07/12 19:40:00 dds Exp $
-.TH BIB2XHTML L "01 July 2004"
+.\" $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml.man,v 1.17 2005/07/12 20:05:52 dds Exp $
+.TH BIB2XHTML L "12 July 2005"
 .SH NAME
 bib2xhtml \- BibTeX bibliography to XHTML converter
 .SH SYNOPSIS
@@ -12,13 +12,13 @@ bib2xhtml \- BibTeX bibliography to XHTML converter
 ] [
 .B \-c
 ] [
-.B \-i
-] [
 .B \-d
 .I delimiter
 ] [
 .B \-h
 .I heading
+] [
+.B \-i
 ] [
 .B \-k
 ] [
@@ -26,7 +26,7 @@ bib2xhtml \- BibTeX bibliography to XHTML converter
 .I macro file
 ] [
 .B \-r
-]
+] [
 .B \-s
 .I style
 ] [
@@ -251,13 +251,6 @@ Sort chronologically.  Normally, the bibliography is ordered first by
 author and then by year.  With this option, the bibliography is
 ordered by year and then author.
 .TP
-.BI \-i
-The citations are included in the
-.IR htmlfile .
-When this option is set, the
-.I sourcefile
-must be a .bib file.
-.TP
 .BI \-d " delimiter"
 Specify the delimiter that sets the bibliography off from the rest
 of the XHTML file.  The default delimiter is the name of the bibliography
@@ -274,11 +267,23 @@ If updating an existing
 .IR htmlfile ,
 this option is ignored.
 .TP
+.BI \-i
+The citations are included in the
+.IR htmlfile .
+When this option is set, the
+.I sourcefile
+must be a .bib file.
+.TP
 .B -k
-In labeled styles (alpha, named, plain, unsort)
-append to the label of each entry its bibtex key.
+In labeled styles
+.BR "" ( alpha ,
+.BR named ,
+.BR plain ,
+and
+.BR unsort )
+append to the label of each entry its BibTeX key.
 Thus, the label of each entry will consist of the original label,
-followed by an em-dash, followed by the bibtex key.
+followed by an em-dash, followed by the BibTeX key.
 .TP
 .BI \-m " macro file"
 Specify a BibTeX macro file to supply to BibTeX when processing the

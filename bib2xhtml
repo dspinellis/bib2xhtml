@@ -2,7 +2,7 @@
 eval 'exec /usr/bin/perl -w -S $0 ${1+"$@"}'
     if 0;
 
-$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.17 2005/07/12 19:40:00 dds Exp $';
+$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.18 2005/07/12 20:05:52 dds Exp $';
 
 #
 # Convert from bibtex to XHTML.
@@ -44,19 +44,19 @@ sub usage {
     $program = $0;
     $program =~ s+^.*/++;
     print STDERR <<_EOF_;
-usage: $program [-A] [-a] [-b bibtex-options] [-c] [-i] [-k] [-d delim]
-		[-h heading] [-m macro file] [-s style] [-r] [-t] [-v] [-u]
+usage: $program [-a] [-b bibtex-options] [-c] [-d delim] [-h heading] [-i]
+                [-k] [-m macro file] [-r] [-s style] [-t] [-u] [-v]
 		sourcefile [htmlfile]
     -a  Write abstract to htmlfile.
     -b bibtex-options
 	Options to pass to bibtex.
     -c	Sort chronologically, by year and then by author.
-    -i Use included citations
     -d delim
 	Specify bibliography delimiter.
     -h heading
 	String to use instead of default title when creating a new htmlfile.
 	If updating an existing htmlfile, this option is ignored.
+    -i Use included citations
     -k  In labeled styles append to the label of each entry its bibtex key.
     -m macro file
 	Specify an additional macro file.
@@ -65,8 +65,8 @@ usage: $program [-A] [-a] [-b bibtex-options] [-c] [-i] [-k] [-d delim]
 	Control style of bibliography:
 	(empty, plain, alpha, named, unsort, or unsortlist).
     -t  Write timestamp to htmlfile.
-    -v  Report the version number.
     -u  Output a Unicode-coded document.
+    -v  Report the version number.
 _EOF_
     exit(1);
 }
@@ -657,9 +657,12 @@ $macrofile = '';
 
 $command_line = &html_encode(join(' ', $0, @ARGV));
 
-getopts("ab:cD:id:h:km:rs:tvu") || &usage;
+getopts("ab:cd:D:h:ikm:rs:tuv") || &usage;
 
-print STDERR "$version\n" if (defined($opt_v));
+if (defined($opt_v)) {
+	print "$version\n";
+	exit 0;
+}
 
 &usage if (($#ARGV < 0) || ($#ARGV > 1));
 
@@ -772,7 +775,7 @@ qq{<?xml version="1.0" encoding="$enc"?>
 <head>
 <title>$title</title>
 <meta http-equiv="Content-type" content="text/html; charset=$enc" />} . q{
-<meta name="Generator" content="$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.17 2005/07/12 19:40:00 dds Exp $" />
+<meta name="Generator" content="$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.18 2005/07/12 20:05:52 dds Exp $" />
 </head>
 <body>
 }
