@@ -2,7 +2,7 @@
 eval 'exec /usr/bin/perl -w -S $0 ${1+"$@"}'
     if 0;
 
-$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.15 2005/05/01 14:31:13 dds Exp $';
+$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.16 2005/07/12 15:53:14 dds Exp $';
 
 #
 # Convert from bibtex to XHTML.
@@ -771,7 +771,7 @@ qq{<?xml version="1.0" encoding="$enc"?>
 <head>
 <title>$title</title>
 <meta http-equiv="Content-type" content="text/html; charset=$enc" />} . q{
-<meta name="Generator" content="$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.15 2005/05/01 14:31:13 dds Exp $" />
+<meta name="Generator" content="$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.16 2005/07/12 15:53:14 dds Exp $" />
 </head>
 <body>
 }
@@ -947,7 +947,7 @@ while (<BBLFILE>) {
     # bibtex's add.period$ knows how to avoid adding extra periods
     # when a block already ends in a period.  bib2xhtml's modifications
     # of bibtex's style files break that.  We fix it here.
-    s/(\.(<\/CITE>|<\/A>|\')+)\./$1/g;
+    s/(\.(<\/cite>|<\/a>|\')+)\./$1/g;
 
     # Adjust beginning of entry based on bibliography style.
     if ($label_style == $LABEL_PLAIN) {
