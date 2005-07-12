@@ -1,5 +1,5 @@
 #
-# $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\Makefile,v 1.12 2004/07/01 22:05:27 dds Exp $
+# $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\Makefile,v 1.13 2005/07/12 17:48:53 dds Exp $
 #
 
 NAME=bib2xhtml
@@ -82,7 +82,7 @@ example:
 # Regression test
 test:
 	cd testdir ; \
-	attrib -r * ; \
+	attrib -r \* ; \
 	rm * ; \
 	cp ../ex*.html ../*.bst ../example.bib ../bib2xhtml . ; \
 	for i in empty plain alpha named unsort unsortlist ; \
@@ -103,5 +103,5 @@ test:
 	for i in *.html ; \
 	do \
 		echo $$i ; \
-		diff $$i ../$$i ; \
+		diff ../$$i $$i ; \
 	done
