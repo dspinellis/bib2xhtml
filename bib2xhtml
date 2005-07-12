@@ -2,7 +2,7 @@
 eval 'exec /usr/bin/perl -w -S $0 ${1+"$@"}'
     if 0;
 
-$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.16 2005/07/12 15:53:14 dds Exp $';
+$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.17 2005/07/12 19:40:00 dds Exp $';
 
 #
 # Convert from bibtex to XHTML.
@@ -44,7 +44,7 @@ sub usage {
     $program = $0;
     $program =~ s+^.*/++;
     print STDERR <<_EOF_;
-usage: $program [-A] [-a] [-b bibtex-options] [-c] [-i] [-d delim]
+usage: $program [-A] [-a] [-b bibtex-options] [-c] [-i] [-k] [-d delim]
 		[-h heading] [-m macro file] [-s style] [-r] [-t] [-v] [-u]
 		sourcefile [htmlfile]
     -a  Write abstract to htmlfile.
@@ -57,6 +57,7 @@ usage: $program [-A] [-a] [-b bibtex-options] [-c] [-i] [-d delim]
     -h heading
 	String to use instead of default title when creating a new htmlfile.
 	If updating an existing htmlfile, this option is ignored.
+    -k  In labeled styles append to the label of each entry its bibtex key.
     -m macro file
 	Specify an additional macro file.
     -r	Sort in reverse chronological order.
@@ -650,13 +651,13 @@ sub utf_ent {
 
 # Prevent "identifier used only once" warnings.
 $opt_a = $opt_b = $opt_c = $opt_D = $opt_d = $opt_h = $opt_m = $opt_r = undef;
-$opt_i = $opt_s = $opt_t = $opt_v = $opt_u = undef;
+$opt_i = $opt_k = $opt_s = $opt_t = $opt_v = $opt_u = undef;
 
 $macrofile = '';
 
 $command_line = &html_encode(join(' ', $0, @ARGV));
 
-getopts("ab:cD:id:h:m:rs:tvu") || &usage;
+getopts("ab:cD:id:h:km:rs:tvu") || &usage;
 
 print STDERR "$version\n" if (defined($opt_v));
 
@@ -771,7 +772,7 @@ qq{<?xml version="1.0" encoding="$enc"?>
 <head>
 <title>$title</title>
 <meta http-equiv="Content-type" content="text/html; charset=$enc" />} . q{
-<meta name="Generator" content="$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.16 2005/07/12 15:53:14 dds Exp $" />
+<meta name="Generator" content="$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.17 2005/07/12 19:40:00 dds Exp $" />
 </head>
 <body>
 }
@@ -962,7 +963,12 @@ while (<BBLFILE>) {
 	or s:(<a name=\"[^\"]*\">)</a>([\w]+):$1$2<\/a>:;
     } elsif ($label_style == $LABEL_NUMBERED) {
 	s:(<dt><a name=\"[^\"]*\">\[)[^\]]*(\]</a></dt><dd>):$1$nentry$2:;
-	s:</dd>::;
+    }
+
+    # Append the key name, if asked so
+    if ($opt_k && ($label_style == $LABEL_NUMBERED || $label_style == $LABEL_DEFAULT)) {
+	# $1              $2      $3     $4      $5
+	s:(<dt><a name=\")([^\"]*)(\">\[)([^\]]*)(\]</a></dt><dd>):$1$2$3$4 --- $2$5:;
     }
 
     # Attempt to fix up crossrefs.

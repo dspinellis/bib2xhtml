@@ -1,4 +1,4 @@
-.\" $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml.man,v 1.15 2005/05/06 14:55:29 dds Exp $
+.\" $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml.man,v 1.16 2005/07/12 19:40:00 dds Exp $
 .TH BIB2XHTML L "01 July 2004"
 .SH NAME
 bib2xhtml \- BibTeX bibliography to XHTML converter
@@ -19,6 +19,8 @@ bib2xhtml \- BibTeX bibliography to XHTML converter
 ] [
 .B \-h
 .I heading
+] [
+.B \-k
 ] [
 .B \-m
 .I macro file
@@ -271,6 +273,12 @@ instead of the default title when creating a new
 If updating an existing
 .IR htmlfile ,
 this option is ignored.
+.TP
+.B -k
+In labeled styles (alpha, named, plain, unsort)
+append to the label of each entry its bibtex key.
+Thus, the label of each entry will consist of the original label,
+followed by an em-dash, followed by the bibtex key.
 .TP
 .BI \-m " macro file"
 Specify a BibTeX macro file to supply to BibTeX when processing the
