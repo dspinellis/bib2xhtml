@@ -2,7 +2,7 @@
 eval 'exec /usr/bin/perl -w -S $0 ${1+"$@"}'
     if 0;
 
-$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.18 2005/07/12 20:05:52 dds Exp $';
+$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.19 2005/09/04 12:48:18 dds Exp $';
 
 #
 # Convert from bibtex to XHTML.
@@ -775,7 +775,7 @@ qq{<?xml version="1.0" encoding="$enc"?>
 <head>
 <title>$title</title>
 <meta http-equiv="Content-type" content="text/html; charset=$enc" />} . q{
-<meta name="Generator" content="$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.18 2005/07/12 20:05:52 dds Exp $" />
+<meta name="Generator" content="$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.19 2005/09/04 12:48:18 dds Exp $" />
 </head>
 <body>
 }
@@ -999,7 +999,9 @@ while (<BBLFILE>) {
     # and \htmladdnormallinkfoot{text}{url}.
     s/\\htmladdnormallink(foot)?(\001\d+)\{([^\001]+)\2\}(\001\d+)\{([^\001]+)\4\}/<a href="$5">$3<\/a>/g;
 
-    s/\\&/&amp;/g;			# \& -> &amp;
+    s/\&amp;/\005/g;			# Protect original &amp; sequences
+    s/\\?&/&amp;/g;			# \& -> &amp; and & -> &amp;
+    s/\005/&amp;/g;			# Restore original &amp; sequences
 
     if ($opt_u) {
         utf_ent();
