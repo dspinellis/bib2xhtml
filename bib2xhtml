@@ -2,7 +2,7 @@
 eval 'exec /usr/bin/perl -w -S $0 ${1+"$@"}'
     if 0;
 
-$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.19 2005/09/04 12:48:18 dds Exp $';
+$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.20 2005/09/04 13:27:21 dds Exp $';
 
 #
 # Convert from bibtex to XHTML.
@@ -10,7 +10,7 @@ $version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.19 2005/09/
 # (C) Copyright 1995, 1996 David Hull.
 # (David Hull / hull@cs.uiuc.edu / http://www.uiuc.edu/ph/www/dlhull)
 #
-# (C) Copyright 2002-2004 Diomidis Spinellis
+# (C) Copyright 2002-2005 Diomidis Spinellis
 # http://www.spinellis.gr
 #
 # This program is free software.  You can redistribute it and/or modify
@@ -31,11 +31,11 @@ $label_styles{'plain'} = 	$LABEL_PLAIN = 		1;
 $label_styles{'numbered'} = 	$LABEL_NUMBERED = 	2;
 $label_styles{'default'} = 	$LABEL_DEFAULT = 	3;
 
-$list_start[$LABEL_PLAIN] = "ul";
+$list_start[$LABEL_PLAIN] = 'ul class="bib2xhtml"';
 $list_end[$LABEL_PLAIN] = "/ul";
-$list_start[$LABEL_NUMBERED] = 'dl compact="1"';
+$list_start[$LABEL_NUMBERED] = 'dl compact="1" class="bib2xhtml"';
 $list_end[$LABEL_NUMBERED] = "/dl";
-$list_start[$LABEL_DEFAULT] = "dl";
+$list_start[$LABEL_DEFAULT] = 'dl class="bib2xhtml"';
 $list_end[$LABEL_DEFAULT] = "/dl";
 
 @tmpfiles = ();
@@ -249,7 +249,7 @@ sub html_ent {
 	s/\\\~(\001\d+)\{([ANOano])\1\}/&$2tilde;/g;	# tilde \~{x}
 	s/\\\~([ANOano])/&$1tilde;/g;			# tilde \~x
 	s/\\\^(\001\d+)\{([AEIOUaeiou])\1\}/&$2circ;/g;	# circumflex \^{x}
-	s/\\\^(AEIOUaeiou])/&$1circ;/g;			# circumflex \^x
+	s/\\\^([AEIOUaeiou])/&$1circ;/g;		# circumflex \^x
 	s/\\c(\001\d+)\{([Cc])\1\}/&$2cedil;/g;		# cedilla \c{x}
 	# The following accents have no HTML equivalent.
 	# (This list is still not complete.)
@@ -775,7 +775,7 @@ qq{<?xml version="1.0" encoding="$enc"?>
 <head>
 <title>$title</title>
 <meta http-equiv="Content-type" content="text/html; charset=$enc" />} . q{
-<meta name="Generator" content="$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.19 2005/09/04 12:48:18 dds Exp $" />
+<meta name="Generator" content="$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.20 2005/09/04 13:27:21 dds Exp $" />
 </head>
 <body>
 }
