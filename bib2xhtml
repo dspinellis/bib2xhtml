@@ -2,7 +2,7 @@
 eval 'exec /usr/bin/perl -w -S $0 ${1+"$@"}'
     if 0;
 
-$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.20 2005/09/04 13:27:21 dds Exp $';
+$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.21 2005/11/12 11:00:09 dds Exp $';
 
 #
 # Convert from bibtex to XHTML.
@@ -775,7 +775,7 @@ qq{<?xml version="1.0" encoding="$enc"?>
 <head>
 <title>$title</title>
 <meta http-equiv="Content-type" content="text/html; charset=$enc" />} . q{
-<meta name="Generator" content="$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.20 2005/09/04 13:27:21 dds Exp $" />
+<meta name="Generator" content="$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.21 2005/11/12 11:00:09 dds Exp $" />
 </head>
 <body>
 }
@@ -1077,6 +1077,9 @@ sub domath {
     # Remove \mbox.
     s/\\mbox(\001\d+)\{([^\001]*)\1\}/$2/g;		# \mbox{x}
 
+    # Escape tildes protecting URLs
+    # For some reason /g doesn't work
+    while (s/(\<a href\=\"[^<]*?)\~/$1\005/g) { ; }
     if ($opt_u) {
         s/([^\\])~/$1 /g;			# ~  non-breaking space - &#xa0;
         s/\\\,/ /g;				# \, thin space - &#x2009;
@@ -1086,6 +1089,7 @@ sub domath {
         s/\\\,/&thinsp;/g;			# \, thin space
         s/\\ldots\b/&hellip;/g;			# Horizontal ellipsis
     }
+    s/\005/\~/g;				# Unescape tildes
     s/\\ / /g;					# \  (normal space)
     s/\\textasciitilde\b\s*/~/g;		# \textasciitilde -> ~
 
