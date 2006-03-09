@@ -2,7 +2,7 @@
 eval 'exec /usr/bin/perl -w -S $0 ${1+"$@"}'
     if 0;
 
-$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.21 2005/11/12 11:00:09 dds Exp $';
+$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.22 2006/03/09 15:43:48 dds Exp $';
 
 #
 # Convert from bibtex to XHTML.
@@ -775,7 +775,7 @@ qq{<?xml version="1.0" encoding="$enc"?>
 <head>
 <title>$title</title>
 <meta http-equiv="Content-type" content="text/html; charset=$enc" />} . q{
-<meta name="Generator" content="$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.21 2005/11/12 11:00:09 dds Exp $" />
+<meta name="Generator" content="$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.22 2006/03/09 15:43:48 dds Exp $" />
 </head>
 <body>
 }
@@ -1059,8 +1059,8 @@ while (<BBLFILE>) {
 
 sub domath {
     local($t) = @_;
-    $t =~ s/\^(\001\d+)\{\\circ\1\}/\&\#176/g;		# ^{\circ}->degree
-    $t =~ s/\^\\circ/\&\#176/g;				# ^\circ->degree
+    $t =~ s/\^(\001\d+)\{\\circ\1\}/\&\#176;/g;		# ^{\circ}->degree
+    $t =~ s/\^\\circ/\&\#176;/g;				# ^\circ->degree
 #   $t =~ s/\^(\001\d+)\{([^\001]*)\1\}/<sup>$2<\/sup>/g;	# ^{x}
     $t =~ s/\^(\001\d+)\{(.*)\1\}/<sup>$2<\/sup>/g;	# ^{x}
     $t =~ s/\^(\w)/<sup>$1<\/sup>/g;			# ^x
@@ -1084,10 +1084,13 @@ sub domath {
         s/([^\\])~/$1 /g;			# ~  non-breaking space - &#xa0;
         s/\\\,/ /g;				# \, thin space - &#x2009;
         s/\\ldots\b\s*/…/g;			# Horizontal ellipsis
+        s/\\dots\b\s*/…/g;			# Horizontal ellipsis
     } else {
         s/([^\\])~/$1&nbsp;/g;			# ~  non-breaking space
         s/\\\,/&thinsp;/g;			# \, thin space
         s/\\ldots\b/&hellip;/g;			# Horizontal ellipsis
+	s/\\dots\b/&hellip;/g;			# Horizontal ellipsis
+
     }
     s/\005/\~/g;				# Unescape tildes
     s/\\ / /g;					# \  (normal space)
