@@ -2,7 +2,7 @@
 eval 'exec /usr/bin/perl -w -S $0 ${1+"$@"}'
     if 0;
 
-$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.22 2006/03/09 15:43:48 dds Exp $';
+$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.23 2006/05/29 12:55:54 dds Exp $';
 
 #
 # Convert from bibtex to XHTML.
@@ -331,10 +331,12 @@ sub utf_ent {
 	s/\\\'(\001\d+)\{R\1\}/Ŕ/g;
 	s/\\\'(\001\d+)\{S\1\}/Ś/g;
 	s/\\\'(\001\d+)\{U\1\}/Ú/g;
+	s/\\\'(\001\d+)\{Y\1\}/Ý/g;
 	s/\\\'(\001\d+)\{Z\1\}/Ź/g;
 	s/\\\'(\001\d+)\{a\1\}/á/g;
 	s/\\\'(\001\d+)\{c\1\}/ć/g;
 	s/\\\'(\001\d+)\{e\1\}/é/g;
+	s/\\\'(\001\d+)\{ı\1\}/í/g;
 	s/\\\'(\001\d+)\{i\1\}/í/g;
 	s/\\\'(\001\d+)\{l\1\}/ĺ/g;
 	s/\\\'(\001\d+)\{n\1\}/ń/g;
@@ -342,6 +344,7 @@ sub utf_ent {
 	s/\\\'(\001\d+)\{r\1\}/ŕ/g;
 	s/\\\'(\001\d+)\{s\1\}/ś/g;
 	s/\\\'(\001\d+)\{u\1\}/ú/g;
+	s/\\\'(\001\d+)\{y\1\}/ý/g;
 	s/\\\'(\001\d+)\{z\1\}/ź/g;
 
 	# acute accent \'x
@@ -355,17 +358,20 @@ sub utf_ent {
 	s/\\\'R/Ŕ/g;
 	s/\\\'S/Ś/g;
 	s/\\\'U/Ù/g;
+	s/\\\'Y/Ý/g;
 	s/\\\'Z/Ź/g;
 	s/\\\'a/á/g;
 	s/\\\'c/ć/g;
 	s/\\\'e/é/g;
 	s/\\\'i/í/g;
+	s/\\\'ı/í/g;
 	s/\\\'l/ĺ/g;
 	s/\\\'n/ń/g;
 	s/\\\'o/ó/g;
 	s/\\\'r/ŕ/g;
 	s/\\\'s/ś/g;
 	s/\\\'u/ú/g;
+	s/\\\'y/ý/g;
 	s/\\\'z/ź/g;
 
 	# grave accent \`{x}
@@ -518,12 +524,18 @@ sub utf_ent {
 	s/\\v(\001\d+)\{E\1\}/Ě/g;
 	s/\\v(\001\d+)\{L\1\}/Ľ/g;
 	s/\\v(\001\d+)\{N\1\}/Ň/g;
+	s/\\v(\001\d+)\{R\1\}/Ř/g;
+	s/\\v(\001\d+)\{S\1\}/Š/g;
+	s/\\v(\001\d+)\{T\1\}/Ť/g;
 	s/\\v(\001\d+)\{Z\1\}/Ž/g;
 	s/\\v(\001\d+)\{c\1\}/č/g;
 	s/\\v(\001\d+)\{d\1\}/ď/g;
 	s/\\v(\001\d+)\{e\1\}/ě/g;
 	s/\\v(\001\d+)\{l\1\}/ľ/g;
 	s/\\v(\001\d+)\{n\1\}/ň/g;
+	s/\\v(\001\d+)\{r\1\}/ř/g;
+	s/\\v(\001\d+)\{s\1\}/š/g;
+	s/\\v(\001\d+)\{t\1\}/ť/g;
 	s/\\v(\001\d+)\{z\1\}/ž/g;
 
 	# macron \={x}
@@ -566,6 +578,10 @@ sub utf_ent {
 	# slashed l
 	s/\\l\b/ł/g;
 	s/\\L\b/Ł/g;
+
+	# krouzek \accent23x or \accent'27
+	s/\{\\accent2[37]\s*u\}/ů/g;
+	s/\\accent2[37]\s*u/ů/g;
 
 	# Other special characters.
 	s/\\O\b\s*/Ø/g;
@@ -775,7 +791,7 @@ qq{<?xml version="1.0" encoding="$enc"?>
 <head>
 <title>$title</title>
 <meta http-equiv="Content-type" content="text/html; charset=$enc" />} . q{
-<meta name="Generator" content="$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.22 2006/03/09 15:43:48 dds Exp $" />
+<meta name="Generator" content="$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.23 2006/05/29 12:55:54 dds Exp $" />
 </head>
 <body>
 }
