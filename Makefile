@@ -1,12 +1,12 @@
 #
-# $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\Makefile,v 1.14 2005/07/12 19:25:51 dds Exp $
+# $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\Makefile,v 1.15 2007/06/14 15:11:19 dds Exp $
 #
 
 NAME=bib2xhtml
 BINDIR=$(HOME)/bin/
 BIBTEXDIR=$(HOME)/texmf/bibtex/bst/
 CGIDIR=/usr/dcs/www/cgi-bin/
-DISTDIR=/dds/pubs/web/home/sw/textproc/$(NAME)
+DISTDIR=/cygdrive/c/dds/pubs/web/home/sw/textproc/$(NAME)
 
 BSTFILES=$(wildcard *.bst)
 DOCFILES=$(NAME).html $(NAME).txt $(NAME).pdf index.html $(wildcard ex-*.html) example.bib
@@ -68,7 +68,7 @@ example:
 		for j in "" -u ; \
 		do \
 			perl bib2xhtml $$j -s $$i -h "Example: bib2xhtml $$j -s $$i" example.bib ex-$${i}$${j}.html ;\
-			case $$i in ; \
+			case $$i in \
 			unsort*) ;; \
 			*) \
 				perl bib2xhtml $$j -c -s $$i -h "Example: bib2xhtml $$j -c -s $$i" example.bib ex-$${i}-c$${j}.html ;\
@@ -76,7 +76,7 @@ example:
 				perl bib2xhtml $$j -c -r -s $$i -h "Example: bib2xhtml $$j -c -r -s $$i" example.bib ex-$${i}-cr$${j}.html ;\
 				;; \
 			esac ;\
-			case $$i in ; \
+			case $$i in \
 			empty) ;; \
 			unsortlist) ;; \
 			*) \
@@ -91,13 +91,13 @@ test:
 	cd testdir ; \
 	attrib -r \* ; \
 	rm * ; \
-	cp ../ex*.html ../*.bst ../example.bib ../bib2xhtml . ; \
+	cp ../ex*.html ../*.bst ../example.bib ../bib2xhtml ../v23n5.pdf . ; \
 	for i in empty plain alpha named unsort unsortlist ; \
 	do \
 		for j in "" -u ; \
 		do \
 			perl bib2xhtml $$j -s $$i -h "Example: bib2xhtml $$j -s $$i" example.bib ex-$${i}$${j}.html ;\
-			case $$i in ; \
+			case $$i in \
 			unsort*) ;; \
 			*) \
 				perl bib2xhtml $$j -c -s $$i -h "Example: bib2xhtml $$j -c -s $$i" example.bib ex-$${i}-c$${j}.html ;\
@@ -105,7 +105,7 @@ test:
 				perl bib2xhtml $$j -c -r -s $$i -h "Example: bib2xhtml $$j -c -r -s $$i" example.bib ex-$${i}-cr$${j}.html ;\
 				;; \
 			esac ;\
-			case $$i in ; \
+			case $$i in \
 			empty) ;; \
 			unsortlist) ;; \
 			*) \
