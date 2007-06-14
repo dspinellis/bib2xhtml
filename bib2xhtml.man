@@ -1,4 +1,4 @@
-.\" $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml.man,v 1.20 2007/06/14 14:41:24 dds Exp $
+.\" $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml.man,v 1.21 2007/06/14 14:45:35 dds Exp $
 .TH BIB2XHTML L "14 June 2007"
 .SH NAME
 bib2xhtml \- BibTeX bibliography to XHTML converter
@@ -184,7 +184,9 @@ If the
 field exists, its value is used as the designation of a digital
 object identifier.
 .B bib2xhtml
-creates a link to the object through http://dx.doi.org and updates
+creates a link to the object through
+.I http://dx.doi.org
+and updates
 .I htmlfile
 with the
 .B doi
@@ -272,6 +274,9 @@ PDF icons.
       alt="PDF" border="0" />' example.bib example.html
 .fi
 .ft P
+A couple of PDF icons and the conditions for their use are available
+at
+.I http://www.adobe.com/misc/linking.html#pdficon .
 .P
 To display the number of pages in local PDF files, the Perl module
 \fIPDF::API2\fP must be installed on the system where
