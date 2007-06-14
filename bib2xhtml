@@ -2,7 +2,7 @@
 eval 'exec /usr/bin/perl -w -S $0 ${1+"$@"}'
     if 0;
 
-$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.23 2006/05/29 12:55:54 dds Exp $';
+$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.24 2007/06/14 14:28:52 dds Exp $';
 
 #
 # Convert from bibtex to XHTML.
@@ -10,7 +10,7 @@ $version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.23 2006/05/
 # (C) Copyright 1995, 1996 David Hull.
 # (David Hull / hull@cs.uiuc.edu / http://www.uiuc.edu/ph/www/dlhull)
 #
-# (C) Copyright 2002-2005 Diomidis Spinellis
+# (C) Copyright 2002-2007 Diomidis Spinellis
 # http://www.spinellis.gr
 #
 # This program is free software.  You can redistribute it and/or modify
@@ -44,15 +44,18 @@ sub usage {
     $program = $0;
     $program =~ s+^.*/++;
     print STDERR <<_EOF_;
-usage: $program [-a] [-b bibtex-options] [-c] [-d delim] [-h heading] [-i]
-                [-k] [-m macro file] [-r] [-s style] [-t] [-u] [-v]
-		sourcefile [htmlfile]
+usage: $program [-a] [-b bibtex-options] [-c] [-d delim] [-e extended-information]
+                [-h heading] [-i] [-k] [-m macro file] [-r] [-s style] [-t] [-u]
+		[-v] sourcefile [htmlfile]
     -a  Write abstract to htmlfile.
     -b bibtex-options
 	Options to pass to bibtex.
     -c	Sort chronologically, by year and then by author.
     -d delim
 	Specify bibliography delimiter.
+    -e extended-information
+	Specify the extended metadata information (page count, size, PDF icon)
+	that will be included in each citation.
     -h heading
 	String to use instead of default title when creating a new htmlfile.
 	If updating an existing htmlfile, this option is ignored.
@@ -159,10 +162,10 @@ sub doPaperLinks {
 papertype:
     foreach $paper (@paperTypes) {
 
-	$ppaper = $paper;
-	$sstr = "";
-	$pstr = "";
-	$cstr = "";
+	$ppaper = $paper unless defined($notype);	# Paper type
+	$sstr = "";					# size string
+	$pstr = "";					# pages string
+	$cstr = "";					# compression type string
 
 	if (($url) = m/\<\!\-\- $paper:[\s\n]+(\S+)[\s\n]+\-\-\>/) {
 
@@ -198,27 +201,34 @@ papertype:
 
 		# Get size.
 		$size = -s _;
-		$sstr = ", $size bytes";
+		$sstr = ", $size bytes" unless(defined($nosize));
 
 		# Get page count.
 		$pageCountRoutine = $paper . "PageCount";
 		$pageCount = &$pageCountRoutine($opencmd);
-		$pstr = ", $pageCount pages" if (defined $pageCount);
+		$pstr = ", $pageCount pages" if (defined $pageCount && !defined $nopages);
 
 		# Get compression type.
 		$cstr = "$cstr " if ($cstr ne "");
+		undef $cstr if (defined $nocompression);
 	    } elsif ($paper eq 'DOI' &&
 	             (($url =~ m/^doi:(.*)/i) ||
 	              ($url =~ m/^http:\/\/[\w.]+\/(.*)/i) ||
 	              ($url =~ m/^(.*)$/))) {
 			# Convert the DOI URL into an HTTP link
 			$url = "http://dx.doi.org/$1";
-			$ppaper = "doi:$1";
+			$ppaper = "doi:$1" unless (defined($nodoi));
 	    }
+
+	    $ppaper = $typeicon{$paper} if (defined $typeicon{$paper});
 
 	    #print STDERR "found $paper $file$pstr$sstr\n";
 
-	    s/\<\!\-\- $paper:[\s\n]+\S+[\s\n]+\-\-\>/(<a href=\"$url\">${cstr}$ppaper<\/a>$pstr$sstr)/;
+	    if ($nobrackets) {
+	        s/\<\!\-\- $paper:[\s\n]+\S+[\s\n]+\-\-\>/<a href=\"$url\">${cstr}$ppaper<\/a>$pstr$sstr/;
+	    } else {
+		s/\<\!\-\- $paper:[\s\n]+\S+[\s\n]+\-\-\>/(<a href=\"$url\">${cstr}$ppaper<\/a>$pstr$sstr)/;
+	    }
 	}
     }
 }
@@ -666,14 +676,14 @@ sub utf_ent {
 
 
 # Prevent "identifier used only once" warnings.
-$opt_a = $opt_b = $opt_c = $opt_D = $opt_d = $opt_h = $opt_m = $opt_r = undef;
+$opt_a = $opt_b = $opt_c = $opt_D = $opt_d = $opt_e = $opt_h = $opt_m = $opt_r = undef;
 $opt_i = $opt_k = $opt_s = $opt_t = $opt_v = $opt_u = undef;
 
 $macrofile = '';
 
 $command_line = &html_encode(join(' ', $0, @ARGV));
 
-getopts("ab:cd:D:h:ikm:rs:tuv") || &usage;
+getopts("ab:cd:D:e:h:ikm:rs:tuv") || &usage;
 
 if (defined($opt_v)) {
 	print "$version\n";
@@ -748,6 +758,36 @@ $bstfile .= "c" if (defined ($opt_c));
 $bstfile .= "r" if (defined ($opt_r));
 $bstfile .= "a" if (defined ($opt_a));
 
+# Extended information is specified as a sequence of
+# (PostScript|PDF|DVI|DOI):icon or
+# (notype|nosize|nopages|nocompression|nodoi|nobrackets)
+# Set correspondingly the associative array %typeicon and the no* variables
+# Example usage:
+# perl bib2xhtml -e 'nosize,nopages,PDF:<img src="pdficon_small.gif" alt="PDF" border="0" />' example.bib  >example.html
+undef $nopages;
+undef $nosize;
+undef $nodoi;
+undef $notype;
+undef $nocompression;
+undef $nobracket;
+
+if (defined($opt_e)) {
+	my(@opts) = split(/,/, $opt_e);
+	for $opt (@opts) {
+		if ($opt =~ m/(PostScript|PDF|DVI|DOI):(.*)/) {
+			$typeicon{$1} = $2;
+		} elsif ($opt =~ m/(notype|nosize|nopages|nocompression|nodoi|nobrackets)/) {
+			eval "\$$1 = 1";
+		} else {
+			print STDERR qq{Invalid extended information specification: $opt
+This can be a comma-separated list of the following specifications:
+PostScript|PDF|DVI|DOI:new-text (e.g. PDF file icon)
+notype|nosize|nopages|nocompression|nodoi|nobrackets
+};
+			exit 1;
+		}
+	}
+}
 
 # PostScript and PDF files are assumed to be in same directory
 # as the target HTML file.
@@ -791,7 +831,7 @@ qq{<?xml version="1.0" encoding="$enc"?>
 <head>
 <title>$title</title>
 <meta http-equiv="Content-type" content="text/html; charset=$enc" />} . q{
-<meta name="Generator" content="$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.23 2006/05/29 12:55:54 dds Exp $" />
+<meta name="Generator" content="$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.24 2007/06/14 14:28:52 dds Exp $" />
 </head>
 <body>
 }

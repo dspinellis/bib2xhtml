@@ -1,5 +1,5 @@
-.\" $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml.man,v 1.18 2005/09/04 13:27:21 dds Exp $
-.TH BIB2XHTML L "12 July 2005"
+.\" $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml.man,v 1.19 2007/06/14 14:28:52 dds Exp $
+.TH BIB2XHTML L "14 June 2007"
 .SH NAME
 bib2xhtml \- BibTeX bibliography to XHTML converter
 .SH SYNOPSIS
@@ -15,6 +15,9 @@ bib2xhtml \- BibTeX bibliography to XHTML converter
 .B \-d
 .I delimiter
 ] [
+.B \-e
+.I extended-information
+] [
 .B \-h
 .I heading
 ] [
@@ -23,7 +26,7 @@ bib2xhtml \- BibTeX bibliography to XHTML converter
 .B \-k
 ] [
 .B \-m
-.I macro file
+.I macro-file
 ] [
 .B \-r
 ] [
@@ -170,8 +173,8 @@ If the
 .B postscript
 field exists, its value is used as the name of a PostScript file.
 .B bib2xhtml
-creates a link to the file.
-, and updates
+creates a link to the file,
+and updates
 .I htmlfile
 with the number of pages and size of the PostScript file.
 .TP
@@ -258,6 +261,17 @@ by adding style entries like the following in the web page's header.
 	  </style>
 .fi
 .ft P
+.P
+The value of the named attributes can contain arbitrary HTML markup commands,
+and can thus be used for substituting the text with icons.
+For example, the following command can be used for creating stand-alone
+PDF icons.
+.ft C
+.nf
+    perl bib2xhtml -e 'nosize,nopages,PDF:<img src="pdficon_small.gif"
+      alt="PDF" border="0" />' example.bib example.html
+.fi
+.ft P
 .SH OPTIONS
 .TP
 .B \-a
@@ -278,6 +292,46 @@ file with the
 .B .bib
 extension stripped.
 .TP
+.BI \-d " extended-information"
+Specify how an entry's extended information will be displayed.
+The extended information is specified as a series of comma-separated
+attributes.
+The following plain attributes are supported.
+.RS
+.TP
+.B notype
+Do not display the file's type (PDF, Postscript, DVI).
+.TP
+.B nosize
+Do not display the file's size in bytes.
+.TP
+.B nopages
+Do not display the file's number of pages.
+.TP
+.B nocompression
+Do not display the file's compression type.
+.TP
+.B nodoi
+Do not display the file's DOI.
+.TP
+.B nobrackets
+Do not enclose the DOI link or the file's extended information in brackets.
+.RE
+.LP
+A number of valued attributes allow the specification of the text
+to display for various file types.
+These are written as a \fIname\fP:\fIvalue\fP pair.
+The following names are supported for valued attributes.
+.RS
+.IP \(bu
+PostScript
+.IP \(bu
+PDF
+.IP \(bu
+DVI
+.IP \(bu
+DOI
+.RE
 .BI \-h " heading"
 Use the string
 .I heading
