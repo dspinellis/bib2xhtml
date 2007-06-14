@@ -1,4 +1,4 @@
-.\" $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml.man,v 1.19 2007/06/14 14:28:52 dds Exp $
+.\" $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml.man,v 1.20 2007/06/14 14:41:24 dds Exp $
 .TH BIB2XHTML L "14 June 2007"
 .SH NAME
 bib2xhtml \- BibTeX bibliography to XHTML converter
@@ -272,6 +272,18 @@ PDF icons.
       alt="PDF" border="0" />' example.bib example.html
 .fi
 .ft P
+.P
+To display the number of pages in local PDF files, the Perl module
+\fIPDF::API2\fP must be installed on the system where
+.B bib2xhtml
+is running.
+A command like the following will accomplish this.
+.ft C
+.nf
+    perl -MCPAN -e "install PDF::API2"
+.fi
+.ft P
+
 .SH OPTIONS
 .TP
 .B \-a

@@ -2,7 +2,7 @@
 eval 'exec /usr/bin/perl -w -S $0 ${1+"$@"}'
     if 0;
 
-$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.24 2007/06/14 14:28:52 dds Exp $';
+$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.25 2007/06/14 14:41:24 dds Exp $';
 
 #
 # Convert from bibtex to XHTML.
@@ -25,6 +25,9 @@ $version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.24 2007/06/
 use Getopt::Std;
 
 require 'ctime.pl';
+
+eval {use PDF::API2};
+$have_pdf_api = 1 unless (defined $@ && $@ ne '');
 
 # Label styles.
 $label_styles{'plain'} = 	$LABEL_PLAIN = 		1;
@@ -118,8 +121,16 @@ line:
     $pageCount;
 }
 
-# Don't know how to determine page count of PDF file.
-sub PDFPageCount { undef; }
+sub PDFPageCount {
+    return undef unless ($have_pdf_api);
+    my($file) = @_;
+    $file =~ s/^\<//;
+    # print "in PDFPageCount $file\n";
+    my($pdf);
+    eval {$pdf = PDF::API2->open($file)};
+    return undef if (defined $@ && $@ ne '');
+    return $pdf->pages;
+}
 
 sub DVIPageCount {
     local($cmd) = @_;
@@ -769,7 +780,7 @@ undef $nosize;
 undef $nodoi;
 undef $notype;
 undef $nocompression;
-undef $nobracket;
+undef $nobrackets;
 
 if (defined($opt_e)) {
 	my(@opts) = split(/,/, $opt_e);
@@ -831,7 +842,7 @@ qq{<?xml version="1.0" encoding="$enc"?>
 <head>
 <title>$title</title>
 <meta http-equiv="Content-type" content="text/html; charset=$enc" />} . q{
-<meta name="Generator" content="$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.24 2007/06/14 14:28:52 dds Exp $" />
+<meta name="Generator" content="$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.25 2007/06/14 14:41:24 dds Exp $" />
 </head>
 <body>
 }
