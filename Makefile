@@ -1,5 +1,5 @@
 #
-# $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\Makefile,v 1.15 2007/06/14 15:11:19 dds Exp $
+# $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\Makefile,v 1.16 2007/06/14 20:18:57 dds Exp $
 #
 
 NAME=bib2xhtml
@@ -32,7 +32,7 @@ $(NAME)-$(VERSION).tar.gz: $(FILES)
 	-cmd /c "rd /s/q $(NAME)-$(VERSION)"
 	mkdir $(NAME)-$(VERSION)
 	cp ${FILES} $(NAME)-$(VERSION)
-	tar cf - ${FILES:%=$(NAME)-$(VERSION)/%} | gzip -c >$(NAME)-$(VERSION).tar.gz
+	tar czf $(NAME)-$(VERSION).tar.gz ${FILES:%=$(NAME)-$(VERSION)/%}
 	zip -r  $(NAME)-$(VERSION).zip $(NAME)-$(VERSION)
 	cmd /c "rd /s/q $(NAME)-$(VERSION)"
 
