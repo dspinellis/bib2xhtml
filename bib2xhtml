@@ -2,7 +2,7 @@
 eval 'exec /usr/bin/perl -w -S $0 ${1+"$@"}'
     if 0;
 
-$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.25 2007/06/14 14:41:24 dds Exp $';
+$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.26 2007/06/14 14:59:44 dds Exp $';
 
 #
 # Convert from bibtex to XHTML.
@@ -47,15 +47,19 @@ sub usage {
     $program = $0;
     $program =~ s+^.*/++;
     print STDERR <<_EOF_;
-usage: $program [-a] [-b bibtex-options] [-c] [-d delim] [-e extended-information]
-                [-h heading] [-i] [-k] [-m macro file] [-r] [-s style] [-t] [-u]
-		[-v] sourcefile [htmlfile]
+usage: $program [-a] [-b bibtex-options] [-c] [-d delim] [-D mappings]
+                [-e extended-information] [-h heading] [-i] [-k]
+		[-m macro file] [-r] [-s style] [-t] [-u] [-v]
+		sourcefile [htmlfile]
+
     -a  Write abstract to htmlfile.
     -b bibtex-options
 	Options to pass to bibtex.
     -c	Sort chronologically, by year and then by author.
     -d delim
 	Specify bibliography delimiter.
+    -D mappings
+	Specify file path to URL mappings.
     -e extended-information
 	Specify the extended metadata information (page count, size, PDF icon)
 	that will be included in each citation.
@@ -842,7 +846,7 @@ qq{<?xml version="1.0" encoding="$enc"?>
 <head>
 <title>$title</title>
 <meta http-equiv="Content-type" content="text/html; charset=$enc" />} . q{
-<meta name="Generator" content="$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.25 2007/06/14 14:41:24 dds Exp $" />
+<meta name="Generator" content="$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.26 2007/06/14 14:59:44 dds Exp $" />
 </head>
 <body>
 }

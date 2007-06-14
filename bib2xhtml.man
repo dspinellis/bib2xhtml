@@ -1,4 +1,4 @@
-.\" $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml.man,v 1.21 2007/06/14 14:45:35 dds Exp $
+.\" $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml.man,v 1.22 2007/06/14 14:59:44 dds Exp $
 .TH BIB2XHTML L "14 June 2007"
 .SH NAME
 bib2xhtml \- BibTeX bibliography to XHTML converter
@@ -11,6 +11,9 @@ bib2xhtml \- BibTeX bibliography to XHTML converter
 .I bibtex-options
 ] [
 .B \-c
+] [
+.B \-D
+.I mappings
 ] [
 .B \-d
 .I delimiter
@@ -309,7 +312,15 @@ file with the
 .B .bib
 extension stripped.
 .TP
-.BI \-d " extended-information"
+.BI \-D " mappings"
+Define URL to directory mappings.
+The \fImappings\fP argument contains a sequence of comma-separated
+values.
+Each value contains a local file path and the corresponding URL,
+separated by an \fI@\fP sign.
+The resulting URL is used for linking the various paper file format types.
+.TP
+.BI \-e " extended-information"
 Specify how an entry's extended information will be displayed.
 The extended information is specified as a series of comma-separated
 attributes.
