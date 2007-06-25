@@ -1,4 +1,4 @@
-.\" $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml.man,v 1.22 2007/06/14 14:59:44 dds Exp $
+.\" $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml.man,v 1.23 2007/06/25 07:38:22 dds Exp $
 .TH BIB2XHTML L "14 June 2007"
 .SH NAME
 bib2xhtml \- BibTeX bibliography to XHTML converter
@@ -269,12 +269,19 @@ by adding style entries like the following in the web page's header.
 .P
 The value of the named attributes can contain arbitrary HTML markup commands,
 and can thus be used for substituting the text with icons.
-For example, the following command can be used for creating stand-alone
+For example, the following Unix command can be used for creating stand-alone
 PDF icons.
 .ft C
 .nf
     perl bib2xhtml -e 'nosize,nopages,PDF:<img src="pdficon_small.gif"
       alt="PDF" border="0" />' example.bib example.html
+.fi
+.ft P
+Unser the Windows shell the corresponding command would be.
+.ft C
+.nf
+    perl bib2xhtml -e "nosize,nopages,PDF:<img src='pdficon_small.gif'
+      alt='PDF' border='0' />" example.bib example.html
 .fi
 .ft P
 A couple of PDF icons and the conditions for their use are available
