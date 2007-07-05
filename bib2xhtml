@@ -2,7 +2,7 @@
 eval 'exec /usr/bin/perl -w -S $0 ${1+"$@"}'
     if 0;
 
-$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.26 2007/06/14 14:59:44 dds Exp $';
+$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.27 2007/07/05 21:29:05 dds Exp $';
 
 #
 # Convert from bibtex to XHTML.
@@ -26,7 +26,7 @@ use Getopt::Std;
 
 require 'ctime.pl';
 
-eval {use PDF::API2};
+eval "use PDF::API2";
 $have_pdf_api = 1 unless (defined $@ && $@ ne '');
 
 # Label styles.
@@ -846,7 +846,7 @@ qq{<?xml version="1.0" encoding="$enc"?>
 <head>
 <title>$title</title>
 <meta http-equiv="Content-type" content="text/html; charset=$enc" />} . q{
-<meta name="Generator" content="$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.26 2007/06/14 14:59:44 dds Exp $" />
+<meta name="Generator" content="$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.27 2007/07/05 21:29:05 dds Exp $" />
 </head>
 <body>
 }
