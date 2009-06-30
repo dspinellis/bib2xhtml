@@ -2,7 +2,7 @@
 eval 'exec /usr/bin/perl -w -S $0 ${1+"$@"}'
     if 0;
 
-$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.27 2007/07/05 21:29:05 dds Exp $';
+$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.28 2009/06/30 09:46:44 dds Exp $';
 
 #
 # Convert from bibtex to XHTML.
@@ -846,7 +846,7 @@ qq{<?xml version="1.0" encoding="$enc"?>
 <head>
 <title>$title</title>
 <meta http-equiv="Content-type" content="text/html; charset=$enc" />} . q{
-<meta name="Generator" content="$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.27 2007/07/05 21:29:05 dds Exp $" />
+<meta name="Generator" content="$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.28 2009/06/30 09:46:44 dds Exp $" />
 </head>
 <body>
 }
@@ -1148,9 +1148,9 @@ sub domath {
     # Remove \mbox.
     s/\\mbox(\001\d+)\{([^\001]*)\1\}/$2/g;		# \mbox{x}
 
-    # Escape tildes protecting URLs
+    # Escape and protect tildes in URLs
     # For some reason /g doesn't work
-    while (s/(\<a href\=\"[^<]*?)\~/$1\005/g) { ; }
+    while (s/(\<a href\=\"[^"]*?)\~/$1\005/g) { ; }
     if ($opt_u) {
         s/([^\\])~/$1 /g;			# ~  non-breaking space - &#xa0;
         s/\\\,/ /g;				# \, thin space - &#x2009;
