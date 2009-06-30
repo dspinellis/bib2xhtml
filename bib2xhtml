@@ -2,7 +2,7 @@
 eval 'exec /usr/bin/perl -w -S $0 ${1+"$@"}'
     if 0;
 
-$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.28 2009/06/30 09:46:44 dds Exp $';
+$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.29 2009/06/30 09:49:26 dds Exp $';
 
 #
 # Convert from bibtex to XHTML.
@@ -36,7 +36,7 @@ $label_styles{'default'} = 	$LABEL_DEFAULT = 	3;
 
 $list_start[$LABEL_PLAIN] = 'ul class="bib2xhtml"';
 $list_end[$LABEL_PLAIN] = "/ul";
-$list_start[$LABEL_NUMBERED] = 'dl compact="1" class="bib2xhtml"';
+$list_start[$LABEL_NUMBERED] = 'dl class="bib2xhtml"';
 $list_end[$LABEL_NUMBERED] = "/dl";
 $list_start[$LABEL_DEFAULT] = 'dl class="bib2xhtml"';
 $list_end[$LABEL_DEFAULT] = "/dl";
@@ -846,7 +846,7 @@ qq{<?xml version="1.0" encoding="$enc"?>
 <head>
 <title>$title</title>
 <meta http-equiv="Content-type" content="text/html; charset=$enc" />} . q{
-<meta name="Generator" content="$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.28 2009/06/30 09:46:44 dds Exp $" />
+<meta name="Generator" content="$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.29 2009/06/30 09:49:26 dds Exp $" />
 </head>
 <body>
 }
