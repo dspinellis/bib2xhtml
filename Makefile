@@ -1,5 +1,5 @@
 #
-# $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\Makefile,v 1.16 2007/06/14 20:18:57 dds Exp $
+# $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\Makefile,v 1.17 2009/07/01 14:38:15 dds Exp $
 #
 
 NAME=bib2xhtml
@@ -116,6 +116,6 @@ test:
 	done ; \
 	for i in *.html ; \
 	do \
-		echo $$i ; \
+		xml val -d /pub/schema/xhtml1-transitional.dtd $$i 2>/dev/null ; \
 		diff ../$$i $$i ; \
 	done
