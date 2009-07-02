@@ -1,5 +1,5 @@
 #
-# $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\Makefile,v 1.17 2009/07/01 14:38:15 dds Exp $
+# $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\Makefile,v 1.18 2009/07/02 13:28:14 dds Exp $
 #
 
 NAME=bib2xhtml
@@ -43,7 +43,7 @@ $(NAME).txt: $(NAME).man
 	$(SSH) $(UXHOST) groff -man -Tascii <$? | $(SSH) $(UXHOST) col -b > $@
 
 $(NAME).pdf: $(NAME).ps
-	ps2pdf $? $@
+	cmd /c ps2pdf $? $@
 
 $(NAME).html: $(NAME).man
 	$(SSH) $(UXHOST) groff -mhtml -Thtml -man <$? | sed -e 's/&minus;/-/g;s/&bull;/\&#8226;/g' >$@
