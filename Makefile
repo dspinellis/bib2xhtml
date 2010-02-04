@@ -1,5 +1,5 @@
 #
-# $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\Makefile,v 1.18 2009/07/02 13:28:14 dds Exp $
+# $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\Makefile,v 1.19 2010/02/04 14:31:08 dds Exp $
 #
 
 NAME=bib2xhtml
@@ -63,7 +63,7 @@ install:
 
 example:
 	-rm -f ex-*.html
-	for i in empty plain alpha named unsort unsortlist ; \
+	for i in empty plain alpha named unsort unsortlist paragraph ; \
 	do \
 		for j in "" -u ; \
 		do \
@@ -92,7 +92,7 @@ test:
 	attrib -r \* ; \
 	rm * ; \
 	cp ../ex*.html ../*.bst ../example.bib ../bib2xhtml ../v23n5.pdf . ; \
-	for i in empty plain alpha named unsort unsortlist ; \
+	for i in empty plain alpha named unsort unsortlist paragraph ; \
 	do \
 		for j in "" -u ; \
 		do \

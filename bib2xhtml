@@ -2,7 +2,7 @@
 eval 'exec /usr/bin/perl -w -S $0 ${1+"$@"}'
     if 0;
 
-$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.30 2009/06/30 10:39:13 dds Exp $';
+$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.31 2010/02/04 14:31:08 dds Exp $';
 
 #
 # Convert from bibtex to XHTML.
@@ -23,6 +23,7 @@ $version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.30 2009/06/
 #
 
 use Getopt::Std;
+use open IO => ':crlf';
 
 require 'ctime.pl';
 
@@ -33,6 +34,7 @@ $have_pdf_api = 1 unless (defined $@ && $@ ne '');
 $label_styles{'plain'} = 	$LABEL_PLAIN = 		1;
 $label_styles{'numbered'} = 	$LABEL_NUMBERED = 	2;
 $label_styles{'default'} = 	$LABEL_DEFAULT = 	3;
+$label_styles{'paragraph'} = 	$LABEL_PARAGRAPH = 	4;
 
 $list_start[$LABEL_PLAIN] = 'ul class="bib2xhtml"';
 $list_end[$LABEL_PLAIN] = "/ul";
@@ -40,6 +42,8 @@ $list_start[$LABEL_NUMBERED] = 'dl class="bib2xhtml"';
 $list_end[$LABEL_NUMBERED] = "/dl";
 $list_start[$LABEL_DEFAULT] = 'dl class="bib2xhtml"';
 $list_end[$LABEL_DEFAULT] = "/dl";
+$list_start[$LABEL_PARAGRAPH] = 'div class="bib2xhtml"';
+$list_end[$LABEL_PARAGRAPH] = "/div";
 
 @tmpfiles = ();
 
@@ -73,7 +77,7 @@ usage: $program [-a] [-b bibtex-options] [-c] [-d delim] [-D mappings]
     -r	Sort in reverse chronological order.
     -s style
 	Control style of bibliography:
-	(empty, plain, alpha, named, unsort, or unsortlist).
+	(empty, plain, alpha, named, paragraph, unsort, or unsortlist).
     -t  Write timestamp to htmlfile.
     -u  Output a Unicode-coded document.
     -v  Report the version number.
@@ -748,6 +752,10 @@ style: {
 	($bstfile = "html-n",
 	 $label_style = $LABEL_DEFAULT,
 	 last style);
+    ($opt_s eq 'paragraph') &&
+	($bstfile = "html-n",
+	 $label_style = $LABEL_PARAGRAPH,
+	 last style);	 
     ($opt_s eq 'unsort') &&
 	($bstfile = "html-u",
 	 $label_style = $LABEL_NUMBERED,
@@ -846,7 +854,7 @@ qq{<?xml version="1.0" encoding="$enc"?>
 <head>
 <title>$title</title>
 <meta http-equiv="Content-type" content="text/html; charset=$enc" />} . q{
-<meta name="Generator" content="$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.30 2009/06/30 10:39:13 dds Exp $" />
+<meta name="Generator" content="$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.31 2010/02/04 14:31:08 dds Exp $" />
 </head>
 <body>
 }
@@ -1035,6 +1043,16 @@ while (<BBLFILE>) {
 	s:(<a name=\"[^\"]*\")></a><a\b:$1:
 	# If that doesn't work, try to swallow following word.
 	or s:(<a name=\"[^\"]*\">)</a>([\w]+):$1$2<\/a>:;
+    } elsif ($label_style == $LABEL_PARAGRAPH) {
+	s:<dt>(<a name=\"[^\"]*\">)\[[^\]]*\](</a>)</dt><dd>:<p>$1$2:;
+	s:</dd>:</p>:;
+
+	# Attempt to fix up empty <a name=...></a> tag, which some browsers
+	# don't handle properly (even though it *is* legal HTML).
+	# First try to combine a <a name=...></a> with a following <A ".
+	s:(<a name=\"[^\"]*\")></a><a\b:$1:
+	# If that doesn't work, try to swallow following word.
+	or s:(<a name=\"[^\"]*\">)</a>([\w]+):$1$2<\/a>:;	
     } elsif ($label_style == $LABEL_NUMBERED) {
 	s:(<dt><a name=\"[^\"]*\">\[)[^\]]*(\]</a></dt><dd>):$1$nentry$2:;
     }

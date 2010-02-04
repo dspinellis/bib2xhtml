@@ -1,5 +1,5 @@
-.\" $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml.man,v 1.23 2007/06/25 07:38:22 dds Exp $
-.TH BIB2XHTML L "14 June 2007"
+.\" $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml.man,v 1.24 2010/02/04 14:31:08 dds Exp $
+.TH BIB2XHTML L "4 February 2010"
 .SH NAME
 bib2xhtml \- BibTeX bibliography to XHTML converter
 .SH SYNOPSIS
@@ -419,6 +419,7 @@ bibliography.  Supported styles are
 .BR plain ,
 .BR alpha ,
 .BR named ,
+.BR paragraph ,
 .BR unsort ,
 and
 .BR unsortlist .
@@ -427,6 +428,8 @@ An
 bibliography is a bulleted list.  A
 .B plain
 bibliography is a numbered list.
+.B paragraph 
+produces just paragraphs (no bullets).
 .B unsort
 is like
 .B plain
