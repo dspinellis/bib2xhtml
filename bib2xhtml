@@ -2,7 +2,7 @@
 eval 'exec /usr/bin/perl -w -S $0 ${1+"$@"}'
     if 0;
 
-$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.31 2010/02/04 14:31:08 dds Exp $';
+$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.32 2010/09/09 06:15:00 dds Exp $';
 
 #
 # Convert from bibtex to XHTML.
@@ -854,7 +854,7 @@ qq{<?xml version="1.0" encoding="$enc"?>
 <head>
 <title>$title</title>
 <meta http-equiv="Content-type" content="text/html; charset=$enc" />} . q{
-<meta name="Generator" content="$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.31 2010/02/04 14:31:08 dds Exp $" />
+<meta name="Generator" content="$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.32 2010/09/09 06:15:00 dds Exp $" />
 </head>
 <body>
 }
@@ -877,7 +877,7 @@ if ($opt_i && $updating) {
     last loop if m/^$endstring$/;
     push(@citations, $2) if m/^([^\\]*)?(.+\})(.*)?$/;
   }
-  push(@citations, "\\bibdata{$bibfile}");
+  push(@citations, "\\bibdata{$macrofile$bibfile}");
 }
 
 # Create an .aux file for bibtex to read.
