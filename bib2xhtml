@@ -2,7 +2,7 @@
 eval 'exec /usr/bin/perl -w -S $0 ${1+"$@"}'
     if 0;
 
-$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.32 2010/09/09 06:15:00 dds Exp $';
+$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.33 2010/11/24 11:56:16 dds Exp $';
 
 #
 # Convert from bibtex to XHTML.
@@ -854,7 +854,7 @@ qq{<?xml version="1.0" encoding="$enc"?>
 <head>
 <title>$title</title>
 <meta http-equiv="Content-type" content="text/html; charset=$enc" />} . q{
-<meta name="Generator" content="$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.32 2010/09/09 06:15:00 dds Exp $" />
+<meta name="Generator" content="$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.33 2010/11/24 11:56:16 dds Exp $" />
 </head>
 <body>
 }
@@ -1114,6 +1114,9 @@ while (<BBLFILE>) {
     s/\\par\b/<p \/>/g;
 
     s/\\url(\001\d+)\{([^\001]*)\1\}/<a href="$2">$2<\/a>/g; #\url{text} -> <a href"text">text</a>
+    s/\\href(\001\d+)\{([^\001]*)\1\}(\001\d+)\{([^\001]*)\3\}/<a href="$2">$4<\/a>/g; #\href{text} -> <a href"link">text</a>
+    s/\\href(\001\d+)\{([^\001]*)\1\}/<a href="$2">$2<\/a>/g; #\href{text} -> <a href"text">text</a>
+
 
     # There's no way to easily handle \rm and \textrm because
     # HTML has no tag to convert back to plain text.  Since it's very
