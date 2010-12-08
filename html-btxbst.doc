@@ -1,5 +1,5 @@
 % BibTeX `plain/html' family
-	% $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\html-btxbst.doc,v 1.4 2005/09/04 13:27:21 dds Exp $
+	% $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\html-btxbst.doc,v 1.5 2010/12/08 19:02:34 dds Exp $
 	% 
 	% This file is either "html-btxbst.doc" or was derived from
 	% "html-btxbst.doc" using cpp.  "html-btxbst.doc" itself was edited
@@ -844,6 +844,7 @@ FUNCTION {format.names}
 #else
     { s nameptr "{f.~}{vv~}{ll}{, jj}" format.name$ 't :=
 #endif NAME_FULL
+      "\bibxhtmlname{" t * "}" * 't :=
       nameptr #1 >
 	{ namesleft #1 >
 	    { ", " * t * }
@@ -2349,6 +2350,93 @@ FUNCTION {editor.key.organization.label}
   if$
 }
 
+
+% Converts a month to an integer. Watch out for the byte limit on
+% subroutines here. 
+FUNCTION {month.to.int}
+{
+	"l" change.case$ #3 text.prefix$
+	's :=
+	s "jan" = { #1 }  {
+	s "feb" = { #2 }  {
+	s "mar" = { #3 }  {
+	s "apr" = { #4 }  {
+	s "may" = { #5 }  {
+	s "jun" = { #6 }  {
+	s "jul" = { #7 }  {
+	s "aug" = { #8 }  {
+	s "sep" = { #9 }  {
+	s "oct" = { #10 } {
+	s "nov" = { #11 } {
+    s "dec" = { #12 } { #13 }  % 13 if nothing matches
+    if$}if$}if$}if$}if$}if$}if$}if$}if$}if$}if$}if$
+}
+
+
+% If there's a day in the month field (e.g. April 14th, Apr 14-17, etc)
+% Strips it out and puts the first number on the stack.
+INTEGERS { done c } 
+FUNCTION { get.day }
+{ month field.or.null 's :=
+  
+  % Strip out month name
+  #0 'done := 
+  { s "" = not done not and }
+  { s #1 #1 substring$ " " = 'done :=
+    s #2 global.max$ substring$ 's :=
+  }
+  while$
+
+  % Build up first number in t
+  "0" 't :=
+  #0 'done :=
+  { s "" = not done not and }
+  { s #1 #1 substring$ chr.to.int$ 'c :=
+    c #47 > c #58 < and
+      { t c int.to.chr$ * 't := }
+      { #1 'done := }
+    if$
+    s #2 global.max$ substring$ 's :=
+  }
+  while$
+
+  t str.to.int
+}
+
+
+% This produces a 4-digit sort string from (max) 4-digit number
+% Used to sortfy years.
+FUNCTION { sortify.fourdigit }
+{ 's :=
+  s empty$
+    { "0000" }
+    { s
+#if REVERSEDATE
+      str.to.int #9999 swap$ - int.to.str$
+#endif /* REVERSEDATE */
+    }
+  if$
+}
+
+% This produces a 2-digit sort string from a (max) 2-digit number
+% Used to sortfy months and days.  Note that this won't really work on
+% things that aren't months or days of months, as the sum can exceed
+% 100.  Should really pad things with zeros instead of this hack.
+FUNCTION { sortify.twodigit }
+{ 's :=
+  s empty$
+    { "00" }
+    { s
+#if REVERSEDATE
+      str.to.int #99 swap$ - int.to.str$
+#else  /* REVERSEDATE */
+      str.to.int #10 + int.to.str$
+#endif /* REVERSEDATE */
+    }
+  if$
+}
+
+
 FUNCTION {calc.label}
 { type$ "book" =
   type$ "inbook" =
@@ -2365,6 +2453,7 @@ FUNCTION {calc.label}
     }
   if$
   duplicate$
+
 #ifndef NAMED
   year field.or.null purify$ #-1 #2 substring$
   *
@@ -2376,23 +2465,20 @@ FUNCTION {calc.label}
   year field.or.null purify$ *  % CHANGED - pfps - 15 Feb 1989
 #endif /* NAMED */
   'label :=
-#ifndef NAMED
-  year field.or.null purify$ #-1 #4 substring$
-#if REVERSEDATE
-  str.to.int #9999 swap$ - int.to.str$
-#endif /* REVERSEDATE */
-#if SORTBYYEAR
-  swap$
-#endif /* SORTBYYEAR */
-#else /* NAMED */
+
   year field.or.null purify$
-#if REVERSEDATE
-  str.to.int #9999 swap$ - int.to.str$
-#endif /* REVERSEDATE */
+#ifdef NAMED
+  #-1 #4 substring$ 
+#endif /* NAMED */
+  sortify.fourdigit 
+  "  " *
+  month field.or.null month.to.int int.to.str$ sortify.twodigit *
+  "  " *  
+  get.day int.to.str$ sortify.twodigit *
+  "  " *
 #if SORTBYYEAR
   swap$
 #endif /* SORTBYYEAR */
-#endif /* NAMED */
   * sortify 'sort.label :=
 }
 

@@ -1,8 +1,10 @@
 #!/usr/bin/perl -w
+# -*- perl -*-
+# vim: syntax=perl
 eval 'exec /usr/bin/perl -w -S $0 ${1+"$@"}'
     if 0;
 
-$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.33 2010/11/24 11:56:16 dds Exp $';
+$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.34 2010/12/08 19:02:34 dds Exp $';
 
 #
 # Convert from bibtex to XHTML.
@@ -10,7 +12,7 @@ $version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.33 2010/11/
 # (C) Copyright 1995, 1996 David Hull.
 # (David Hull / hull@cs.uiuc.edu / http://www.uiuc.edu/ph/www/dlhull)
 #
-# (C) Copyright 2002-2007 Diomidis Spinellis
+# (C) Copyright 2002-2010 Diomidis Spinellis
 # http://www.spinellis.gr
 #
 # This program is free software.  You can redistribute it and/or modify
@@ -53,13 +55,13 @@ sub usage {
     print STDERR <<_EOF_;
 usage: $program [-a] [-b bibtex-options] [-c] [-d delim] [-D mappings]
                 [-e extended-information] [-h heading] [-i] [-k]
-		[-m macro file] [-r] [-s style] [-t] [-u] [-v]
+		[-m macro file] [-n name] [-r] [-s style] [-t] [-u] [-v]
 		sourcefile [htmlfile]
 
     -a  Write abstract to htmlfile.
     -b bibtex-options
 	Options to pass to bibtex.
-    -c	Sort chronologically, by year and then by author.
+    -c	Sort chronologically, by year, month, day, and then by author.
     -d delim
 	Specify bibliography delimiter.
     -D mappings
@@ -71,9 +73,11 @@ usage: $program [-a] [-b bibtex-options] [-c] [-d delim] [-D mappings]
 	String to use instead of default title when creating a new htmlfile.
 	If updating an existing htmlfile, this option is ignored.
     -i Use included citations
-    -k  In labeled styles append to the label of each entry its bibtex key.
+    -k  In labeled styles append to the label of each entry its BibTeX key.
     -m macro file
 	Specify an additional macro file.
+    -n name
+	Highlight the specified author name in the output.
     -r	Sort in reverse chronological order.
     -s style
 	Control style of bibliography:
@@ -249,6 +253,18 @@ papertype:
 		s/\<\!\-\- $paper:[\s\n]+\S+[\s\n]+\-\-\>/(<a href=\"$url\">${cstr}$ppaper<\/a>$pstr$sstr)/;
 	    }
 	}
+    }
+}
+
+# highlight_name(string)
+# Return name with Highlighted name if it was passed in as an option from the command line.
+#
+sub highlight_name {
+    local($name) = @_;
+    if (defined($highlighted_name) && $name =~ /$highlighted_name/) {
+        return "<strong>$name</strong>";
+    } else {
+        return $name;
     }
 }
 
@@ -695,14 +711,19 @@ sub utf_ent {
 
 
 # Prevent "identifier used only once" warnings.
-$opt_a = $opt_b = $opt_c = $opt_D = $opt_d = $opt_e = $opt_h = $opt_m = $opt_r = undef;
-$opt_i = $opt_k = $opt_s = $opt_t = $opt_v = $opt_u = undef;
+$opt_a = $opt_b = $opt_c = $opt_D = $opt_d = $opt_e = $opt_h = $opt_m =
+$opt_n = $opt_r = $opt_i = $opt_k = $opt_s = $opt_t = $opt_v = $opt_u = undef;
 
 $macrofile = '';
 
 $command_line = &html_encode(join(' ', $0, @ARGV));
 
-getopts("ab:cd:D:e:h:ikm:rs:tuv") || &usage;
+getopts("ab:cd:D:e:h:ikm:n:rs:tuv") || &usage;
+
+if (defined($opt_n)) {
+    $highlighted_name = $opt_n;
+    $highlighted_name =~ s/\s/[\\s~]+/;
+}
 
 if (defined($opt_v)) {
 	print "$version\n";
@@ -755,7 +776,7 @@ style: {
     ($opt_s eq 'paragraph') &&
 	($bstfile = "html-n",
 	 $label_style = $LABEL_PARAGRAPH,
-	 last style);	 
+	 last style);
     ($opt_s eq 'unsort') &&
 	($bstfile = "html-u",
 	 $label_style = $LABEL_NUMBERED,
@@ -776,6 +797,12 @@ if ($bstfile eq "html-u" && ($opt_r || $opt_c)) {
     print STDERR "Unsorted styles do not support a sort specification\n";
     exit(1);
 }
+
+if ($opt_k && !($label_style == $LABEL_NUMBERED || $label_style == $LABEL_DEFAULT)) {
+    print STDERR "The specified style does not support the display of BibTeX keys\n";
+    exit(1);
+}
+
 
 $bstfile .= "c" if (defined ($opt_c));
 $bstfile .= "r" if (defined ($opt_r));
@@ -854,7 +881,7 @@ qq{<?xml version="1.0" encoding="$enc"?>
 <head>
 <title>$title</title>
 <meta http-equiv="Content-type" content="text/html; charset=$enc" />} . q{
-<meta name="Generator" content="$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.33 2010/11/24 11:56:16 dds Exp $" />
+<meta name="Generator" content="$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.34 2010/12/08 19:02:34 dds Exp $" />
 </head>
 <body>
 }
@@ -1144,6 +1171,9 @@ while (<BBLFILE>) {
     s/\\mathcal(\001\d+)\{([^\001]*)\1\}/<i>$2<\/i>/g;# \mathcal{text} -> <I>text</I>
     s/\\mathit(\001\d+)\{([^\001]*)\1\}/<i>$2<\/i>/g;	# \mathit{text} -> <I>text</I>
     s/\\mathtt(\001\d+)\{([^\001]*)\1\}/<tt>$2<\/tt>/g;# \mathtt{text} -> <TT>text</TT>
+
+    # Custom highlighting for the -n option.
+    s/\\bibxhtmlname(\001\d+)\{(.*)\1\}/&highlight_name($2)/ges;
 
     # {\boldmath $mathstuff$} -> <B>mathstuff</B>
 #    s/(\001\d+)\{\s*\\boldmath ?([^A-Za-z\{\}][^\{\}]*)\}/<b>$1<\/b>/g;
