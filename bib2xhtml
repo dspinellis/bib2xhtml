@@ -4,7 +4,7 @@
 eval 'exec /usr/bin/perl -w -S $0 ${1+"$@"}'
     if 0;
 
-$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.34 2010/12/08 19:02:34 dds Exp $';
+$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.35 2010/12/08 19:38:16 dds Exp $';
 
 #
 # Convert from bibtex to XHTML.
@@ -285,25 +285,25 @@ sub html_encode {
 sub html_ent {
 	# Accents.
 	s/\\i\b/i/g;					# dotless i.
-	s/\\\'(\001\d+)\{([AEIOUaeiou])\1\}/&$2acute;/g;	# acute accent \'{x}
+	s/\\\'(\001\d+)\{([AEIOUaeiou])\1\}/&$2acute;/gs;	# acute accent \'{x}
 	s/\\\'([AEIOUaeiou])/&$1acute;/g;			# acute accent \'x
-	s/\\\`(\001\d+)\{([AEIOUaeiou])\1\}/&$2grave;/g;	# grave accent \`{x}
+	s/\\\`(\001\d+)\{([AEIOUaeiou])\1\}/&$2grave;/gs;	# grave accent \`{x}
 	s/\\\`([AEIOUaeiou])/&$1grave;/g;			# grave accent \`x
-	s/\\\"(\001\d+)\{([AEIOUaeiouy])\1\}/&$2uml;/g;	# umlaut \"{x}
+	s/\\\"(\001\d+)\{([AEIOUaeiouy])\1\}/&$2uml;/gs;	# umlaut \"{x}
 	s/\\\"([AEIOUaeiouy])/&$1uml;/g;			# umlaut \"x
-	s/\\\~(\001\d+)\{([ANOano])\1\}/&$2tilde;/g;	# tilde \~{x}
+	s/\\\~(\001\d+)\{([ANOano])\1\}/&$2tilde;/gs;	# tilde \~{x}
 	s/\\\~([ANOano])/&$1tilde;/g;			# tilde \~x
-	s/\\\^(\001\d+)\{([AEIOUaeiou])\1\}/&$2circ;/g;	# circumflex \^{x}
+	s/\\\^(\001\d+)\{([AEIOUaeiou])\1\}/&$2circ;/gs;	# circumflex \^{x}
 	s/\\\^([AEIOUaeiou])/&$1circ;/g;		# circumflex \^x
-	s/\\c(\001\d+)\{([Cc])\1\}/&$2cedil;/g;		# cedilla \c{x}
+	s/\\c(\001\d+)\{([Cc])\1\}/&$2cedil;/gs;		# cedilla \c{x}
 	# The following accents have no HTML equivalent.
 	# (This list is still not complete.)
-	s/\\u(\001\d+)\{(.)\1\}/$2/g;			# breve accent \u{x}
-	s/\\v(\001\d+)\{(.)\1\}/$2/g;			# hacek accent \v{x}
+	s/\\u(\001\d+)\{(.)\1\}/$2/gs;			# breve accent \u{x}
+	s/\\v(\001\d+)\{(.)\1\}/$2/gs;			# hacek accent \v{x}
 	s/\\([lL])\b/$1/g;					# slashed l
-	s/\\\=(\001\d+)\{(.)\1\}/$2/g;			# macron \={x}
+	s/\\\=(\001\d+)\{(.)\1\}/$2/gs;			# macron \={x}
 	s/\\\=(.)/$1/g;					# macron accent \=x
-	s/\\\.(\001\d+)\{(.)\1\}/$2/g;			# dot \.{x}
+	s/\\\.(\001\d+)\{(.)\1\}/$2/gs;			# dot \.{x}
 	s/\\\.(.)/$1/g;					# dot accent \.x
 
 	# Other special characters.
@@ -366,31 +366,31 @@ sub utf_ent {
 	s/\\i\b/ı/g;					# dotless i.
 
 	# acute accent \'{x}
-	s/\\\'(\001\d+)\{A\1\}/Á/g;
-	s/\\\'(\001\d+)\{C\1\}/Ć/g;
-	s/\\\'(\001\d+)\{E\1\}/É/g;
-	s/\\\'(\001\d+)\{I\1\}/Í/g;
-	s/\\\'(\001\d+)\{L\1\}/Ĺ/g;
-	s/\\\'(\001\d+)\{N\1\}/Ń/g;
-	s/\\\'(\001\d+)\{O\1\}/Ó/g;
-	s/\\\'(\001\d+)\{R\1\}/Ŕ/g;
-	s/\\\'(\001\d+)\{S\1\}/Ś/g;
-	s/\\\'(\001\d+)\{U\1\}/Ú/g;
-	s/\\\'(\001\d+)\{Y\1\}/Ý/g;
-	s/\\\'(\001\d+)\{Z\1\}/Ź/g;
-	s/\\\'(\001\d+)\{a\1\}/á/g;
-	s/\\\'(\001\d+)\{c\1\}/ć/g;
-	s/\\\'(\001\d+)\{e\1\}/é/g;
-	s/\\\'(\001\d+)\{ı\1\}/í/g;
-	s/\\\'(\001\d+)\{i\1\}/í/g;
-	s/\\\'(\001\d+)\{l\1\}/ĺ/g;
-	s/\\\'(\001\d+)\{n\1\}/ń/g;
-	s/\\\'(\001\d+)\{o\1\}/ó/g;
-	s/\\\'(\001\d+)\{r\1\}/ŕ/g;
-	s/\\\'(\001\d+)\{s\1\}/ś/g;
-	s/\\\'(\001\d+)\{u\1\}/ú/g;
-	s/\\\'(\001\d+)\{y\1\}/ý/g;
-	s/\\\'(\001\d+)\{z\1\}/ź/g;
+	s/\\\'(\001\d+)\{A\1\}/Á/gs;
+	s/\\\'(\001\d+)\{C\1\}/Ć/gs;
+	s/\\\'(\001\d+)\{E\1\}/É/gs;
+	s/\\\'(\001\d+)\{I\1\}/Í/gs;
+	s/\\\'(\001\d+)\{L\1\}/Ĺ/gs;
+	s/\\\'(\001\d+)\{N\1\}/Ń/gs;
+	s/\\\'(\001\d+)\{O\1\}/Ó/gs;
+	s/\\\'(\001\d+)\{R\1\}/Ŕ/gs;
+	s/\\\'(\001\d+)\{S\1\}/Ś/gs;
+	s/\\\'(\001\d+)\{U\1\}/Ú/gs;
+	s/\\\'(\001\d+)\{Y\1\}/Ý/gs;
+	s/\\\'(\001\d+)\{Z\1\}/Ź/gs;
+	s/\\\'(\001\d+)\{a\1\}/á/gs;
+	s/\\\'(\001\d+)\{c\1\}/ć/gs;
+	s/\\\'(\001\d+)\{e\1\}/é/gs;
+	s/\\\'(\001\d+)\{ı\1\}/í/gs;
+	s/\\\'(\001\d+)\{i\1\}/í/gs;
+	s/\\\'(\001\d+)\{l\1\}/ĺ/gs;
+	s/\\\'(\001\d+)\{n\1\}/ń/gs;
+	s/\\\'(\001\d+)\{o\1\}/ó/gs;
+	s/\\\'(\001\d+)\{r\1\}/ŕ/gs;
+	s/\\\'(\001\d+)\{s\1\}/ś/gs;
+	s/\\\'(\001\d+)\{u\1\}/ú/gs;
+	s/\\\'(\001\d+)\{y\1\}/ý/gs;
+	s/\\\'(\001\d+)\{z\1\}/ź/gs;
 
 	# acute accent \'x
 	s/\\\'A/Á/g;
@@ -420,16 +420,16 @@ sub utf_ent {
 	s/\\\'z/ź/g;
 
 	# grave accent \`{x}
-	s/\\\`(\001\d+)\{A\1\}/À/g;
-	s/\\\`(\001\d+)\{E\1\}/È/g;
-	s/\\\`(\001\d+)\{I\1\}/Ì/g;
-	s/\\\`(\001\d+)\{O\1\}/Ò/g;
-	s/\\\`(\001\d+)\{U\1\}/Ù/g;
-	s/\\\`(\001\d+)\{a\1\}/à/g;
-	s/\\\`(\001\d+)\{e\1\}/è/g;
-	s/\\\`(\001\d+)\{i\1\}/ì/g;
-	s/\\\`(\001\d+)\{o\1\}/ò/g;
-	s/\\\`(\001\d+)\{u\1\}/ù/g;
+	s/\\\`(\001\d+)\{A\1\}/À/gs;
+	s/\\\`(\001\d+)\{E\1\}/È/gs;
+	s/\\\`(\001\d+)\{I\1\}/Ì/gs;
+	s/\\\`(\001\d+)\{O\1\}/Ò/gs;
+	s/\\\`(\001\d+)\{U\1\}/Ù/gs;
+	s/\\\`(\001\d+)\{a\1\}/à/gs;
+	s/\\\`(\001\d+)\{e\1\}/è/gs;
+	s/\\\`(\001\d+)\{i\1\}/ì/gs;
+	s/\\\`(\001\d+)\{o\1\}/ò/gs;
+	s/\\\`(\001\d+)\{u\1\}/ù/gs;
 
 	# grave accent \`x
 	s/\\\`A/À/g;
@@ -444,18 +444,18 @@ sub utf_ent {
 	s/\\\`u/ù/g;
 
 	# umlaut \"{x}
-	s/\\\"(\001\d+)\{A\1\}/Ä/g;
-	s/\\\"(\001\d+)\{E\1\}/Ë/g;
-	s/\\\"(\001\d+)\{I\1\}/Ï/g;
-	s/\\\"(\001\d+)\{O\1\}/Ö/g;
-	s/\\\"(\001\d+)\{U\1\}/Ü/g;
-	s/\\\"(\001\d+)\{Y\1\}/Ÿ/g;
-	s/\\\"(\001\d+)\{a\1\}/ä/g;
-	s/\\\"(\001\d+)\{e\1\}/ë/g;
-	s/\\\"(\001\d+)\{i\1\}/ï/g;
-	s/\\\"(\001\d+)\{o\1\}/ö/g;
-	s/\\\"(\001\d+)\{u\1\}/ü/g;
-	s/\\\"(\001\d+)\{y\1\}/ÿ/g;
+	s/\\\"(\001\d+)\{A\1\}/Ä/gs;
+	s/\\\"(\001\d+)\{E\1\}/Ë/gs;
+	s/\\\"(\001\d+)\{I\1\}/Ï/gs;
+	s/\\\"(\001\d+)\{O\1\}/Ö/gs;
+	s/\\\"(\001\d+)\{U\1\}/Ü/gs;
+	s/\\\"(\001\d+)\{Y\1\}/Ÿ/gs;
+	s/\\\"(\001\d+)\{a\1\}/ä/gs;
+	s/\\\"(\001\d+)\{e\1\}/ë/gs;
+	s/\\\"(\001\d+)\{i\1\}/ï/gs;
+	s/\\\"(\001\d+)\{o\1\}/ö/gs;
+	s/\\\"(\001\d+)\{u\1\}/ü/gs;
+	s/\\\"(\001\d+)\{y\1\}/ÿ/gs;
 
 	# umlaut \"x
 	s/\\\"A/Ä/g;
@@ -472,12 +472,12 @@ sub utf_ent {
 	s/\\\"y/ÿ/g;
 
 	# tilde \~{x}
-	s/\\\~(\001\d+)\{A\1\}/Ã/g;
-	s/\\\~(\001\d+)\{N\1\}/Ñ/g;
-	s/\\\~(\001\d+)\{O\1\}/Õ/g;
-	s/\\\~(\001\d+)\{a\1\}/ã/g;
-	s/\\\~(\001\d+)\{n\1\}/ñ/g;
-	s/\\\~(\001\d+)\{o\1\}/õ/g;
+	s/\\\~(\001\d+)\{A\1\}/Ã/gs;
+	s/\\\~(\001\d+)\{N\1\}/Ñ/gs;
+	s/\\\~(\001\d+)\{O\1\}/Õ/gs;
+	s/\\\~(\001\d+)\{a\1\}/ã/gs;
+	s/\\\~(\001\d+)\{n\1\}/ñ/gs;
+	s/\\\~(\001\d+)\{o\1\}/õ/gs;
 
 	# tilde \~x
 	s/\\\~A/Ã/g;
@@ -488,26 +488,26 @@ sub utf_ent {
 	s/\\\~O/õ/g;
 
 	# circumflex \^{x}
-	s/\\\^(\001\d+)\{A\1\}/Â/g;
-	s/\\\^(\001\d+)\{E\1\}/Ê/g;
-	s/\\\^(\001\d+)\{G\1\}/Ĝ/g;
-	s/\\\^(\001\d+)\{H\1\}/Ĥ/g;
-	s/\\\^(\001\d+)\{I\1\}/Î/g;
-	s/\\\^(\001\d+)\{J\1\}/Ĵ/g;
-	s/\\\^(\001\d+)\{O\1\}/Ô/g;
-	s/\\\^(\001\d+)\{U\1\}/Û/g;
-	s/\\\^(\001\d+)\{W\1\}/Ŵ/g;
-	s/\\\^(\001\d+)\{Y\1\}/Ŷ/g;
-	s/\\\^(\001\d+)\{a\1\}/â/g;
-	s/\\\^(\001\d+)\{e\1\}/ê/g;
-	s/\\\^(\001\d+)\{g\1\}/ĝ/g;
-	s/\\\^(\001\d+)\{h\1\}/ĥ/g;
-	s/\\\^(\001\d+)\{i\1\}/î/g;
-	s/\\\^(\001\d+)\{j\1\}/ĵ/g;
-	s/\\\^(\001\d+)\{o\1\}/ô/g;
-	s/\\\^(\001\d+)\{u\1\}/û/g;
-	s/\\\^(\001\d+)\{w\1\}/ŵ/g;
-	s/\\\^(\001\d+)\{y\1\}/ŷ/g;
+	s/\\\^(\001\d+)\{A\1\}/Â/gs;
+	s/\\\^(\001\d+)\{E\1\}/Ê/gs;
+	s/\\\^(\001\d+)\{G\1\}/Ĝ/gs;
+	s/\\\^(\001\d+)\{H\1\}/Ĥ/gs;
+	s/\\\^(\001\d+)\{I\1\}/Î/gs;
+	s/\\\^(\001\d+)\{J\1\}/Ĵ/gs;
+	s/\\\^(\001\d+)\{O\1\}/Ô/gs;
+	s/\\\^(\001\d+)\{U\1\}/Û/gs;
+	s/\\\^(\001\d+)\{W\1\}/Ŵ/gs;
+	s/\\\^(\001\d+)\{Y\1\}/Ŷ/gs;
+	s/\\\^(\001\d+)\{a\1\}/â/gs;
+	s/\\\^(\001\d+)\{e\1\}/ê/gs;
+	s/\\\^(\001\d+)\{g\1\}/ĝ/gs;
+	s/\\\^(\001\d+)\{h\1\}/ĥ/gs;
+	s/\\\^(\001\d+)\{i\1\}/î/gs;
+	s/\\\^(\001\d+)\{j\1\}/ĵ/gs;
+	s/\\\^(\001\d+)\{o\1\}/ô/gs;
+	s/\\\^(\001\d+)\{u\1\}/û/gs;
+	s/\\\^(\001\d+)\{w\1\}/ŵ/gs;
+	s/\\\^(\001\d+)\{y\1\}/ŷ/gs;
 
 	# circumflex \^x
 	s/\\\^A/Â/g;
@@ -532,66 +532,66 @@ sub utf_ent {
 	s/\\\^y/ŷ/g;
 
 	# cedilla \c{x}
-	s/\\c(\001\d+)\{C\1\}/Ç/g;
-	s/\\c(\001\d+)\{c\1\}/ç/g;
-	s/\\c(\001\d+)\{K\1\}/Ķ/g;
-	s/\\c(\001\d+)\{k\1\}/ķ/g;
-	s/\\c(\001\d+)\{L\1\}/Ļ/g;
-	s/\\c(\001\d+)\{l\1\}/ļ/g;
-	s/\\c(\001\d+)\{N\1\}/Ņ/g;
-	s/\\c(\001\d+)\{n\1\}/ņ/g;
-	s/\\c(\001\d+)\{N\1\}/Ŗ/g;
-	s/\\c(\001\d+)\{n\1\}/ŗ/g;
+	s/\\c(\001\d+)\{C\1\}/Ç/gs;
+	s/\\c(\001\d+)\{c\1\}/ç/gs;
+	s/\\c(\001\d+)\{K\1\}/Ķ/gs;
+	s/\\c(\001\d+)\{k\1\}/ķ/gs;
+	s/\\c(\001\d+)\{L\1\}/Ļ/gs;
+	s/\\c(\001\d+)\{l\1\}/ļ/gs;
+	s/\\c(\001\d+)\{N\1\}/Ņ/gs;
+	s/\\c(\001\d+)\{n\1\}/ņ/gs;
+	s/\\c(\001\d+)\{N\1\}/Ŗ/gs;
+	s/\\c(\001\d+)\{n\1\}/ŗ/gs;
 
 	# double acute accent \H{x}
-	s/\\H(\001\d+)\{O\1\}/Ő/g;
-	s/\\H(\001\d+)\{U\1\}/Ű/g;
-	s/\\H(\001\d+)\{o\1\}/ő/g;
-	s/\\H(\001\d+)\{u\1\}/ű/g;
+	s/\\H(\001\d+)\{O\1\}/Ő/gs;
+	s/\\H(\001\d+)\{U\1\}/Ű/gs;
+	s/\\H(\001\d+)\{o\1\}/ő/gs;
+	s/\\H(\001\d+)\{u\1\}/ű/gs;
 
 	# breve accent \u{x}
-	s/\\u(\001\d+)\{A\1\}/Ă/g;
-	s/\\u(\001\d+)\{E\1\}/Ĕ/g;
-	s/\\u(\001\d+)\{G\1\}/Ğ/g;
-	s/\\u(\001\d+)\{I\1\}/Ĭ/g;
-	s/\\u(\001\d+)\{O\1\}/Ŏ/g;
-	s/\\u(\001\d+)\{U\1\}/Ŭ/g;
-	s/\\u(\001\d+)\{a\1\}/ă/g;
-	s/\\u(\001\d+)\{e\1\}/ĕ/g;
-	s/\\u(\001\d+)\{g\1\}/ğ/g;
-	s/\\u(\001\d+)\{i\1\}/ĭ/g;
-	s/\\u(\001\d+)\{o\1\}/ŏ/g;
-	s/\\u(\001\d+)\{u\1\}/ŭ/g;
+	s/\\u(\001\d+)\{A\1\}/Ă/gs;
+	s/\\u(\001\d+)\{E\1\}/Ĕ/gs;
+	s/\\u(\001\d+)\{G\1\}/Ğ/gs;
+	s/\\u(\001\d+)\{I\1\}/Ĭ/gs;
+	s/\\u(\001\d+)\{O\1\}/Ŏ/gs;
+	s/\\u(\001\d+)\{U\1\}/Ŭ/gs;
+	s/\\u(\001\d+)\{a\1\}/ă/gs;
+	s/\\u(\001\d+)\{e\1\}/ĕ/gs;
+	s/\\u(\001\d+)\{g\1\}/ğ/gs;
+	s/\\u(\001\d+)\{i\1\}/ĭ/gs;
+	s/\\u(\001\d+)\{o\1\}/ŏ/gs;
+	s/\\u(\001\d+)\{u\1\}/ŭ/gs;
 
 	# hacek/caron? accent \v{x}
-	s/\\v(\001\d+)\{C\1\}/Č/g;
-	s/\\v(\001\d+)\{D\1\}/Ď/g;
-	s/\\v(\001\d+)\{E\1\}/Ě/g;
-	s/\\v(\001\d+)\{L\1\}/Ľ/g;
-	s/\\v(\001\d+)\{N\1\}/Ň/g;
-	s/\\v(\001\d+)\{R\1\}/Ř/g;
-	s/\\v(\001\d+)\{S\1\}/Š/g;
-	s/\\v(\001\d+)\{T\1\}/Ť/g;
-	s/\\v(\001\d+)\{Z\1\}/Ž/g;
-	s/\\v(\001\d+)\{c\1\}/č/g;
-	s/\\v(\001\d+)\{d\1\}/ď/g;
-	s/\\v(\001\d+)\{e\1\}/ě/g;
-	s/\\v(\001\d+)\{l\1\}/ľ/g;
-	s/\\v(\001\d+)\{n\1\}/ň/g;
-	s/\\v(\001\d+)\{r\1\}/ř/g;
-	s/\\v(\001\d+)\{s\1\}/š/g;
-	s/\\v(\001\d+)\{t\1\}/ť/g;
-	s/\\v(\001\d+)\{z\1\}/ž/g;
+	s/\\v(\001\d+)\{C\1\}/Č/gs;
+	s/\\v(\001\d+)\{D\1\}/Ď/gs;
+	s/\\v(\001\d+)\{E\1\}/Ě/gs;
+	s/\\v(\001\d+)\{L\1\}/Ľ/gs;
+	s/\\v(\001\d+)\{N\1\}/Ň/gs;
+	s/\\v(\001\d+)\{R\1\}/Ř/gs;
+	s/\\v(\001\d+)\{S\1\}/Š/gs;
+	s/\\v(\001\d+)\{T\1\}/Ť/gs;
+	s/\\v(\001\d+)\{Z\1\}/Ž/gs;
+	s/\\v(\001\d+)\{c\1\}/č/gs;
+	s/\\v(\001\d+)\{d\1\}/ď/gs;
+	s/\\v(\001\d+)\{e\1\}/ě/gs;
+	s/\\v(\001\d+)\{l\1\}/ľ/gs;
+	s/\\v(\001\d+)\{n\1\}/ň/gs;
+	s/\\v(\001\d+)\{r\1\}/ř/gs;
+	s/\\v(\001\d+)\{s\1\}/š/gs;
+	s/\\v(\001\d+)\{t\1\}/ť/gs;
+	s/\\v(\001\d+)\{z\1\}/ž/gs;
 
 	# macron \={x}
-	s/\\\=(\001\d+)\{A\1\}/Ā/g;
-	s/\\\=(\001\d+)\{E\1\}/Ē/g;
-	s/\\\=(\001\d+)\{O\1\}/Ō/g;
-	s/\\\=(\001\d+)\{U\1\}/Ū/g;
-	s/\\\=(\001\d+)\{a\1\}/ā/g;
-	s/\\\=(\001\d+)\{e\1\}/ē/g;
-	s/\\\=(\001\d+)\{o\1\}/ō/g;
-	s/\\\=(\001\d+)\{u\1\}/ū/g;
+	s/\\\=(\001\d+)\{A\1\}/Ā/gs;
+	s/\\\=(\001\d+)\{E\1\}/Ē/gs;
+	s/\\\=(\001\d+)\{O\1\}/Ō/gs;
+	s/\\\=(\001\d+)\{U\1\}/Ū/gs;
+	s/\\\=(\001\d+)\{a\1\}/ā/gs;
+	s/\\\=(\001\d+)\{e\1\}/ē/gs;
+	s/\\\=(\001\d+)\{o\1\}/ō/gs;
+	s/\\\=(\001\d+)\{u\1\}/ū/gs;
 
 	# macron \=x
 	s/\\\=A/Ā/g;
@@ -604,12 +604,12 @@ sub utf_ent {
 	s/\\\=u/ū/g;
 
 	# dot \.{x}
-	s/\\\.(\001\d+)\{G\1\}/Ġ/g;
-	s/\\\.(\001\d+)\{L\1\}/Ŀ/g;
-	s/\\\.(\001\d+)\{Z\1\}/Ż/g;
-	s/\\\.(\001\d+)\{g\1\}/ġ/g;
-	s/\\\.(\001\d+)\{l\1\}/ŀ/g;
-	s/\\\.(\001\d+)\{z\1\}/ż/g;
+	s/\\\.(\001\d+)\{G\1\}/Ġ/gs;
+	s/\\\.(\001\d+)\{L\1\}/Ŀ/gs;
+	s/\\\.(\001\d+)\{Z\1\}/Ż/gs;
+	s/\\\.(\001\d+)\{g\1\}/ġ/gs;
+	s/\\\.(\001\d+)\{l\1\}/ŀ/gs;
+	s/\\\.(\001\d+)\{z\1\}/ż/gs;
 
 	# dot \.x
 	s/\\\.G/Ġ/g;
@@ -881,7 +881,7 @@ qq{<?xml version="1.0" encoding="$enc"?>
 <head>
 <title>$title</title>
 <meta http-equiv="Content-type" content="text/html; charset=$enc" />} . q{
-<meta name="Generator" content="$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.34 2010/12/08 19:02:34 dds Exp $" />
+<meta name="Generator" content="$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.35 2010/12/08 19:38:16 dds Exp $" />
 </head>
 <body>
 }
@@ -1113,7 +1113,7 @@ while (<BBLFILE>) {
 
     # Handle the latex2html commands \htmladdnormallink{text}{url}
     # and \htmladdnormallinkfoot{text}{url}.
-    s/\\htmladdnormallink(foot)?(\001\d+)\{([^\001]+)\2\}(\001\d+)\{([^\001]+)\4\}/<a href="$5">$3<\/a>/g;
+    s/\\htmladdnormallink(foot)?(\001\d+)\{([^\001]+)\2\}(\001\d+)\{([^\001]+)\4\}/<a href="$5">$3<\/a>/gs;
 
     s/\&amp;/\005/g;			# Protect original &amp; sequences
     s/\\?&/&amp;/g;			# \& -> &amp; and & -> &amp;
@@ -1140,54 +1140,54 @@ while (<BBLFILE>) {
 
     s/\\par\b/<p \/>/g;
 
-    s/\\url(\001\d+)\{([^\001]*)\1\}/<a href="$2">$2<\/a>/g; #\url{text} -> <a href"text">text</a>
-    s/\\href(\001\d+)\{([^\001]*)\1\}(\001\d+)\{([^\001]*)\3\}/<a href="$2">$4<\/a>/g; #\href{text} -> <a href"link">text</a>
-    s/\\href(\001\d+)\{([^\001]*)\1\}/<a href="$2">$2<\/a>/g; #\href{text} -> <a href"text">text</a>
+    s/\\url(\001\d+)\{(.*)\1\}/<a href="$2">$2<\/a>/gs; #\url{text} -> <a href"text">text</a>
+    s/\\href(\001\d+)\{(.*)\1\}(\001\d+)\{([^\001]*)\3\}/<a href="$2">$4<\/a>/gs; #\href{text} -> <a href"link">text</a>
+    s/\\href(\001\d+)\{(.*)\1\}/<a href="$2">$2<\/a>/gs; #\href{text} -> <a href"text">text</a>
 
 
     # There's no way to easily handle \rm and \textrm because
     # HTML has no tag to convert back to plain text.  Since it's very
     # difficult to do the right thing, we do the wrong thing, and just
     # remove them.
-    s/(\001\d+)\{\\rm\s+([^\001]*)\1\}/$2/g;		# {\rm text} -> text
-    s/\\textrm(\001\d+)\{([^\001]*)\1\}/$2/g;		# \textrm{text} -> text
+    s/(\001\d+)\{\\rm\s+(.*)\1\}/$2/gs;		# {\rm text} -> text
+    s/\\textrm(\001\d+)\{(.*)\1\}/$2/gs;		# \textrm{text} -> text
 
     # This doesn't create correct HTML, because HTML doesn't allow nested
     # character style tags.  Oh well.
-    s/(\001\d+)\{\\em\s+([^\001]*)\1\}/<em>$2<\/em>/g; # {\em text} -> <EM>text</EM>
-    s/(\001\d+)\{\\it\s+([^\001]*)\1\}/<i>$2<\/i>/g;   # {\it text} -> <I>text</I>
-    s/(\001\d+)\{\\bf\s+([^\001]*)\1\}/<b>$2<\/b>/g;   # {\bf text} -> <B>text</B>
-    s/(\001\d+)\{\\tt\s+([^\001]*)\1\}/<tt>$2<\/tt>/g; # {\tt text} -> <TT>text</TT>
+    s/(\001\d+)\{\\em\s+(.*)\1\}/<em>$2<\/em>/gs; # {\em text} -> <EM>text</EM>
+    s/(\001\d+)\{\\it\s+(.*)\1\}/<i>$2<\/i>/gs;   # {\it text} -> <I>text</I>
+    s/(\001\d+)\{\\bf\s+(.*)\1\}/<b>$2<\/b>/gs;   # {\bf text} -> <B>text</B>
+    s/(\001\d+)\{\\tt\s+(.*)\1\}/<tt>$2<\/tt>/gs; # {\tt text} -> <TT>text</TT>
 
-    s/\\emph(\001\d+)\{([^\001]*)\1\}/<em>$2<\/em>/g;  # \emph{text} -> <EM>text</EM>
-    s/\\textit(\001\d+)\{([^\001]*)\1\}/<i>$2<\/i>/g;  # \textit{text} -> <I>text</I>
-    s/\\textbf(\001\d+)\{([^\001]*)\1\}/<b>$2<\/b>/g;  # \textbf{text} -> <B>text</B>
-    s/\\texttt(\001\d+)\{([^\001]*)\1\}/<tt>$2<\/tt>/g;# \textit{text} -> <TT>text</TT>
+    s/\\emph(\001\d+)\{(.*)\1\}/<em>$2<\/em>/gs;  # \emph{text} -> <EM>text</EM>
+    s/\\textit(\001\d+)\{(.*)\1\}/<i>$2<\/i>/gs;  # \textit{text} -> <I>text</I>
+    s/\\textbf(\001\d+)\{(.*)\1\}/<b>$2<\/b>/gs;  # \textbf{text} -> <B>text</B>
+    s/\\texttt(\001\d+)\{(.*)\1\}/<tt>$2<\/tt>/gs;# \textit{text} -> <TT>text</TT>
 
-    s/\\mathrm(\001\d+)\{([^\001]*)\1\}/$2/g;		# \mathrm{text} -> text
-    s/\\mathnormal(\001\d+)\{([^\001]*)\1\}/$2/g;	# \mathnormal{text} -> text
-    s/\\mathsf(\001\d+)\{([^\001]*)\1\}/$2/g;		# \mathsf{text} -> text
-    s/\\mathbf(\001\d+)\{([^\001]*)\1\}/<b>$2<\/b>/g;	# \mathbf{text} -> <B>text</B>
-    s/\\mathcal(\001\d+)\{([^\001]*)\1\}/<i>$2<\/i>/g;# \mathcal{text} -> <I>text</I>
-    s/\\mathit(\001\d+)\{([^\001]*)\1\}/<i>$2<\/i>/g;	# \mathit{text} -> <I>text</I>
-    s/\\mathtt(\001\d+)\{([^\001]*)\1\}/<tt>$2<\/tt>/g;# \mathtt{text} -> <TT>text</TT>
+    s/\\mathrm(\001\d+)\{(.*)\1\}/$2/gs;		# \mathrm{text} -> text
+    s/\\mathnormal(\001\d+)\{(.*)\1\}/$2/gs;	# \mathnormal{text} -> text
+    s/\\mathsf(\001\d+)\{(.*)\1\}/$2/gs;		# \mathsf{text} -> text
+    s/\\mathbf(\001\d+)\{(.*)\1\}/<b>$2<\/b>/gs;	# \mathbf{text} -> <B>text</B>
+    s/\\mathcal(\001\d+)\{(.*)\1\}/<i>$2<\/i>/gs;# \mathcal{text} -> <I>text</I>
+    s/\\mathit(\001\d+)\{(.*)\1\}/<i>$2<\/i>/gs;	# \mathit{text} -> <I>text</I>
+    s/\\mathtt(\001\d+)\{(.*)\1\}/<tt>$2<\/tt>/gs;# \mathtt{text} -> <TT>text</TT>
 
     # Custom highlighting for the -n option.
     s/\\bibxhtmlname(\001\d+)\{(.*)\1\}/&highlight_name($2)/ges;
 
     # {\boldmath $mathstuff$} -> <B>mathstuff</B>
-#    s/(\001\d+)\{\s*\\boldmath ?([^A-Za-z\{\}][^\{\}]*)\}/<b>$1<\/b>/g;
+#    s/(\001\d+)\{\s*\\boldmath ?([^A-Za-z\{\}][^\{\}]*)\}/<b>$1<\/b>/gs;
 
 
 sub domath {
     local($t) = @_;
-    $t =~ s/\^(\001\d+)\{\\circ\1\}/\&\#176;/g;		# ^{\circ}->degree
+    $t =~ s/\^(\001\d+)\{\\circ\1\}/\&\#176;/gs;		# ^{\circ}->degree
     $t =~ s/\^\\circ/\&\#176;/g;				# ^\circ->degree
-#   $t =~ s/\^(\001\d+)\{([^\001]*)\1\}/<sup>$2<\/sup>/g;	# ^{x}
-    $t =~ s/\^(\001\d+)\{(.*)\1\}/<sup>$2<\/sup>/g;	# ^{x}
+#   $t =~ s/\^(\001\d+)\{(.*)\1\}/<sup>$2<\/sup>/gs;	# ^{x}
+    $t =~ s/\^(\001\d+)\{(.*)\1\}/<sup>$2<\/sup>/gs;	# ^{x}
     $t =~ s/\^(\w)/<sup>$1<\/sup>/g;			# ^x
-#   $t =~ s/\_(\001\d+)\{([^\001]*)\1\}/<sub>$2<\/sub>/g;	# _{x}
-    $t =~ s/\_(\001\d+)\{(.*)\1\}/<sub>$2<\/sub>/g;	# _{x}
+#   $t =~ s/\_(\001\d+)\{(.*)\1\}/<sub>$2<\/sub>/gs;	# _{x}
+    $t =~ s/\_(\001\d+)\{(.*)\1\}/<sub>$2<\/sub>/gs;	# _{x}
     $t =~ s/\_(\w)/<sub>$1<\/sub>/g;			# _x
     $t;
 }
@@ -1197,7 +1197,7 @@ sub domath {
     s/(\\\((([^\\]|\\[^\(\)])+)\\\))/&domath($2)/ge;	# \( ... \)
 
     # Remove \mbox.
-    s/\\mbox(\001\d+)\{([^\001]*)\1\}/$2/g;		# \mbox{x}
+    s/\\mbox(\001\d+)\{(.*)\1\}/$2/gs;		# \mbox{x}
 
     # Escape and protect tildes in URLs
     # For some reason /g doesn't work
@@ -1244,7 +1244,7 @@ sub domath {
     &doPaperLinks;
 
     # Get rid of { } ids, and put protected { } back.
-    s/\001\d+[\{\}]//g;
+    s/\001\d+[\{\}]//gs;
     tr/\002\003\004/{}$/;
 
     print HTMLFILE $_;
