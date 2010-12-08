@@ -1,5 +1,5 @@
 #
-# $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\Makefile,v 1.20 2010/12/08 10:47:38 dds Exp $
+# $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\Makefile,v 1.21 2010/12/08 19:03:36 dds Exp $
 #
 
 NAME=bib2xhtml
@@ -13,9 +13,6 @@ DOCFILES=$(NAME).html $(NAME).txt $(NAME).pdf index.html static.html showeg.js $
 EGFILES=$(wildcard eg/*.html)
 FILES=README COPYING $(NAME) ${BSTFILES} $(DOCFILES) $(EGFILES) bibsearch Makefile $(NAME).man ChangeLog html-btxbst.doc gen-bst
 VERSION=$(shell ident $(NAME) | awk '/Id:/{print $$3; exit 0} ')
-
-UXHOST=spiti
-SSH=plink
 
 default: $(DOCFILES) $(EGFILES) ${BSTFILES} syntax
 
@@ -40,16 +37,16 @@ $(NAME)-$(VERSION).tar.gz: $(FILES)
 	cmd /c "rd /s/q $(NAME)-$(VERSION)"
 
 $(NAME).ps: $(NAME).man
-	$(SSH) $(UXHOST) groff -man -Tps <$? > $@
+	groff -man -Tps <$? > $@
 
 $(NAME).txt: $(NAME).man
-	$(SSH) $(UXHOST) groff -man -Tascii <$? | $(SSH) $(UXHOST) col -b > $@
+	groff -man -Tascii <$? | col -b > $@
 
 $(NAME).pdf: $(NAME).ps
 	cmd /c ps2pdf $? $@
 
 $(NAME).html: $(NAME).man
-	$(SSH) $(UXHOST) groff -mhtml -Thtml -man <$? | sed -e 's/&minus;/-/g;s/&bull;/\&#8226;/g' >$@
+	groff -mhtml -Thtml -man <$? | sed -e 's/&minus;/-/g;s/&bull;/\&#8226;/g' >$@
 
 ${BSTFILES} : html-btxbst.doc
 	perl gen-bst
@@ -64,6 +61,9 @@ install:
 	    install -m 644 $$i $(BIBTEXDIR);\
 	done
 
+# Create example files
+# Some nonsensical option combinations cause bib2xhtml to exit with an error
+# Hence the || true part
 example: Makefile bib2xhtml
 	-rm -f eg/*.html
 	cp v23n5.pdf eg
@@ -80,7 +80,7 @@ example: Makefile bib2xhtml
 					do \
 						for k in '' -k  ; \
 						do \
-							perl bib2xhtml -s $$style $$n $$u $$c $$r $$k -h "Example: bib2xhtml -s $$style $$n $$u $$c $$r $$k" example.bib eg/$${style}$${nopt}$${u}$${c}$${r}$${k}.html ;\
+							perl bib2xhtml -s $$style $$n $$u $$c $$r $$k -h "Example: bib2xhtml -s $$style $$n $$u $$c $$r $$k" example.bib eg/$${style}$${nopt}$${u}$${c}$${r}$${k}.html || true;\
 						done ; \
 					done ; \
 				done ; \
@@ -91,9 +91,9 @@ example: Makefile bib2xhtml
 
 # Regression test
 test: example static.html
-	cd eg ; \
 	xml val -d /pub/schema/xhtml1-transitional.dtd index.html ;\
 	xml val -d /pub/schema/xhtml1-transitional.dtd static.html ;\
+	cd eg ; \
 	for i in *.html ; \
 	do \
 		xml val -d /pub/schema/xhtml1-transitional.dtd $$i 2>/dev/null ; \
