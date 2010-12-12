@@ -1,5 +1,5 @@
 #
-# $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\Makefile,v 1.24 2010/12/12 18:08:58 dds Exp $
+# $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\Makefile,v 1.25 2010/12/12 18:45:34 dds Exp $
 #
 
 NAME=bib2xhtml
@@ -9,14 +9,14 @@ CGIDIR=/usr/dcs/www/cgi-bin/
 DISTDIR=/cygdrive/c/dds/pubs/web/home/sw/textproc/$(NAME)
 
 BSTFILES=$(wildcard *.bst)
-DOCFILES=$(NAME).html $(NAME).txt $(NAME).pdf index.html static.html showeg.js $(wildcard eg/*.html) example.bib
+DOCFILES=$(NAME).html $(NAME).txt $(NAME).pdf index.html static.html showeg.js example.bib
 EGFILES=$(wildcard eg/*.html)
-FILES=README COPYING $(NAME) ${BSTFILES} $(DOCFILES) $(EGFILES) bibsearch Makefile $(NAME).man ChangeLog html-btxbst.doc gen-bst
+ROOTFILES=README COPYING $(NAME) ${BSTFILES} $(DOCFILES) bibsearch Makefile $(NAME).man ChangeLog html-btxbst.doc gen-bst
 VERSION=$(shell ident $(NAME) | awk '/Id:/{print $$3; exit 0} ')
 
 default: $(DOCFILES) $(EGFILES) ${BSTFILES} syntax
 
-dist: default $(NAME)-$(VERSION).tar.gz
+dist: default $(NAME)-$(VERSION).tar.gz $(NAME)-$(VERSION).zip
 	-mkdir -p $(DISTDIR)/eg 2>/dev/null
 	cp $(NAME)-$(VERSION).tar.gz $(NAME)-$(VERSION).zip $(DISTDIR)
 	cp $(DOCFILES) $(DISTDIR)
@@ -24,15 +24,13 @@ dist: default $(NAME)-$(VERSION).tar.gz
 	cp ChangeLog $(DISTDIR)/ChangeLog.txt
 	sed -e "s/VERSION/${VERSION}/" index.html >${DISTDIR}/index.html
 
-$(NAME)-$(VERSION).shar: $(FILES)
-	gshar -s hull@cs.uiuc.edu $(FILES) > $@
-	chmod 644 $@
-
-$(NAME)-$(VERSION).tar.gz: $(FILES)
+$(NAME)-$(VERSION).tar.gz $(NAME)-$(VERSION).zip: $(ROOTFILES) $(EGFILES)
 	-cmd /c "rd /s/q $(NAME)-$(VERSION)"
-	mkdir $(NAME)-$(VERSION)
-	cp ${FILES} $(NAME)-$(VERSION)
-	tar czf $(NAME)-$(VERSION).tar.gz ${FILES:%=$(NAME)-$(VERSION)/%}
+	mkdir -p $(NAME)-$(VERSION)/eg
+	cp ${ROOTFILES} $(NAME)-$(VERSION)
+	sed -e "s/VERSION/${VERSION}/" index.html >$(NAME)-$(VERSION)/index.html
+	cp ${EGFILES} $(NAME)-$(VERSION)/eg
+	tar czf $(NAME)-$(VERSION).tar.gz $(NAME)-$(VERSION)
 	zip -r  $(NAME)-$(VERSION).zip $(NAME)-$(VERSION)
 	cmd /c "rd /s/q $(NAME)-$(VERSION)"
 
@@ -64,7 +62,7 @@ install:
 # Create example files
 # Some nonsensical option combinations cause bib2xhtml to exit with an error
 # Hence the || true part
-example: Makefile bib2xhtml
+example: bib2xhtml Makefile
 	-rm -f eg/*.html
 	cp v23n5.pdf eg
 	for style in empty plain alpha named unsort unsortlist paragraph ; \
@@ -109,6 +107,7 @@ seed: example
 	-mkdir test.ok 2>/dev/null
 	cp eg/* test.ok
 
+# Static HTML file version with links to the eg files
 static.html: index.html Makefile example
 	(sed -n '1,/<meta/p' index.html ; \
 	echo '</head><body><ul>' ; \
