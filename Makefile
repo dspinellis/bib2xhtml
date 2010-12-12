@@ -1,5 +1,5 @@
 #
-# $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\Makefile,v 1.23 2010/12/12 17:58:12 dds Exp $
+# $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\Makefile,v 1.24 2010/12/12 18:08:58 dds Exp $
 #
 
 NAME=bib2xhtml
@@ -89,7 +89,7 @@ example: Makefile bib2xhtml
 	done ; \
 	for i in eg/*.html ; \
 	do \
-		sed -i '/$$Id/d' $i ; \
+		sed -i '/$$Id/d' $$i ; \
 	done ; \
 	touch example
 
