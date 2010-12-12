@@ -1,5 +1,5 @@
 #
-# $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\Makefile,v 1.25 2010/12/12 18:45:34 dds Exp $
+# $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\Makefile,v 1.26 2010/12/12 18:54:17 dds Exp $
 #
 
 NAME=bib2xhtml
@@ -18,18 +18,18 @@ default: $(DOCFILES) $(EGFILES) ${BSTFILES} syntax
 
 dist: default $(NAME)-$(VERSION).tar.gz $(NAME)-$(VERSION).zip
 	-mkdir -p $(DISTDIR)/eg 2>/dev/null
-	cp $(NAME)-$(VERSION).tar.gz $(NAME)-$(VERSION).zip $(DISTDIR)
-	cp $(DOCFILES) $(DISTDIR)
-	cp $(EGFILES) $(DISTDIR)/eg
-	cp ChangeLog $(DISTDIR)/ChangeLog.txt
+	cp -f $(NAME)-$(VERSION).tar.gz $(NAME)-$(VERSION).zip $(DISTDIR)
+	cp -f $(DOCFILES) $(DISTDIR)
+	cp -f $(EGFILES) $(DISTDIR)/eg
+	cp -f ChangeLog $(DISTDIR)/ChangeLog.txt
 	sed -e "s/VERSION/${VERSION}/" index.html >${DISTDIR}/index.html
 
 $(NAME)-$(VERSION).tar.gz $(NAME)-$(VERSION).zip: $(ROOTFILES) $(EGFILES)
 	-cmd /c "rd /s/q $(NAME)-$(VERSION)"
 	mkdir -p $(NAME)-$(VERSION)/eg
-	cp ${ROOTFILES} $(NAME)-$(VERSION)
+	cp -f ${ROOTFILES} $(NAME)-$(VERSION)
 	sed -e "s/VERSION/${VERSION}/" index.html >$(NAME)-$(VERSION)/index.html
-	cp ${EGFILES} $(NAME)-$(VERSION)/eg
+	cp -f ${EGFILES} $(NAME)-$(VERSION)/eg
 	tar czf $(NAME)-$(VERSION).tar.gz $(NAME)-$(VERSION)
 	zip -r  $(NAME)-$(VERSION).zip $(NAME)-$(VERSION)
 	cmd /c "rd /s/q $(NAME)-$(VERSION)"
