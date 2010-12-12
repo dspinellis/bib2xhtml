@@ -78,6 +78,6 @@ Thanks to these people, who have contributed to bib2html:
   Vispi Bulsara, Nick Cropper, Joe Wells, Luis Mandel, Ricardo E. Gonzalez,
   Daniel Kapitan, Tammy Kolda, Walter M. Lioen, Panos Louridas, Aki Vehtari,
   Martin P. J. Zinser, Eric Vinck, Mark Jelasity, Vasek Smidl, Bruno Salvy,
-  and Wilfried Elmenreich.
+  Wilfried Elmenreich, Rogan Carr, Frank Loeffler, Todd Gamblin.
 
-$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\README,v 1.3 2010/02/04 14:31:08 dds Exp $
+$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\README,v 1.4 2010/12/12 19:17:24 dds Exp $
