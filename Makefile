@@ -1,5 +1,5 @@
 #
-# $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\Makefile,v 1.26 2010/12/12 18:54:17 dds Exp $
+# $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\Makefile,v 1.27 2010/12/12 19:01:08 dds Exp $
 #
 
 NAME=bib2xhtml
@@ -22,12 +22,14 @@ dist: default $(NAME)-$(VERSION).tar.gz $(NAME)-$(VERSION).zip
 	cp -f $(DOCFILES) $(DISTDIR)
 	cp -f $(EGFILES) $(DISTDIR)/eg
 	cp -f ChangeLog $(DISTDIR)/ChangeLog.txt
+	rm -f ${DISTDIR}/index.html
 	sed -e "s/VERSION/${VERSION}/" index.html >${DISTDIR}/index.html
 
 $(NAME)-$(VERSION).tar.gz $(NAME)-$(VERSION).zip: $(ROOTFILES) $(EGFILES)
 	-cmd /c "rd /s/q $(NAME)-$(VERSION)"
 	mkdir -p $(NAME)-$(VERSION)/eg
 	cp -f ${ROOTFILES} $(NAME)-$(VERSION)
+	rm -f $(NAME)-$(VERSION)/index.html
 	sed -e "s/VERSION/${VERSION}/" index.html >$(NAME)-$(VERSION)/index.html
 	cp -f ${EGFILES} $(NAME)-$(VERSION)/eg
 	tar czf $(NAME)-$(VERSION).tar.gz $(NAME)-$(VERSION)
