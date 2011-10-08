@@ -4,7 +4,7 @@
 eval 'exec /usr/bin/perl -w -S $0 ${1+"$@"}'
     if 0;
 
-$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.35 2010/12/08 19:38:16 dds Exp $';
+$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.36 2011/10/08 16:41:10 dds Exp $';
 
 #
 # Convert from bibtex to XHTML.
@@ -53,7 +53,8 @@ sub usage {
     $program = $0;
     $program =~ s+^.*/++;
     print STDERR <<_EOF_;
-usage: $program [-a] [-b bibtex-options] [-c] [-d delim] [-D mappings]
+usage: $program [-a] [-b bibtex-options] [-B bibtex-executable]
+                [-c] [-d delim] [-D mappings]
                 [-e extended-information] [-h heading] [-i] [-k]
 		[-m macro file] [-n name] [-r] [-s style] [-t] [-u] [-v]
 		sourcefile [htmlfile]
@@ -61,6 +62,7 @@ usage: $program [-a] [-b bibtex-options] [-c] [-d delim] [-D mappings]
     -a  Write abstract to htmlfile.
     -b bibtex-options
 	Options to pass to bibtex.
+    -B bibtex executable name.
     -c	Sort chronologically, by year, month, day, and then by author.
     -d delim
 	Specify bibliography delimiter.
@@ -709,6 +711,7 @@ sub utf_ent {
 	s/\\omega\b/ω/g;
 }
 
+$opt_B = 'bibtex' unless defined($opt_B);
 
 # Prevent "identifier used only once" warnings.
 $opt_a = $opt_b = $opt_c = $opt_D = $opt_d = $opt_e = $opt_h = $opt_m =
@@ -718,7 +721,7 @@ $macrofile = '';
 
 $command_line = &html_encode(join(' ', $0, @ARGV));
 
-getopts("ab:cd:D:e:h:ikm:n:rs:tuv") || &usage;
+getopts("aB:b:cd:D:e:h:ikm:n:rs:tuv") || &usage;
 
 if (defined($opt_n)) {
     $highlighted_name = $opt_n;
@@ -881,7 +884,7 @@ qq{<?xml version="1.0" encoding="$enc"?>
 <head>
 <title>$title</title>
 <meta http-equiv="Content-type" content="text/html; charset=$enc" />} . q{
-<meta name="Generator" content="$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.35 2010/12/08 19:38:16 dds Exp $" />
+<meta name="Generator" content="$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.36 2011/10/08 16:41:10 dds Exp $" />
 </head>
 <body>
 }
@@ -953,12 +956,12 @@ eval { fork || (open(STDOUT, ">&STDERR"),
 	# Handle leakage in Win32 prevents the final rename()
 	close(HTMLFILE),
 	close(OHTMLFILE),
-	exec('bibtex', (split(/\s+/, ($opt_b ? $opt_b : "")), $auxfile)));
+	exec($opt_B, (split(/\s+/, ($opt_b ? $opt_b : "")), $auxfile)));
 	wait; };
 # fork is not implemented on some non-Unix platforms.
 if ($@) {
     # The fork failed (perhaps not implemented on this system).
-    system("bibtex $opt_b $auxfile 1>&2");
+    system("$opt_B $opt_b $auxfile 1>&2");
 }
 
 $beginstring = "<!-- BEGIN BIBLIOGRAPHY $delimiter -->";

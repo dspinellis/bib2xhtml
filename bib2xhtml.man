@@ -1,5 +1,5 @@
-.\" $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml.man,v 1.25 2010/12/08 19:02:34 dds Exp $
-.TH BIB2XHTML L "5 December 2010"
+.\" $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml.man,v 1.26 2011/10/08 16:41:10 dds Exp $
+.TH BIB2XHTML L "8 October 2011"
 .SH NAME
 bib2xhtml \- BibTeX bibliography to XHTML converter
 .SH SYNOPSIS
@@ -9,6 +9,9 @@ bib2xhtml \- BibTeX bibliography to XHTML converter
 ] [
 .B \-b
 .I bibtex-options
+] [
+.B \-B
+.I bibtex-executable
 ] [
 .B \-c
 ] [
@@ -309,6 +312,12 @@ Include the BibTeX file's abstract field in the bibliography.
 .TP
 .BI \-b " bibtex-options"
 Provide the specified options to the BibTeX program.
+.TP
+.BI \-B " bibtex-executable"
+Specify the name or path of the bibtex executable program.
+By default this is \fIbibtex\fP.
+In some installations specifying \fIbibtex8\fP can prevent out of memory
+conditions.
 .TP
 .B \-c
 Sort chronologically.  Normally, the bibliography is ordered first by
