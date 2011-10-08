@@ -1,5 +1,5 @@
 #
-# $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\Makefile,v 1.27 2010/12/12 19:01:08 dds Exp $
+# $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\Makefile,v 1.28 2011/10/08 18:02:42 dds Exp $
 #
 
 NAME=bib2xhtml
@@ -55,6 +55,7 @@ syntax: $(NAME) bibsearch
 	-perl -w -c $(NAME) >syntax 2>&1
 	-perl -T -w -c bibsearch >>syntax 2>&1
 	-perl -w -c gen-bst >>syntax 2>&1
+	cat syntax
 
 install:
 	for i in *.bst; do\
@@ -80,7 +81,10 @@ example: bib2xhtml Makefile
 					do \
 						for k in '' -k  ; \
 						do \
-							perl bib2xhtml -s $$style $$n $$u $$c $$r $$k -h "Example: bib2xhtml -s $$style $$n $$u $$c $$r $$k" example.bib eg/$${style}$${nopt}$${u}$${c}$${r}$${k}.html || true;\
+							for R in '' -R  ; \
+							do \
+								perl bib2xhtml -s $$style $$n $$u $$c $$r $$k $$R -h "Example: bib2xhtml -s $$style $$n $$u $$c $$r $$k $$R" example.bib eg/$${style}$${nopt}$${u}$${c}$${r}$${k}$${R}.html || true;\
+							done ; \
 						done ; \
 					done ; \
 				done ; \

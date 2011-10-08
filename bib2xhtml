@@ -4,7 +4,7 @@
 eval 'exec /usr/bin/perl -w -S $0 ${1+"$@"}'
     if 0;
 
-$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.36 2011/10/08 16:41:10 dds Exp $';
+$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.37 2011/10/08 18:02:42 dds Exp $';
 
 #
 # Convert from bibtex to XHTML.
@@ -56,14 +56,14 @@ sub usage {
 usage: $program [-a] [-b bibtex-options] [-B bibtex-executable]
                 [-c] [-d delim] [-D mappings]
                 [-e extended-information] [-h heading] [-i] [-k]
-		[-m macro file] [-n name] [-r] [-s style] [-t] [-u] [-v]
+		[-m macro file] [-n name] [-r] [-R] [-s style] [-t] [-u] [-v]
 		sourcefile [htmlfile]
 
     -a  Write abstract to htmlfile.
     -b bibtex-options
 	Options to pass to bibtex.
     -B bibtex executable name.
-    -c	Sort chronologically, by year, month, day, and then by author.
+    -c Sort chronologically, by year, month, day, and then by author.
     -d delim
 	Specify bibliography delimiter.
     -D mappings
@@ -75,12 +75,13 @@ usage: $program [-a] [-b bibtex-options] [-B bibtex-executable]
 	String to use instead of default title when creating a new htmlfile.
 	If updating an existing htmlfile, this option is ignored.
     -i Use included citations
-    -k  In labeled styles append to the label of each entry its BibTeX key.
+    -k In labeled styles append to the label of each entry its BibTeX key.
     -m macro file
 	Specify an additional macro file.
     -n name
 	Highlight the specified author name in the output.
-    -r	Sort in reverse chronological order.
+    -r Sort in reverse chronological order.
+    -R Reference numbers increase from bottom to top, not from top to bottom.
     -s style
 	Control style of bibliography:
 	(empty, plain, alpha, named, paragraph, unsort, or unsortlist).
@@ -715,13 +716,14 @@ $opt_B = 'bibtex' unless defined($opt_B);
 
 # Prevent "identifier used only once" warnings.
 $opt_a = $opt_b = $opt_c = $opt_D = $opt_d = $opt_e = $opt_h = $opt_m =
-$opt_n = $opt_r = $opt_i = $opt_k = $opt_s = $opt_t = $opt_v = $opt_u = undef;
+$opt_n = $opt_r = $opt_R = $opt_i = $opt_k = $opt_s = $opt_t = $opt_v =
+$opt_u = undef;
 
 $macrofile = '';
 
 $command_line = &html_encode(join(' ', $0, @ARGV));
 
-getopts("aB:b:cd:D:e:h:ikm:n:rs:tuv") || &usage;
+getopts("aB:b:cd:D:e:h:ikm:n:rRs:tuv") || &usage;
 
 if (defined($opt_n)) {
     $highlighted_name = $opt_n;
@@ -884,7 +886,7 @@ qq{<?xml version="1.0" encoding="$enc"?>
 <head>
 <title>$title</title>
 <meta http-equiv="Content-type" content="text/html; charset=$enc" />} . q{
-<meta name="Generator" content="$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.36 2011/10/08 16:41:10 dds Exp $" />
+<meta name="Generator" content="$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.37 2011/10/08 18:02:42 dds Exp $" />
 </head>
 <body>
 }
@@ -996,6 +998,17 @@ $t = $auxfile . ".bbl";
 $/ = "";
 
 # Make a first pass through the .bbl file, collecting citation/label pairs.
+$ntotent = 0;
+if (defined($opt_R)) {
+	open(BBLFILE, "<$t") || die "error opening $t: $!\n";
+	while (<BBLFILE>) {
+		($bcite, $blabel) = m+<dt><a name=\"([^\"]*)\">\[([^\]]*)\]</a></dt><dd>+;
+		if ($bcite) {
+			$ntotent++;
+		}
+	}
+	close(BBLFILE);
+}
 open(BBLFILE, "<$t") || die "error opening $t: $!\n";
 $nentry = 0;
 loop:
@@ -1013,7 +1026,14 @@ while (<BBLFILE>) {
     }
     $nentry++;
     ($bcite, $blabel) = m+<dt><a name=\"([^\"]*)\">\[([^\]]*)\]</a></dt><dd>+;
-    $blabel = "$nentry" if ($label_style == $LABEL_NUMBERED);
+	if ($label_style == $LABEL_NUMBERED) {
+		if (defined ($opt_R)) {
+			$blabel = $ntotent - $nentry + 1;
+			$blabel = "$blabel";
+		} else {
+			$blabel = "$nentry";
+		}
+	}
     $bibcite{$bcite} = $blabel;
 }
 close(BBLFILE);
@@ -1040,6 +1060,12 @@ while (<BBLFILE>) {
     next loop if (($nentry == 0) && (m/^#/));
 
     $nentry++;
+
+	if (defined ($opt_R)) {
+		$nentryp = $ntotent - $nentry + 1;
+	} else {
+		$nentryp = $nentry;
+	}
 
     # Protect \{, \}, and \$, and then assign matching {} pairs a unique ID.
     s/\\\{/\002/g;
@@ -1084,7 +1110,7 @@ while (<BBLFILE>) {
 	# If that doesn't work, try to swallow following word.
 	or s:(<a name=\"[^\"]*\">)</a>([\w]+):$1$2<\/a>:;	
     } elsif ($label_style == $LABEL_NUMBERED) {
-	s:(<dt><a name=\"[^\"]*\">\[)[^\]]*(\]</a></dt><dd>):$1$nentry$2:;
+	s:(<dt><a name=\"[^\"]*\">\[)[^\]]*(\]</a></dt><dd>):$1$nentryp$2:;
     }
 
     # Append the key name, if asked so

@@ -1,4 +1,4 @@
-.\" $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml.man,v 1.26 2011/10/08 16:41:10 dds Exp $
+.\" $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml.man,v 1.27 2011/10/08 18:02:42 dds Exp $
 .TH BIB2XHTML L "8 October 2011"
 .SH NAME
 bib2xhtml \- BibTeX bibliography to XHTML converter
@@ -38,6 +38,8 @@ bib2xhtml \- BibTeX bibliography to XHTML converter
 .I author-name
 ] [
 .B \-r
+] [
+.B \-R
 ] [
 .B \-s
 .I style
@@ -427,6 +429,22 @@ Note that to obtain a bibliography ordered by chronological order you
 must also specify the
 .B \-c
 option.
+.TP
+.B -R
+Reference numbers increase from bottom to top, not from top to bottom.
+This option is useful, for example, in the following situation.
+When one keeps one's own publication list over many years or decades,
+one often prefers that
+(i) the new ones appear on top of the list,
+to give them more immediate attention, and
+(ii) reference numbers, once assigned, do not change, so as not to
+mess up old documents that use reference numbers.
+Using options
+.B -c
+.B -r
+and
+.B -R
+together satisfies this need.
 .TP
 .BI \-s " style"
 Create a

@@ -1,7 +1,7 @@
 /*
  * Show the example file specified.
  *
- * $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\showeg.js,v 1.1 2010/12/08 18:47:48 dds Exp $
+ * $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\showeg.js,v 1.2 2011/10/08 18:02:42 dds Exp $
  */
 
 function showBib(form) {
@@ -27,6 +27,7 @@ function showBib(form) {
 		(form.chrono.checked ? form.chrono.value : '') +
 		(form.reverse.checked ? form.reverse.value : '') +
 		(form.append.checked ? form.append.value : '') +
+		(form.rnumber.checked ? form.rnumber.value : '') +
 		'.html'
 	);
 }
