@@ -1,5 +1,5 @@
 % BibTeX `plain/html' family
-	% $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\html-btxbst.doc,v 1.5 2010/12/08 19:02:34 dds Exp $
+	% $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\html-btxbst.doc,v 1.6 2012/01/27 07:19:06 dds Exp $
 	% 
 	% This file is either "html-btxbst.doc" or was derived from
 	% "html-btxbst.doc" using cpp.  "html-btxbst.doc" itself was edited
@@ -580,7 +580,7 @@ FUNCTION {fin.entry}
 #ifdef ABSTRACT
   abstract empty$
     'skip$
-    { newline$ "<blockquote>" abstract * "</blockquote>" * write$ }
+    { newline$ "<blockquote><p>" abstract * "</p></blockquote>" * write$ }
   if$
 #endif /* ABSTRACT */
   "</dd>" write$
