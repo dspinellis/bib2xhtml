@@ -1,5 +1,6 @@
 #
-#
+# Makefile for generating the distribution
+# This is written to run under Cygwin. YMMV
 
 NAME=bib2xhtml
 BINDIR=$(HOME)/bin/
@@ -11,7 +12,7 @@ BSTFILES=$(wildcard *.bst)
 DOCFILES=$(NAME).html $(NAME).txt $(NAME).pdf index.html static.html showeg.js example.bib
 EGFILES=$(wildcard eg/*.html)
 ROOTFILES=README COPYING $(NAME) ${BSTFILES} $(DOCFILES) bibsearch Makefile $(NAME).man ChangeLog html-btxbst.doc gen-bst
-VERSION=$(shell ident $(NAME) | awk '/Id:/{print $$3; exit 0} ')
+VERSION=$(shell git describe --tags --abbrev=4 HEAD)
 
 default: $(DOCFILES) $(EGFILES) ${BSTFILES} syntax
 
@@ -30,6 +31,7 @@ $(NAME)-$(VERSION).tar.gz $(NAME)-$(VERSION).zip: $(ROOTFILES) $(EGFILES)
 	cp -f ${ROOTFILES} $(NAME)-$(VERSION)
 	rm -f $(NAME)-$(VERSION)/index.html
 	sed -e "s/VERSION/${VERSION}/" index.html >$(NAME)-$(VERSION)/index.html
+	sed -e "s/@VERSION@/${VERSION}/" $(NAME) >$(NAME)-$(VERSION)/$(NAME)
 	cp -f ${EGFILES} $(NAME)-$(VERSION)/eg
 	tar czf $(NAME)-$(VERSION).tar.gz $(NAME)-$(VERSION)
 	zip -r  $(NAME)-$(VERSION).zip $(NAME)-$(VERSION)

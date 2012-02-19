@@ -4,7 +4,7 @@
 eval 'exec /usr/bin/perl -w -S $0 ${1+"$@"}'
     if 0;
 
-$version = '$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.38 2011/10/19 15:15:05 dds Exp $';
+$version = '@VERSION@';
 
 #
 # Convert from bibtex to XHTML.
