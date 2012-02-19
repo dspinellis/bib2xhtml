@@ -1,0 +1,905 @@
+	* Create valid XHTML blockquote elements when producing abstracts.
+	  (Contributed by Klaus Brunner.)
+
+	* New -R option allows you to number entries from bottom to top.
+	  (Contributed by G.-H. Gweon.)
+
+	* New -B option allows you to specify the name or path of the bibtex
+	  executable.  In some installations specifying bibtex8 as the
+	  executable can prevent out of memory conditions.
+
+	* An obsolete (and soon to be deprecated) dependency on ctime.pl
+	  has been removed.
+
+Sun Dec 12 20:16:58 2010
+
+	* Version 2.35 released.
+
+	* New -n option will highlight the specified author name.
+	  (Contributed by Todd Gamblin.)
+
+	* Chronological ordering now takes also into account month and day.
+	  (Contributed by Todd Gamblin.)
+
+	* Correct handling of nested LaTeX braces.
+	  (Suggested by Todd Gamblin.)
+
+	* Add support for the \href appearing in bibliography entries.
+	  (Contributed by Frank Loeffler.)
+
+	* Fix problem where when a list of citations is given, and a
+	  bibtex macro file is specified, the macro file will not be
+	  applied. (Contributed by Rogan Carr)
+
+	* The project's home page supports the interactive choice
+	  of formatting examples.
+
+Thu Feb 04 16:22:07 2010
+
+	* Version 2.31 released.
+
+	* new option "paragraph" now produces paragraphs (no bullets)
+
+	* Use crlf IO open option in order to avoid problems under Windows
+	  with Cygwin.
+
+Thu Jul 02 16:27:03 GTB Daylight Time 2009
+
+	* Version 2.30 released.
+
+	* Correct operation when the PDF::API2 module is not available.
+
+	* Dropped the deprecated compact dl attribute.  The appearance of
+	  the list can be controlled through the bib2xhtml CSS style.
+	  (Pointed by Mark Jelasity.)
+
+	* Correct handling of cross references containing tildes.
+	  (Pointed by Ken Pierce.)
+
+	* Escape XML-special characters appearing in URLs and DOIs.
+	  (Pointed by Mark Jelasity.)
+	  The last two changes make the generated documents pass XHTML
+	  validators.
+
+Thu Jun 14 17:59:59 2007
+
+	* Version 2.26 released.
+
+	* New -e option for specifying how extended file information is
+	  displayed.  This can be used for including PDF file icons.
+
+	* Support for counting the pages of PDF documents (requires
+	  PDF::API2).
+
+	* Document the -D option for specifying file path to URL mappings.
+
+Mon May 29 16:57:06 2006
+
+	* Version 2.23 released.
+
+	* Add support for some missing Czech characters (Vasek Smidl).
+
+	* Correct the handling of the  degree symbol and handle \dots
+	  (Bruno Salvy)
+
+	* Prevent tildes in URLs from being converted into spaces.
+
+Sun Sep 04 17:27:13 2005
+
+	* Version 2.20 released.
+
+	* The lists generated now contain CSS hooks (class bib2xhtml).
+	  The list items are not explicitly separated with <p />;
+	  if you want that behavior, simply add a style entry like
+	  the following
+	  <style type="text/css">
+		  dl.bib2xhtml dd { padding-bottom: 1em }
+	  </style>
+	  <style type="text/css">
+		  ul.bib2xhtml li { padding-bottom: 1em }
+	  </style>
+	  in the page's header. (suggested by Mark Jelasity)
+
+	* Correct the handling of circumflex escapes (fix by Mark Jelasity)
+
+	* Stray & symbols (e.g. in URLs) are converted into &amp;
+
+Wed Jul 13 00:06:55 2005
+
+	* Version 2.18 released.
+
+	* New -k option to display in the generated file the
+	  original bibtex key together with the label.
+
+	* Correctly terminate <dd> tag in the numbered styles.
+
+	* Fix duplicate periods appearing in the XHTML output.
+
+	* Correct the creation of the compact attribute in <dl> tags.
+
+	* Support DOI fields lacking a doi or http prefix.
+
+	* Added support for the \url{} LaTeX command.  It is converted
+	  into a hypertext link.  (Contributed by Mark Jelasity.)
+
+Fri Jul 02 01:17:24 2004
+
+	* Version 2.12 released.
+
+	* Added support for a DOI (digital object identifier) bibliography
+	  field in the bibliography entries.  The DOI will appear in the
+	  XHTML bibliograpy in its human readable form, hyperlinked through
+	  dx.doi.org.
+
+Sat Jun 06 23:09:04 2004
+
+	* Version 2.11 released.
+
+	* Remove output duplication caused by unflushed buffers after a fork.
+	  Many thanks to Mark Jelasity for drawing my attention to this
+	  problem, and testing the solution.
+
+	* New -u option to convert LaTeX special characters into the
+	  corresponding Unicode characters, and output valid XML coded
+	  in UTF-8.
+	  Note with this option documents must specify
+	  <?xml version="1.0" encoding="utf-8"?>
+	  at their top.
+	  HTML documents should better also specify
+	  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+	  and/or arrange with their web server to indicate the UTF-8 encoding
+	  as part of the HTTP header.
+	  The documents produced by this option may be easier to parse and
+	  validate with some XML parsers.
+
+	* Removed the deprecated -3 option (output HTML-3 character entities).
+	  Many HTML entities are now encoded by their symbolic name rather
+	  than numerically.
+
+	* Added http-equiv and Generator tags
+
+Wed Apr 07 17:03:43 2004
+
+	* Version 2.6 released.
+
+	* Improved documentaion includes examples.
+
+	* Clarified the sorting options in the code and the
+	  manual page.
+
+Sun Apr 04 17:30:17 2004
+
+	* Version 2.4 released.
+
+	* Prevent Win32 filehandle resource leakage introduced
+	  in version 2.3.  This prevented the final rename operation.
+
+Sat Apr 03 12:04:08 2004
+
+	* Version 2.3 released.
+
+	* Changes by Panos Louridas <louridas@aueb.gr>
+	  to allow the specification of the citations
+	  in-line in the HTML file.
+
+Mon Mar 29 15:08:52 2004  Diomidis Spinellis <dds@aueb.gr>
+
+	* Version 2.2 released.
+
+	* Change project name from bib2html into bib2xhtml.
+
+Mon Jan 19 10:43:44 2004  Diomidis Spinellis <dds@aueb.gr>
+
+	* Version 2.1 released.
+
+	* bib2html: Corrected the handling of the -b option.
+
+Wed Jan 14 21:46:17 2004  Diomidis Spinellis <dds@aueb.gr>
+
+	* Version 2.1 released.
+
+	* Makefile: adjust for new public distribution
+
+	* gen-bst: Create the named reversedate (nr) style by default
+
+	* bib2html: Correct the usage information.
+
+	* bib2html.man: Document a number of missing options.
+	Add HISTORY section.
+	Update for public release of version 2.1
+
+Fri Nov 21 23:38:06 2003  Diomidis Spinellis <dds@aueb.gr>
+
+	* html-btxbst.doc: Convert tags and their syntax to make them
+	compatible with XHTML 1.0
+
+	* bib2html: Convert HTML output and post processing code to make it
+	compatible with XHTML 1.0
+
+Tue Apr 30 10:17:36 2002  Diomidis Spinellis <dds@aueb.gr>
+
+	* bib2html: Add -m option for specifying an additional macro file
+	Add unsortlist format for creating non-sorted empty lists.
+
+Fri Apr 24 22:27:56 1998  David Hull  <hull@cs.uiuc.edu>
+
+	* Version 1.33 released.
+
+	* README: Update THANKS.
+
+	* bib2html: In plain style, combine <A NAME="..."></A> with following
+	<A HREF="mailto:..."> which may exist because of mailto field
+	in bibliography file.
+
+	* html-btxbst.doc: Add support for mailto field (thanks to Eric Vinck).
+
+Wed Apr 22 21:10:57 1998  David Hull  <hull@cs.uiuc.edu>
+
+	* bib2html: Add -b <bibtex-options> to pass options through bib2html to
+	bibtex.
+	Yet another try at forking bibtex that works on all systems.
+	Fix pattern for \textasciitilde.
+
+Mon Mar 16 18:22:20 1998  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* Version 1.32 released.
+	
+	* README: Updated thanks.
+
+	* html-btxbst.doc:
+	Fix newlines around postscript, pdf, dvi, and abstract fields
+	(an extra newline was being output).
+
+	* gen-bst: Fix declaration for cpp (prototype needed to be repeated).
+
+	* bib2html: Tmp file filename fix for VMS from Martin P. J. Zinser.
+
+Thu Feb 26 15:39:11 1998  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* Version 1.31 released.
+	
+	* bib2html: Fixed some "use of uninitialized value" warnings, thanks to
+	Martin P.J. Zinser.
+
+	* bib2html: Fix a "use of unitialized value" bug.
+	Use unicode characters for m-dash and n-dash instead of &mdash; and
+	&ndash;, because they seem to be supported by more browsers.
+
+Wed Feb 11 19:22:30 1998  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* bibsearch: Perl 5.004 apparently requires that -T switch be first.
+
+Wed Jan 21 21:08:52 1998  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* bib2html:
+	Allow user-specified BibTeX style (.bst) file.  This required
+	allowing the .bst file to specify what label type to use with it.
+
+	* html-btxbst.doc: Add label-style definitions to begin.bib.
+
+Thu Jan  8 19:45:43 1998  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* Version 1.30 released.
+	
+	* bib2html:
+	Fix link problem for postscript (and other) files when URL is
+	given (thanks to Aki Vehtari).
+	Change pattern for ^ and _ expansion.
+
+	* README: Update bibtex mode information (thanks to Aki Vehtari).
+
+Tue Oct 14 16:34:56 1997  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* Version 1.29 released.
+	
+	* bib2html: Add -D option to define URL to directory mappings.
+
+	* gen-bst: Fix REVERSEBYDATE -> REVERSEDATE.
+
+Fri Jun 27 20:19:53 1997  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* bib2html: Translate \textasciitilde.
+	Better search pattern for fixing <A NAME=""></A>.
+
+Thu Jun  5 17:06:19 1997  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* Version 1.28 released.
+	
+	* README: Update thanks.
+
+	* html-btxbst.doc:
+	Use organization field for Authors: comment if entry has neither
+	author or editor field.
+
+	* bibsearch: Fix bug: entry was not being skipped correctly if it
+	didn't have an Authors: comment.
+
+Fri Apr  4 20:13:31 1997  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* Version 1.27 released.
+	
+	* gen-bst: Convert gen-bst from a shell script that calls CPP to a Perl
+	script that implements "just enough" CPP to do the job.
+
+	* README: Update Thanks section.
+
+	* html-btxbst.doc: Change "et al." to "et~al." in format.lab.names.
+
+	* html-btxbst.doc: Simplify the CPP statements a little so that my fake
+	Perl CPP interpreter can handle them.
+
+	* bib2html: Get rid of fork and open of /dev/null so that bib2html will
+	run on non-UNIX platforms.
+
+Fri Mar 14 15:31:31 1997  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* bibsearch: Make compatible with perl 4 again.
+
+Tue Mar  4 21:56:50 1997  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* Version 1.26 released.
+
+Tue Feb 18 18:46:30 1997  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* bib2html:
+	Fix: open /dev/null for OHTMLFILE if no old HTML file exists.
+	Get mode differently.
+
+Tue Feb 11 15:30:35 1997  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* bib2html: Fix "unitialized value" warning with pageCount.
+
+Fri Feb  7 21:05:03 1997  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* Version 1.25 released.
+	
+	* bib2html: Add -w flag to perl.
+
+	* README: Warn about change to bibsearch.
+
+Fri Feb  7 20:42:03 1997  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* bibsearch:
+	No longer do path translation on database ourselves, but rely
+	on server to do it in PATH_TRANSLATED environment variable.  This
+	increases the security of bibsearch (or at least moves the problem
+	into the http server instead of in bibsearch).
+	Code cleanup so that "-w" doesn't cause complaints.
+
+Fri Jan 31 21:51:29 1997  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* bibsearch:
+	More informative error message when unable to open database.
+	Default values for $open_list and $close_list.
+	Correct error in determining list type (was giving up too
+	soon in looking for beginning of list).
+
+Fri Jan 24 17:46:11 1997  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* bib2html: Add '\ ' to ' ' translation (was getting translated to '').
+
+	* html-btxbst.doc:
+	Fix str.to.int.  The logic was completely wrong.  What could
+	I have been thinking of?
+
+	* bib2html:
+	In a regular expression, "." doen't match newline, and so some
+	patterns weren't matching that should.  I replaced the "." with
+	[^\001].  An alternative would have been to add the /s option,
+	but that would have only worked under Perl 5.
+
+Wed Jan 22 19:29:33 1997  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* html-btxbst.doc:
+	Add str.to.int function, to convert string to integer.
+	Add REVERSEDATE support, to sort into reverse chronological order.
+	Add SORTBYYEAR support, to sort first by year and then by author.
+
+	* bib2html.man: Describe new -c and -r options.
+
+	* README: Describe how to generate .bst files for -c and -r options.
+
+	* bib2html: It's the -c option, not the -y option.
+
+	* gen-bst: Add support for -r and -c options.
+
+	* bib2html: Add new -c and -r options.
+
+	* gen-bst: Initial revision
+
+	* bib2html:
+	Correct patterns for accented characters.  They were sometimes
+	incorrectly swallowing the following space.
+
+Thu Jan  9 16:15:48 1997  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	Version 1.24 released.
+	
+	* bib2html:
+	Remove blank line in comment at beginning of bibliography (introduced
+	yesterday) that confused bibsearch.
+
+Wed Jan  8 17:12:37 1997  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	Version 1.23 released.
+	
+	* bib2html:
+	Output command line used to generate bibliography as comment in
+	HTML file.
+	Fix a problem with the pattern that was used to ensure that the
+	contents of the A NAME tag in the empty style weren't empty.
+	Be more careful about &emdash; and &endash;.
+
+Tue Dec 17 15:57:05 1996  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* README: *** empty log message ***
+
+	* bib2html:
+	Move "require 'ctime.pl'" to the top of the file.  It was causing
+	an error in perl 4 where it was.
+
+Tue Nov 26 15:40:03 1996  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* Version 1.22 released.
+	
+	* bib2html: Fix \aa -> &aring.
+	Start up perl explicitly if $running_under_some_shell.
+
+Thu Sep 26 22:47:10 1996  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* bib2html: Add count of number of references to timestamp.
+
+Wed Aug  7 14:42:33 1996  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* bib2html: Added \circ to degree symbol translation for math mode.
+
+Tue Jul 30 21:04:15 1996  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* bibsearch: Improve documentation.
+
+Tue Jul 30 20:30:36 1996  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* Version 1.20 released.
+
+	* bib2html: Handle LaTeX inline math \( ... \).
+
+Tue Jul 30 19:46:46 1996  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* bib2html:
+	Only do superscript and subscript processing in inline math mode.
+	Make -w be quiet about identifier used only once warnings.
+	Fix syntax error in \, pattern.
+
+Tue Jul 30 19:13:56 1996  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* bib2html.man: Say how to produce ~'s in bibliography.
+
+	* bib2html: Do proper matching on curly braces.  This involved changing
+	all of the patterns that matched on any curly braces.
+	Add (null) translations for a hacek, macron, and dot accents.
+	Be more careful on \par translation.
+	Add crude superscript and subscript support.  Doesn't check to
+	make sure it's inside math mode.
+	More translations: \, \ldots etc.
+
+Mon Jul  8 20:27:41 1996  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* Version 1.19 released.
+
+	* bibsearch: Fix bugs in iso8859-1 mapping to plain ASCII.
+
+Fri Jul  5 20:34:00 1996  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* Version 1.18 released.
+
+	* README: Update installation instructions.
+
+	* bib2html: Fix handling of \i, the dotless i, in accents.
+
+	* bib2html: Be more careful when translating accent commands to not
+	generate invalid ISO8859-1 HTML character entities.
+	Translate \l to l and \L to L.
+
+	* bibsearch: Update example of form to use to call bibsearch.
+	Add mapping for ISO characters to map them to ASCII.
+	Read database a line at a time instead of a paragraph at a
+	time so that we can't miss the beginning of a bibliography
+	when there is more than one bibliography in a database.
+	Print "no matches found" message when no matches are found.
+
+Wed Jul  3 14:49:30 1996  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* Version 1.17 released.
+	
+	* bib2html: BibTeX was wrapping the postscript, pdf, and dvi comments.
+	Modify the grep patterns to account for it.
+
+Mon Jul  1 19:15:10 1996  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* Version 1.16 released.
+
+	* README: Update thanks.
+
+	* html-btxbst.doc:
+	Also add links for url entries in book-like titles (format.btitle).
+
+	* bib2html: Suppress extra white space after TeX macros.
+
+Mon Jun 24 15:04:40 1996  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* Version 1.15 released.
+
+	* bib2html: Fix translation of \'{\i} and \ss.
+
+Fri Jun  7 15:49:51 1996  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* Version 1.14 released.
+	
+	* bib2html: Fix error in circumflex grep pattern.
+
+Thu Apr 18 02:48:52 1996  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* Version 1.13 released.
+	
+	* bib2html: More changes for Perl 5.
+
+Wed Apr 17 17:56:42 1996  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* bibsearch, bib2html: Small cleanups to make perl -w happy.
+
+Mon Apr 15 12:16:43 1996  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* Version 1.12 released.
+
+Wed Apr 10 17:42:22 1996  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* html-btxbst.doc:
+	In entries that have no author field, emit an HTML comment with the
+	editors instead.
+
+	* bibsearch:
+	Fix: If author search was requested, and bibliography entry had no
+	Authors: comment, it matched.  Now it doesn't match.
+
+Mon Apr  8 21:37:31 1996  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* bibsearch: Handle more than one bibliography in a HTML file.
+	Fix error in determining list type.
+
+	* bibsearch:
+	Fix: make type of generated bibliography list match the type of
+	the bibliography list in the original document.
+
+	* html-btxbst.doc:
+	Eliminate useless comma in label in named style with no year specified.
+
+	* bib2html: Attempt to eliminate extra periods at ends of blocks.
+
+Fri Apr  5 22:03:03 1996  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* Version 1.11 released.
+
+	* README: *** empty log message ***
+
+	* bib2html: Be more careful about removing redundancy in crossrefs.
+
+	* bib2html:
+	Only go to end of line when getting text to put inside A NAME tag.
+	Remove \rm and \textrm commands (there's no easy way to handle them).
+	Add improved macro handling from Joe Wells.
+
+	* bib2html: In plain style, be more careful about not enclosing
+	another HTML element when fixing empty NAME anchor.
+
+	* html-btxbst.doc: Update comments.
+	Add <P> tag at end of bibliography entry.
+	Use \citelabel instead of \cite to refer to other bibliography
+	entries.
+
+	* bib2html: Change \cite processing.  A \cite is now expanded so that
+	the label is a link to the entry the \cite refers to.  A \citelabel
+	expands to only the label, without the link.  This is accompanied
+	by a corresponding change in the bst style files so that bib2html
+	does not create nested links.
+
+	* html-btxbst.doc: Initial revision
+
+	* bib2html: Cleanup: escape more { and } in regex patterns.
+	Add support for math font handling from Joe Wells.
+
+	* bib2html: Fix: escape { and } in regex patterns.
+	Simplify accent and greek character replacement patterns.
+
+	* bib2html:
+	Bug in \cite processing was sometimes creating nested A HREF tags.
+	Back off on converting \cite entries to links until I can figure
+	out a way to prevent the nesting.
+
+Mon Apr  1 18:39:41 1996  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* bib2html: Add translation for \htmladdnormallinkfoot{text}{url}.
+
+	* bib2html: Make \cite crossrefs be hyperized in more cases.
+
+	* bib2html: Translate \htmladdnormallink{text}{url}.
+
+Mon Feb 26 16:50:45 1996  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* README: Update THANKS.
+
+	* bib2html: Add new -h option.
+	Output some boilerplate HTML when creating a new HTML file from
+	scratch.
+
+	* bib2html.man: Document new -h option.
+
+	* Version 1.10 released.
+
+Mon Feb  5 20:40:17 1996  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* html-n.bst: Fix spacing around "et al." in labels.
+
+	* bib2html:
+	Remove \n is regexp for finding citations and labels.  This was causing
+	problems on entries with no authors.
+
+Wed Jan 24 21:04:07 1996  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* bib2html:
+	Get rid of -A option.  Instead use file extension of source file
+	(.aux or .bib) to determine input file type.
+
+	* bib2html.man: Document new unsort bibliography style.
+
+	* Version 1.9 released.
+
+Wed Jan 24 18:51:04 1996  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* html-u.bst: Add RCS header.
+
+	* html-n.bst, html-a.bst: Change spacing in output.
+
+	* bib2html: Add unsort bibliography style.
+	Add -A option to read an already-existing .aux file for citations
+	instead of using all citations from one bibtex bibliography file.
+	Be a little more careful about removing "scratch" files.
+
+	* html-u.bst: Initial revision
+
+Tue Jan 23 19:11:51 1996  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* bib2html:
+	Bibtex sometimes inserts "%\n" to break long lines.  Remove it.
+
+	* html-a.bst, html-n.bst:
+	Don't output Authors: comment if author is empty.
+
+	* README: Update thanks.
+
+	* Version 1.8 released.
+
+Wed Dec 20 23:19:39 1995  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* README: Update thanks.
+
+	* bib2html.man: Update FILES section.  Document -v option.
+
+	* bibsearch:
+	Bug fix: did some pattern substitutions on author names in the
+	wrong order.
+
+	* Version 1.7 released.
+
+Fri Dec 15 23:15:17 1995  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* bib2html: Oops!  Fixed recent \~{} fix.
+
+Fri Dec 15 22:48:45 1995  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* bib2html:
+	Handle \char'377, \char"ff, and \char255 by converting to &#255;.
+
+	* bib2html:
+	Fix handling of \~{}, which should produce a ~ in the output.
+
+Thu Dec  7 21:44:44 1995  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* bib2html.man: Document new named style.
+
+	* README: Update installation instructions.
+
+	* bib2html 1.6 released.
+	
+Thu Dec  7 21:00:59 1995  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* html-n.bst: Initial revision
+
+	* html-a.bst:
+	Changed name from html.bst to html-a.bst to indicate that this
+	is used for the alpha html style.
+
+	* bib2html:
+	Handle postscript, pdf, and dvi tags that are URLs.  At his point,
+	we handle them by pretty much ignoring them, and not attempting to
+	get the file size or number of pages.
+	Add named ([Hull, 1995]) style.  Use this style as the basis for
+	the empty (bulletted) and plain ([1]) styles, because it results
+	in a more sensible alphabetization than the named style does.
+	Produce better cross-referenced citations.
+
+Fri Nov  3 18:35:44 1995  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* bib2html: Add version (-v) option.
+	Remove incorrect \rm mapping.
+	Add LaTeX2e-style font commands (\textit{}, etc).
+
+Fri Oct 27 21:05:45 1995  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* bib2html 1.5 released.
+
+	* bibsearch:
+	Add author search.  Keyword search is no longer straight grep
+	pattern.  Built-in help.
+
+	* bib2html: Oops!  Missing "#".
+
+Thu Oct 26 17:26:17 1995  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* README: Update Thanks.
+
+	* bib2html: htmlfile argument is now optional.  If it is not specified,
+	the bibliography is written to stdout.
+	Give usage message if an improper number of arguments is
+	specified.
+
+	* bib2html.man: htmlfile argument is now optional.
+
+Tue Oct 17 18:41:55 1995  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* html.bst: Add url field, a replacement for html field.
+
+	* bib2html.man: Document url field, a replacement for html.
+
+	* bib2html:
+	Change \cite{} retain original cite key if citation is not found.
+	Swallow up space after \rm, \it, \em, or \tt.
+
+	* README: More people to thank....
+
+	* bibsearch: Fix error in HREF qualification.
+
+	* bib2html: Fix: move ~ -> &nbsp; translation to after \~ translation.
+
+Mon Oct 16 22:18:38 1995  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* html-abs.bst.diffs: Initial revision
+
+	* html.bst: Use \cite{} in crossref instead of [[]].
+
+	* bib2html.man: Document new delimiter (-d delim) option.
+
+	* bib2html:
+	Citations were being formatted incorrectly in alpha style.  Fixed.
+	Expand \cite{} so that citations are allowed anywhere in entry.
+	Add delimiter (-d delim) option.
+
+Mon Oct 16 19:41:35 1995  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* bib2html.man: Document new "-s style" option.
+
+	* bib2html: Check options and print usage message if illegal option.
+	Change $htmldir derivation.
+
+	* bib2html: Add support for plain and alpha bibliography styles.
+
+	* html.bst: Generate alpha labels instead of plain labels.  Code stolen
+	from alpha.bst.
+
+	* html.bst: Support both empty (<LI>) and plain (<DT>[nn]</DD>) lists.
+	Show crossref field in cross references.
+
+Fri Oct  6 18:50:20 1995  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* html-abs.bst, html.bst: Fix crossref code for HTML.
+
+	* bib2html: Remove empty crossrefs.
+
+	* README: Update emacs and thanks sections.
+
+	* bibsearch:
+	Fix relative URLs (<A HREF="#...">) so that they still work.
+
+	* bib2html.man: Document new abstract (-a) option.
+
+	* bib2html: Add \par to <P> conversion for abstracts.
+	Fix another bug in deriving $htmldir.
+
+Thu Oct  5 21:02:31 1995  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* README: Added "Thanks" section.
+
+	* bib2html:
+	Oops!  Lost command line processing.  Put call to Getopt() back in.
+	Add -a option, which puts abstract in HTML file.
+	Add more LaTeX to HTML character entity translations.
+
+	* html-abs.bst: Initial revision
+
+Wed Oct  4 19:32:45 1995  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* bib2html.man: Mention support for compressed and gzipped files.
+
+Wed Oct  4 19:18:27 1995  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* bib2html 1.3 released.
+
+	* bib2html: Printing warning if paper is not found.
+
+	* bib2html.man: Added under "BUGS": requires dviselect.
+
+	* bib2html: Removed debugging prints.
+
+	* bib2html: Generalized parsing of paper files.
+	Added support for DVI files.
+	Fixed bug: were deriving $htmldir incorrectly.
+
+	* html.bst: Add dvi field type.
+
+Wed Oct  4 15:32:07 1995  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* bib2html 1.2 released.
+
+	* README: Initial revision
+
+Tue Oct  3 23:16:50 1995  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* bib2html: Added redistribution under GNU Public License.
+
+	* bib2html.man:
+	Document new postscript and pdf field handling, and changed html
+	field handling.
+
+	* html.bst: Added pdf bibtex tag.
+
+	* bib2html:
+	Added pdf bibtex tag.  Improved PostScript file parsing.  Automagically
+	handle compressed (.Z) and gzipped (.z and .gz) files.
+
+Mon Oct  2 23:50:09 1995  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* html.bst: Added postscript bibtex tag.
+
+	* bib2html:
+	Added postscript bibtex tag.  Added postscript file parsing to
+	get file size and number of pages.
+
+Mon Sep 11 20:43:04 1995  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* bib2html.man: Document new -3 option.
+
+	* bib2html:
+	Add limited support for translation of TeX greek to HTML 3.0 greek
+	entities.  Add &ndash; and &mdash; entities.  These translations
+	are enabled by the command line option "-3".
+
+Fri Aug 25 18:40:36 1995  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* bib2html 1.1 released.
+
+Fri Aug 25 13:44:27 1995  David Hull  <hull@pertsserver.cs.uiuc.edu>
+
+	* html.bst:
+ 	Change name anchor so that it no longer encloses
+	entire entry.  That sometimes creates nested anchor tags, which
+	is bad HTML.  Instead, create an empty name anchor, and bib2html
+	will try to fix it.
+	
+	* html.bst:
+ 	Change order of <LI> and <A NAME=...> to produce conforming HTML.
+	
+	* bib2html:
+ 	Try to move close tag of empty name anchors
+	(<A NAME=...></A>) so that they are not empty.  Some browsers
+	don't handle empty anchors correctly.
+	
+
