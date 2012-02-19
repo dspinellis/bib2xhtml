@@ -1,5 +1,4 @@
 #
-# $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\Makefile,v 1.28 2011/10/08 18:02:42 dds Exp $
 #
 
 NAME=bib2xhtml

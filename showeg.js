@@ -1,7 +1,6 @@
 /*
  * Show the example file specified.
  *
- * $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\showeg.js,v 1.2 2011/10/08 18:02:42 dds Exp $
  */
 
 function showBib(form) {

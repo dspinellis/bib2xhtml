@@ -2,7 +2,6 @@
 #
 # Add a URL field to books, based on their ISBN
 #
-# $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\addurl.pl,v 1.1 2008/03/22 18:09:10 dds Exp $
 #
 
 BEGIN {

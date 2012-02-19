@@ -1,6 +1,5 @@
 #!/local/bin/perl -w
 #
-# $Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\gen-bst,v 1.4 2004/04/07 12:59:49 dds Exp $
 #
 
 $DEFS = "html-btxbst.doc";
