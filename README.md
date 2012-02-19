@@ -72,4 +72,4 @@ Peter J Knaggs, Juergen Vollmer, Chris Torrence, Michael Sanders,
 Vispi Bulsara, Nick Cropper, Joe Wells, Luis Mandel, Ricardo E. Gonzalez,
 Daniel Kapitan, Tammy Kolda, Walter M. Lioen, Panos Louridas, Aki Vehtari,
 Martin P. J. Zinser, Eric Vinck, Mark Jelasity, Vasek Smidl, Bruno Salvy,
-Wilfried Elmenreich, Rogan Carr, Frank Loeffler, Todd Gamblin.
+Wilfried Elmenreich, Rogan Carr, Frank Loeffler, Todd Gamblin, Klaus Brunner.
