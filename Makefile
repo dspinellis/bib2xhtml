@@ -11,7 +11,7 @@ DISTDIR=/cygdrive/c/dds/pubs/web/home/sw/textproc/$(NAME)
 BSTFILES=$(wildcard *.bst)
 DOCFILES=$(NAME).html $(NAME).txt $(NAME).pdf index.html static.html showeg.js example.bib
 EGFILES=$(wildcard eg/*.html)
-ROOTFILES=README COPYING $(NAME) ${BSTFILES} $(DOCFILES) bibsearch Makefile $(NAME).man ChangeLog html-btxbst.doc gen-bst
+ROOTFILES=README.md COPYING $(NAME) ${BSTFILES} $(DOCFILES) bibsearch Makefile $(NAME).man ChangeLog html-btxbst.doc gen-bst
 VERSION=$(shell git describe --tags --abbrev=4 HEAD)
 
 default: $(DOCFILES) $(EGFILES) ${BSTFILES} syntax
