@@ -11,7 +11,7 @@ DISTDIR=/cygdrive/c/dds/pubs/web/home/sw/textproc/$(NAME)
 BSTFILES=$(wildcard *.bst)
 DOCFILES=$(NAME).html $(NAME).txt $(NAME).pdf index.html static.html showeg.js example.bib
 EGFILES=$(wildcard eg/*.html)
-ROOTFILES=README.md COPYING $(NAME) ${BSTFILES} $(DOCFILES) bibsearch Makefile $(NAME).man ChangeLog html-btxbst.doc gen-bst
+ROOTFILES=README.md COPYING ${BSTFILES} $(DOCFILES) bibsearch.pl Makefile $(NAME).man ChangeLog html-btxbst.doc gen-bst.pl $(NAME).pl
 VERSION=$(shell git describe --tags --abbrev=4 HEAD)
 
 default: $(DOCFILES) $(EGFILES) ${BSTFILES} syntax
@@ -31,7 +31,7 @@ $(NAME)-$(VERSION).tar.gz $(NAME)-$(VERSION).zip: $(ROOTFILES) $(EGFILES)
 	cp -f ${ROOTFILES} $(NAME)-$(VERSION)
 	rm -f $(NAME)-$(VERSION)/index.html
 	sed -e "s/VERSION/${VERSION}/" index.html >$(NAME)-$(VERSION)/index.html
-	sed -e "s/@VERSION@/${VERSION}/" $(NAME) >$(NAME)-$(VERSION)/$(NAME)
+	sed -e "s/@VERSION@/${VERSION}/" $(NAME).pl >$(NAME)-$(VERSION)/$(NAME)
 	cp -f ${EGFILES} $(NAME)-$(VERSION)/eg
 	tar czf $(NAME)-$(VERSION).tar.gz $(NAME)-$(VERSION)
 	zip -r  $(NAME)-$(VERSION).zip $(NAME)-$(VERSION)
@@ -50,12 +50,12 @@ $(NAME).html: $(NAME).man
 	groff -mhtml -Thtml -man <$? | sed -e 's/&minus;/-/g;s/&bull;/\&#8226;/g' >$@
 
 ${BSTFILES} : html-btxbst.doc
-	perl gen-bst
+	perl gen-bst.pl
 
-syntax: $(NAME) bibsearch
-	-perl -w -c $(NAME) >syntax 2>&1
-	-perl -T -w -c bibsearch >>syntax 2>&1
-	-perl -w -c gen-bst >>syntax 2>&1
+syntax: $(NAME).pl bibsearch.pl
+	-perl -w -c $(NAME).pl >syntax 2>&1
+	-perl -T -w -c bibsearch.pl >>syntax 2>&1
+	-perl -w -c gen-bst.pl >>syntax 2>&1
 	cat syntax
 
 install:
@@ -84,7 +84,7 @@ example: bib2xhtml Makefile
 						do \
 							for R in '' -R  ; \
 							do \
-								perl bib2xhtml -s $$style $$n $$u $$c $$r $$k $$R -h "Example: bib2xhtml -s $$style $$n $$u $$c $$r $$k $$R" example.bib eg/$${style}$${nopt}$${u}$${c}$${r}$${k}$${R}.html || true;\
+								perl $(NAME).pl -s $$style $$n $$u $$c $$r $$k $$R -h "Example: bib2xhtml -s $$style $$n $$u $$c $$r $$k $$R" example.bib eg/$${style}$${nopt}$${u}$${c}$${r}$${k}$${R}.html || true;\
 							done ; \
 						done ; \
 					done ; \
