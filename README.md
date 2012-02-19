@@ -1,4 +1,4 @@
-# This is Free Software:
+# This is Free Software
 
 The bib2html package is copyright 1996, David Hull.
 In 2002, due to the lack of visible updates on the web, the program
@@ -27,14 +27,14 @@ along with this program; if not, write to the Free Softwre
 Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 
-# Important news for people who already use bib2html:
+# Important news for people who already use bib2html
 
 The way that the bibsearch CGI script is called from HTML has changed
 in bib2html-1.25.  Read the comments at the beginning of bibsearch
 for the new calling conventions.
 
 
-# Installation:
+# Installation
 
 * Update the first line of bib2xhtml and bibsearch to point to the
 location of perl on your local machine.
@@ -53,7 +53,7 @@ html-btxbst.doc and then run gen-bst to generate the new versions.
 You probably won't need to, though.
 
 
-# GNU emacs:
+# GNU emacs
 
 For use with bibtex mode (available at
 http://www.ida.ing.tu-bs.de/people/dirk/bibtex/),
@@ -66,7 +66,7 @@ I add the following to my ~/.emacs file:
     ("dvi" "DVI file (for bib2xhtml))
 
 
-# Thanks to these people, who have contributed to bib2html:
+# Thanks to these people, who have contributed to bib2html
 
 Peter J Knaggs, Juergen Vollmer, Chris Torrence, Michael Sanders,
 Vispi Bulsara, Nick Cropper, Joe Wells, Luis Mandel, Ricardo E. Gonzalez,
