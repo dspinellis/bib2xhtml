@@ -41,7 +41,7 @@ $(NAME).ps: $(NAME).man
 	groff -man -Tps <$? > $@
 
 $(NAME).txt: $(NAME).man
-	groff -man -Tascii <$? | col -b > $@
+	groff -man -Tascii -P-c <$? | sed 's/.//g' >$@
 
 $(NAME).pdf: $(NAME).ps
 	cmd /c ps2pdf $? $@
