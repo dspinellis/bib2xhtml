@@ -291,6 +291,9 @@ ENTRY
     keywords
 %           Obvious.  bib2html will create a HTML comment containing these
 %	    keywords in the HTML it generates.
+    djvu
+%           DJVU source file.  bib2html will create a link to this
+%	    file in the HTML it generates.
     pdf
 %           PDF source file.  bib2html will create a link to this
 %	    file in the HTML it generates.
@@ -567,6 +570,10 @@ FUNCTION {fin.entry}
   pdf empty$
     'skip$
     { newline$ "<!-- PDF: " pdf * " -->" * write$ }
+  if$
+  djvu empty$
+    'skip$
+    { newline$ "<!-- DJVU: " djvu * " -->" * write$ }
   if$
   dvi empty$
     'skip$
