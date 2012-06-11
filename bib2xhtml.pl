@@ -108,7 +108,12 @@ command: {
     ($cmd, $cmp);
 }
 
-@paperTypes = ("PostScript", "PDF", "DVI", "DOI");
+@paperTypes = ("PostScript", "PDF", "DVI", "DOI", "DJVU");
+
+sub DJVUPageCount {
+    return undef;
+    # could be implemented later but it is not crucial...
+}
 
 sub PostScriptPageCount {
     local($cmd) = @_;
@@ -1023,7 +1028,8 @@ while (<BBLFILE>) {
 	next loop;
     }
     $nentry++;
-    ($bcite, $blabel) = m+<dt><a name=\"([^\"]*)\">\[([^\]]*)\]</a></dt><dd>+;
+#    ($bcite, $blabel) = m+<dt><a name=\"([^\"]*)\">\[([^\]]*)\]</a></dt><dd>+;
+    ($bcite, $blabel) = m+name=\"([^\"]*)\">\[([^\]]*)\]</a></dt><dd>+;
 	if ($label_style == $LABEL_NUMBERED) {
 		if (defined ($opt_R)) {
 			$blabel = $ntotent - $nentry + 1;
