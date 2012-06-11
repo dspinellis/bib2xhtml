@@ -832,14 +832,14 @@ undef $nobrackets;
 if (defined($opt_e)) {
 	my(@opts) = split(/,/, $opt_e);
 	for $opt (@opts) {
-		if ($opt =~ m/(PostScript|PDF|DVI|DOI):(.*)/) {
+		if ($opt =~ m/(PostScript|PDF|DVI|DOI|DJVU):(.*)/) {
 			$typeicon{$1} = $2;
 		} elsif ($opt =~ m/(notype|nosize|nopages|nocompression|nodoi|nobrackets)/) {
 			eval "\$$1 = 1";
 		} else {
 			print STDERR qq{Invalid extended information specification: $opt
 This can be a comma-separated list of the following specifications:
-PostScript|PDF|DVI|DOI:new-text (e.g. PDF file icon)
+PostScript|PDF|DVI|DOI|DJVU:new-text (e.g. PDF file icon)
 notype|nosize|nopages|nocompression|nodoi|nobrackets
 };
 			exit 1;
@@ -1005,7 +1005,7 @@ $ntotent = 0;
 if (defined($opt_R)) {
 	open(BBLFILE, "<$t") || die "error opening $t: $!\n";
 	while (<BBLFILE>) {
-		($bcite, $blabel) = m+<dt><a name=\"([^\"]*)\">\[([^\]]*)\]</a></dt><dd>+;
+		($bcite, $blabel) = m+name=\"([^\"]*)\">\[([^\]]*)\]</a></dt><dd>+;
 		if ($bcite) {
 			$ntotent++;
 		}
@@ -1093,33 +1093,35 @@ while (<BBLFILE>) {
 
     # Adjust beginning of entry based on bibliography style.
     if ($label_style == $LABEL_PLAIN) {
-	s:<dt>(<a name=\"[^\"]*\">)\[[^\]]*\](</a>)</dt><dd>:<li>$1$2:;
-	s:</dd>:</li>:;
+	s+<dt><a+<li><a+;
+	s+(name=\"[^\"]*\">)\[[^\]]*\](</a>)</dt><dd>+$1$2+;
+	s+</dd>+</li>+;
 
 	# Attempt to fix up empty <a name=...></a> tag, which some browsers
 	# don't handle properly (even though it *is* legal HTML).
 	# First try to combine a <a name=...></a> with a following <A ".
-	s:(<a name=\"[^\"]*\")></a><a\b:$1:
+	s+(name=\"[^\"]*\")></a><a\b+$1+
 	# If that doesn't work, try to swallow following word.
-	or s:(<a name=\"[^\"]*\">)</a>([\w]+):$1$2<\/a>:;
+	or s:(name=\"[^\"]*\">)</a>([\w]+):$1$2<\/a>:;
     } elsif ($label_style == $LABEL_PARAGRAPH) {
-	s:<dt>(<a name=\"[^\"]*\">)\[[^\]]*\](</a>)</dt><dd>:<p>$1$2:;
-	s:</dd>:</p>:;
+	s+<dt><a+<p><a+;
+	s+(name=\"[^\"]*\">)\[[^\]]*\](</a>)</dt><dd>+$1$2+;
+	s+</dd>+</p>+;
 
 	# Attempt to fix up empty <a name=...></a> tag, which some browsers
 	# don't handle properly (even though it *is* legal HTML).
 	# First try to combine a <a name=...></a> with a following <A ".
-	s:(<a name=\"[^\"]*\")></a><a\b:$1:
+	s+(name=\"[^\"]*\")></a><a\b+$1+
 	# If that doesn't work, try to swallow following word.
-	or s:(<a name=\"[^\"]*\">)</a>([\w]+):$1$2<\/a>:;	
+	or s:(name=\"[^\"]*\">)</a>([\w]+):$1$2<\/a>:;	
     } elsif ($label_style == $LABEL_NUMBERED) {
-	s:(<dt><a name=\"[^\"]*\">\[)[^\]]*(\]</a></dt><dd>):$1$nentryp$2:;
+	s+(name=\"[^\"]*\">\[)[^\]]*(\]</a></dt><dd>)+$1$nentryp$2+;
     }
 
     # Append the key name, if asked so
     if ($opt_k && ($label_style == $LABEL_NUMBERED || $label_style == $LABEL_DEFAULT)) {
-	# $1              $2      $3     $4      $5
-	s:(<dt><a name=\")([^\"]*)(\">\[)([^\]]*)(\]</a></dt><dd>):$1$2$3$4 --- $2$5:;
+	# $1       $2      $3     $4      $5
+	s+(name=\")([^\"]*)(\">\[)([^\]]*)(\]</a></dt><dd>)+$1$2$3$4 --- $2$5+;
     }
 
     # Attempt to fix up crossrefs.
