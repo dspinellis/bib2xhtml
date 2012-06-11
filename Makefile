@@ -66,7 +66,7 @@ install:
 # Create example files
 # Some nonsensical option combinations cause bib2xhtml to exit with an error
 # Hence the || true part
-example: bib2xhtml Makefile
+example: bib2xhtml.pl Makefile
 	-rm -f eg/*.html
 	cp v23n5.pdf eg
 	for style in empty plain alpha named unsort unsortlist paragraph ; \
