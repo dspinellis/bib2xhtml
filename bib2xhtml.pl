@@ -1028,7 +1028,6 @@ while (<BBLFILE>) {
 	next loop;
     }
     $nentry++;
-#    ($bcite, $blabel) = m+<dt><a name=\"([^\"]*)\">\[([^\]]*)\]</a></dt><dd>+;
     ($bcite, $blabel) = m+name=\"([^\"]*)\">\[([^\]]*)\]</a></dt><dd>+;
 	if ($label_style == $LABEL_NUMBERED) {
 		if (defined ($opt_R)) {
