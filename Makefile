@@ -8,7 +8,12 @@ BIBTEXDIR=$(HOME)/texmf/bibtex/bst/
 CGIDIR=/usr/dcs/www/cgi-bin/
 DISTDIR=/cygdrive/c/dds/pubs/web/home/sw/textproc/$(NAME)
 
-BSTFILES=$(wildcard *.bst)
+BSTFILES=\
+	html-a.bst html-aa.bst html-ac.bst html-aca.bst html-acr.bst\
+	html-acra.bst html-ar.bst html-ara.bst html-n.bst html-na.bst\
+	html-nc.bst html-nca.bst html-ncr.bst html-ncra.bst html-nr.bst\
+	html-nra.bst html-u.bst html-ua.bst
+
 DOCFILES=$(NAME).html $(NAME).txt $(NAME).pdf index.html static.html showeg.js example.bib
 EGFILES=$(wildcard eg/*.html)
 ROOTFILES=README.md COPYING ${BSTFILES} $(DOCFILES) bibsearch.pl Makefile $(NAME).man ChangeLog html-btxbst.doc gen-bst.pl $(NAME).pl
