@@ -15,29 +15,28 @@ BSTFILES=\
 	html-nra.bst html-u.bst html-ua.bst
 
 DOCFILES=$(NAME).html $(NAME).txt $(NAME).pdf index.html static.html showeg.js example.bib
-EGFILES=$(wildcard eg/*.html)
 ROOTFILES=README.md COPYING ${BSTFILES} $(DOCFILES) bibsearch.pl Makefile $(NAME).man ChangeLog html-btxbst.doc gen-bst.pl $(NAME).pl
 VERSION=$(shell git describe --tags --abbrev=4 HEAD)
 
-default: $(DOCFILES) $(EGFILES) ${BSTFILES} syntax
+default: $(DOCFILES) eg ${BSTFILES} syntax
 
 dist: default $(NAME)-$(VERSION).tar.gz $(NAME)-$(VERSION).zip
 	-mkdir -p $(DISTDIR)/eg 2>/dev/null
 	cp -f $(NAME)-$(VERSION).tar.gz $(NAME)-$(VERSION).zip $(DISTDIR)
 	cp -f $(DOCFILES) $(DISTDIR)
-	cp -f $(EGFILES) $(DISTDIR)/eg
+	cp -f eg/* $(DISTDIR)/eg
 	cp -f ChangeLog $(DISTDIR)/ChangeLog.txt
 	rm -f ${DISTDIR}/index.html
 	sed -e "s/VERSION/${VERSION}/" index.html >${DISTDIR}/index.html
 
-$(NAME)-$(VERSION).tar.gz $(NAME)-$(VERSION).zip: $(ROOTFILES) $(EGFILES)
+$(NAME)-$(VERSION).tar.gz $(NAME)-$(VERSION).zip: $(ROOTFILES) eg
 	-cmd /c "rd /s/q $(NAME)-$(VERSION)"
 	mkdir -p $(NAME)-$(VERSION)/eg
 	cp -f ${ROOTFILES} $(NAME)-$(VERSION)
 	rm -f $(NAME)-$(VERSION)/index.html
 	sed -e "s/VERSION/${VERSION}/" index.html >$(NAME)-$(VERSION)/index.html
 	sed -e "s/@VERSION@/${VERSION}/" $(NAME).pl >$(NAME)-$(VERSION)/$(NAME)
-	cp -f ${EGFILES} $(NAME)-$(VERSION)/eg
+	cp -f eg/* $(NAME)-$(VERSION)/eg
 	tar czf $(NAME)-$(VERSION).tar.gz $(NAME)-$(VERSION)
 	zip -r  $(NAME)-$(VERSION).zip $(NAME)-$(VERSION)
 	cmd /c "rd /s/q $(NAME)-$(VERSION)"
@@ -71,7 +70,8 @@ install:
 # Create example files
 # Some nonsensical option combinations cause bib2xhtml to exit with an error
 # Hence the || true part
-example: bib2xhtml.pl Makefile
+eg: bib2xhtml.pl Makefile
+	mkdir -p eg
 	-rm -f eg/*.html
 	cp v23n5.pdf eg
 	for style in empty plain alpha named unsort unsortlist paragraph ; \
