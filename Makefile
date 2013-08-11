@@ -14,7 +14,7 @@ BSTFILES=\
 	html-nc.bst html-nca.bst html-ncr.bst html-ncra.bst html-nr.bst\
 	html-nra.bst html-u.bst html-ua.bst
 
-DOCFILES=$(NAME).html $(NAME).txt $(NAME).pdf index.html static.html showeg.js example.bib
+DOCFILES=$(NAME).html $(NAME).txt $(NAME).pdf index.html static.html showeg.js example.bib logo.jpeg
 ROOTFILES=README.md COPYING ${BSTFILES} $(DOCFILES) bibsearch.pl Makefile $(NAME).man ChangeLog html-btxbst.doc gen-bst.pl $(NAME).pl
 VERSION=$(shell git describe --tags --abbrev=4 HEAD)
 
