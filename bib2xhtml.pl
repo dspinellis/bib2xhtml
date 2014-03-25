@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl -w
 # -*- perl -*-
 # vim: syntax=perl
 eval 'exec /usr/bin/perl -w -S $0 ${1+"$@"}'
