@@ -1046,7 +1046,7 @@ $list_start = $list_start[$label_style];
 $list_end = $list_end[$label_style];
 
 if (defined($opt_t)) {
-    print HTMLFILE "$nentry references, last updated " . localtime . "<p />\n";
+    print HTMLFILE "$nentry references, last updated " . localtime() . "<p />\n";
 }
 
 print HTMLFILE "<$list_start>\n\n";
