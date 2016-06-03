@@ -36,10 +36,13 @@ for the new calling conventions.
 
 # Installation
 
-* Update the first line of bib2xhtml and bibsearch to point to the
-location of perl on your local machine.
+* The scripts should be able to find the location your perl
+installation. If not, you need to update the first line of bib2xhtml
+and bibsearch to point to the location of perl on your local machine.
 
-* Install html-*.bst somewhere that bibtex can find them.  If you have
+* Run ./gen-bst.pl from the directory to generate the html-\*.bst style files.
+
+* Install html-\*.bst somewhere that bibtex can find them.  If you have
 installed an earlier version of bib2xhtml, remove html.bst and
 html-abs.bst.
 
