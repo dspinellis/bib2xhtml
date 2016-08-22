@@ -1,4 +1,4 @@
-#!/local/bin/perl -T -w
+#!/usr/bin/env perl -T -w
 
 # $Id: bibsearch,v 1.20 1998/02/11 19:22:30 hull Exp hull $
 #
