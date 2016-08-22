@@ -70,7 +70,7 @@ install:
 # Create example files
 # Some nonsensical option combinations cause bib2xhtml to exit with an error
 # Hence the || true part
-eg: bib2xhtml.pl Makefile
+eg example: bib2xhtml.pl Makefile
 	mkdir -p eg
 	-rm -f eg/*.html
 	cp v23n5.pdf eg
@@ -116,7 +116,7 @@ test: example static.html
 
 # Seed regression test files
 seed: example
-	-mkdir test.ok 2>/dev/null
+	mkdir -p test.ok
 	cp eg/* test.ok
 
 # Static HTML file version with links to the eg files
