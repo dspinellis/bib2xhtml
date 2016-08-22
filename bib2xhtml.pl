@@ -1076,7 +1076,7 @@ while (<BBLFILE>) {
     s/\\\$/\004/g;
     {
 	local ($c, $l, $z) = (0, 0, ());
-	s/([\{\}])/join("","\001",($1 eq "\{" ? $z[$l++]=$c++ : $z[--$l]),$1)/ge;
+	s/([\{\}])/join("","\001",($1 eq "\{" ? $z[$l++]=$c++ : $l > 0 ? $z[--$l] : $1),$1)/ge;
     }
 
     # bibtex sometimes breaks long lines by inserting "%\n".  We remove
