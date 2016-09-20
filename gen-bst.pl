@@ -1,6 +1,7 @@
-#!/usr/bin/env perl -w
+#!/usr/bin/env perl
 #
 #
+use warnings;
 
 $DEFS = "html-btxbst.doc";
 
