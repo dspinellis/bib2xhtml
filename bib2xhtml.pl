@@ -1,4 +1,4 @@
-#!/usr/bin/env perl -w
+#!/usr/bin/env perl
 # -*- perl -*-
 # vim: syntax=perl
 eval 'exec /usr/bin/perl -w -S $0 ${1+"$@"}'
@@ -23,7 +23,7 @@ $version = '@VERSION@';
 # an appropriate editor, if you want to view/modify the LaTeX to Unicode
 # substitution commands.
 #
-
+use warnings;
 use Getopt::Std;
 use open IO => ':crlf';
 
