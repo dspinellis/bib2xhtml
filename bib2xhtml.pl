@@ -888,7 +888,7 @@ qq{<?xml version="1.0" encoding="$enc"?>
 <head>
 <title>$title</title>
 <meta http-equiv="Content-type" content="text/html; charset=$enc" />} . q{
-<meta name="Generator" content="$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.38 2011/10/19 15:15:05 dds Exp $" />
+<meta name="Generator" content="http://www.spinellis.gr/sw/textproc/bib2xhtml/" />
 </head>
 <body>
 }
