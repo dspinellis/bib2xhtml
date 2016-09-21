@@ -111,7 +111,7 @@ test: example static.html
 	for i in *.html ; \
 	do \
 		xml val -d /pub/schema/xhtml1-transitional.dtd $$i 2>/dev/null ; \
-		diff ../test.ok/$$i $$i ; \
+		diff -w ../test.ok/$$i $$i ; \
 	done
 
 # Seed regression test files
