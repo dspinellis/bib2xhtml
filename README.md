@@ -1,9 +1,12 @@
-# Important news for people who already use bib2html
-
-The way that the bibsearch CGI script is called from HTML has changed
-in bib2html-1.25.  Read the comments at the beginning of bibsearch
-for the new calling conventions.
-
+# bib2xhtml - Convert BibTeX Files into HTML
+bib2xhtml is a program that converts BibTeX files into HTML
+(specifically XHTML 1.0).
+The conversion is mostly done by specialized BibTeX style files,
+derived from a converted bibliography style template.
+This ensures that the original BibTeX styles are faithfully reproduced.
+Some postprocessing is performed by Perl code.
+More information, documentation, and examples can be found on
+the [bib2xhtml home page](http://www.spinellis.gr/sw/textproc/bib2xhtml/).
 
 # Installation
 
@@ -26,15 +29,12 @@ to call it from another HTML page.
 html-btxbst.doc and then run gen-bst to generate the new versions.
 You probably won't need to, though.
 
-# bib2xhtml - Convert BibTeX Files into HTML
-bib2xhtml is a program that converts BibTeX files into HTML
-(specifically XHTML 1.0).
-The conversion is mostly done by specialized BibTeX style files,
-derived from a converted bibliography style template.
-This ensures that the original BibTeX styles are faithfully reproduced.
-Some postprocessing is performed by Perl code.
-More information, documentation, and examples can be found on
-the [bib2xhtml home page](http://www.spinellis.gr/sw/textproc/bib2xhtml/).
+# Important news for people who already use bib2html
+
+The way that the bibsearch CGI script is called from HTML has changed
+in bib2html-1.25.  Read the comments at the beginning of bibsearch
+for the new calling conventions.
+
 
 # GNU emacs
 
