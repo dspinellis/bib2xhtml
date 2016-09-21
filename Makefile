@@ -103,14 +103,17 @@ eg example: bib2xhtml.pl Makefile ${BSTFILES}
 	done ; \
 	touch example
 
+xhtml1-transitional.dtd:
+	wget https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd
+
 # Regression test
-test: example static.html
-	xmlstarlet val -d /pub/schema/xhtml1-transitional.dtd index.html ;\
-	xmlstarlet val -d /pub/schema/xhtml1-transitional.dtd static.html ;\
+test: example static.html xhtml1-transitional.dtd
+	xmlstarlet val -d xhtml1-transitional.dtd index.html ;\
+	xmlstarlet val -d xhtml1-transitional.dtd static.html ;\
 	cd eg ; \
 	for i in *.html ; \
 	do \
-		xmlstarlet val -d /pub/schema/xhtml1-transitional.dtd $$i 2>/dev/null ; \
+		xmlstarlet val -d ../xhtml1-transitional.dtd $$i 2>/dev/null ; \
 		diff -w ../test.ok/$$i $$i ; \
 	done
 
