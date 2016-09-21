@@ -25,7 +25,6 @@ $version = '@VERSION@';
 #
 use warnings;
 use Getopt::Std;
-use open IO => ':crlf';
 
 eval "use PDF::API2";
 $have_pdf_api = 1 unless (defined $@ && $@ ne '');
@@ -1003,7 +1002,7 @@ $/ = "";
 # Make a first pass through the .bbl file, collecting citation/label pairs.
 $ntotent = 0;
 if (defined($opt_R)) {
-	open(BBLFILE, "<$t") || die "error opening $t: $!\n";
+	open(BBLFILE, "<:crlf", $t) || die "error opening $t: $!\n";
 	while (<BBLFILE>) {
 		($bcite, $blabel) = m+name=\"([^\"]*)\">\[([^\]]*)\]</a></dt><dd>+;
 		if ($bcite) {
@@ -1012,7 +1011,7 @@ if (defined($opt_R)) {
 	}
 	close(BBLFILE);
 }
-open(BBLFILE, "<$t") || die "error opening $t: $!\n";
+open(BBLFILE, "<:crlf", $t) || die "error opening $t: $!\n";
 $nentry = 0;
 loop:
 while (<BBLFILE>) {
@@ -1055,7 +1054,7 @@ print HTMLFILE "<$list_start>\n\n";
 #    print "$key : $bibcite{$key}\n";
 #}
 
-open(BBLFILE, "<$t") || die "error opening $t: $!\n";
+open(BBLFILE, "<:crlf", $t) || die "error opening $t: $!\n";
 $nentry = 0;
 loop:
 while (<BBLFILE>) {
