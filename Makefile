@@ -53,7 +53,7 @@ $(NAME).pdf: $(NAME).ps
 $(NAME).html: $(NAME).man
 	groff -mhtml -Thtml -man <$? | sed -e 's/&minus;/-/g;s/&bull;/\&#8226;/g' >$@
 
-${BSTFILES} : html-btxbst.doc
+${BSTFILES}: html-btxbst.doc
 	perl gen-bst.pl
 
 syntax: $(NAME).pl bibsearch.pl
@@ -70,7 +70,7 @@ install:
 # Create example files
 # Some nonsensical option combinations cause bib2xhtml to exit with an error
 # Hence the || true part
-eg example: bib2xhtml.pl Makefile
+eg example: bib2xhtml.pl Makefile ${BSTFILES}
 	mkdir -p eg
 	-rm -f eg/*.html
 	cp v23n5.pdf eg
