@@ -105,12 +105,12 @@ eg example: bib2xhtml.pl Makefile ${BSTFILES}
 
 # Regression test
 test: example static.html
-	xml val -d /pub/schema/xhtml1-transitional.dtd index.html ;\
-	xml val -d /pub/schema/xhtml1-transitional.dtd static.html ;\
+	xmlstarlet val -d /pub/schema/xhtml1-transitional.dtd index.html ;\
+	xmlstarlet val -d /pub/schema/xhtml1-transitional.dtd static.html ;\
 	cd eg ; \
 	for i in *.html ; \
 	do \
-		xml val -d /pub/schema/xhtml1-transitional.dtd $$i 2>/dev/null ; \
+		xmlstarlet val -d /pub/schema/xhtml1-transitional.dtd $$i 2>/dev/null ; \
 		diff -w ../test.ok/$$i $$i ; \
 	done
 
