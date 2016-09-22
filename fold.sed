@@ -1,4 +1,4 @@
-#!/usr/bin/sed -nf
+#!/bin/sed -nf
 #
 # Fold blank-line separated blocks into a single line
 
