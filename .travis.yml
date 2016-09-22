@@ -1,0 +1,6 @@
+install:
+- sudo apt-get -qq update
+- sudo apt-get install -y wget texlive
+- make
+
+script: make syntax test
