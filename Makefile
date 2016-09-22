@@ -114,13 +114,13 @@ test: example static.html xhtml1-transitional.dtd
 	for i in *.html ; \
 	do \
 		xmlstarlet val -d ../xhtml1-transitional.dtd $$i 2>/dev/null ; \
-		diff -w ../test.ok/$$i $$i ; \
+		../fold.sed $$i | diff -w ../test.ok/$$i - ; \
 	done
 
 # Seed regression test files
 seed: example
 	mkdir -p test.ok
-	cp eg/* test.ok
+	cd eg && for i in *.html ; do ../fold.sed $$i >../test.ok/$$i ; done
 
 # Static HTML file version with links to the eg files
 static.html: index.html Makefile example
