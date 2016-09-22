@@ -2,7 +2,7 @@
 # Makefile for generating the distribution
 # This is written to run under Cygwin. YMMV
 
-NAME=bib2xhtml
+export NAME=bib2xhtml
 BINDIR=$(HOME)/bin/
 BIBTEXDIR=$(HOME)/texmf/bibtex/bst/
 CGIDIR=/usr/dcs/www/cgi-bin/
@@ -70,37 +70,11 @@ install:
 # Create example files
 # Some nonsensical option combinations cause bib2xhtml to exit with an error
 # Hence the || true part
-eg example: bib2xhtml.pl Makefile ${BSTFILES}
+eg example: bib2xhtml.pl example.sh ${BSTFILES}
 	mkdir -p eg
 	-rm -f eg/*.html
 	cp v23n5.pdf eg
-	for style in empty plain alpha named unsort unsortlist paragraph ; \
-	do \
-		for n in '' '-n Spinellis' ; \
-		do \
-			nopt=`expr "$$n" : '\(..\)'` ;\
-			for u in '' -u  ; \
-			do \
-				for c in '' -c  ; \
-				do \
-					for r in '' -r  ; \
-					do \
-						for k in '' -k  ; \
-						do \
-							for R in '' -R  ; \
-							do \
-								perl $(NAME).pl -s $$style $$n $$u $$c $$r $$k $$R -h "Example: bib2xhtml -s $$style $$n $$u $$c $$r $$k $$R" example.bib eg/$${style}$${nopt}$${u}$${c}$${r}$${k}$${R}.html || true;\
-							done ; \
-						done ; \
-					done ; \
-				done ; \
-			done ; \
-		done ; \
-	done ; \
-	for i in eg/*.html ; \
-	do \
-		sed -i '/$$Id/d' $$i ; \
-	done ; \
+	./example.sh
 	touch example
 
 xhtml1-transitional.dtd:
