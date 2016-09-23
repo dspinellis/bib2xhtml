@@ -30,7 +30,7 @@ dist: default $(NAME)-$(VERSION).tar.gz $(NAME)-$(VERSION).zip
 	sed -e "s/VERSION/${VERSION}/" index.html >${DISTDIR}/index.html
 
 $(NAME)-$(VERSION).tar.gz $(NAME)-$(VERSION).zip: $(ROOTFILES) eg
-	rm -rf $(NAME)-$(VERSION)"
+	rm -rf $(NAME)-$(VERSION)
 	mkdir -p $(NAME)-$(VERSION)/eg
 	cp -f ${ROOTFILES} $(NAME)-$(VERSION)
 	rm -f $(NAME)-$(VERSION)/index.html
@@ -39,7 +39,7 @@ $(NAME)-$(VERSION).tar.gz $(NAME)-$(VERSION).zip: $(ROOTFILES) eg
 	cp -f eg/* $(NAME)-$(VERSION)/eg
 	tar czf $(NAME)-$(VERSION).tar.gz $(NAME)-$(VERSION)
 	zip -r  $(NAME)-$(VERSION).zip $(NAME)-$(VERSION)
-	rm -rf $(NAME)-$(VERSION)"
+	rm -rf $(NAME)-$(VERSION)
 
 $(NAME).ps: $(NAME).man
 	groff -man -Tps <$? > $@
