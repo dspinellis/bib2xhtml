@@ -22,6 +22,7 @@ default: $(DOCFILES) eg ${BSTFILES} syntax
 
 dist: default $(NAME)-$(VERSION).tar.gz $(NAME)-$(VERSION).zip
 	-mkdir -p $(DISTDIR)/eg 2>/dev/null
+	rm -f $(DISTDIR)/bib2xhtml-v*
 	cp -f $(NAME)-$(VERSION).tar.gz $(NAME)-$(VERSION).zip $(DISTDIR)
 	cp -f $(DOCFILES) $(DISTDIR)
 	cp -f eg/* $(DISTDIR)/eg
