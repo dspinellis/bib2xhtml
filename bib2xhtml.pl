@@ -903,12 +903,12 @@ if ($opt_i && $updating) {
  loop:
   while (<OHTMLFILE>) {
     print HTMLFILE;
-    last loop if m/^$beginstring$/;
+    last loop if m/^$beginstring\s*$/;
   }
  loop:
   while (<OHTMLFILE>) {
     print HTMLFILE;
-    last loop if m/^$endstring$/;
+    last loop if m/^$endstring\s*$/;
     push(@citations, $2) if m/^([^\\]*)?(.+\})(.*)?$/;
   }
   push(@citations, "\\bibdata{$macrofile$bibfile}");
@@ -974,12 +974,12 @@ $endstring = "<!-- END BIBLIOGRAPHY $delimiter -->";
 if ($updating) {
 loop:
     while (<OHTMLFILE>) {
-	last loop if m/^$beginstring$/;
+	last loop if m/^$beginstring\s*$/;
 	print HTMLFILE;
     }
 loop:
     while (<OHTMLFILE>) {
-	last loop if m/^$endstring$/;
+	last loop if m/^$endstring\s*$/;
     }
 }
 
