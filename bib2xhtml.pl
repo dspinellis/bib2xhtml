@@ -927,7 +927,7 @@ if (defined($citefile)) {
     $citefile .= ".aux";
     open(CITEFILE, "<$citefile") || die "error opening $citefile: $!\n";
     while (<CITEFILE>) {
-	print AUXFILE $_ if (m/^\\(citation|bibdata){/);
+	print AUXFILE $_ if (m/^\\(citation|bibdata)\{/);
     }
     close(CITEFILE);
 } elsif (@citations) {
