@@ -1,0 +1,6 @@
+install:
+- sudo apt-get -qq update
+- sudo apt-get install -y wget texlive xmlstarlet
+- make
+
+script: make syntax test

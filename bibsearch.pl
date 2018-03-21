@@ -1,4 +1,4 @@
-#!/local/bin/perl -T -w
+#!/usr/bin/perl -T
 
 # $Id: bibsearch,v 1.20 1998/02/11 19:22:30 hull Exp hull $
 #
@@ -33,6 +33,7 @@
 #
 
 ### Configuration section.
+use warnings;
 
 # Path of default bibliography database, if not specified in URL.
 $DEFAULT_BIB_PATH = "/usr/dcs/www/www-root/papers/index.html";

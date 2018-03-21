@@ -9,3 +9,5 @@ bib2xhtml.txt
 *.tar.gz
 *.zip
 .*.swp
+*.bst
+xhtml1-transitional.dtd

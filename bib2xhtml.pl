@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl
 # -*- perl -*-
 # vim: syntax=perl
 eval 'exec /usr/bin/perl -w -S $0 ${1+"$@"}'
@@ -23,9 +23,8 @@ $version = '@VERSION@';
 # an appropriate editor, if you want to view/modify the LaTeX to Unicode
 # substitution commands.
 #
-
+use warnings;
 use Getopt::Std;
-use open IO => ':crlf';
 
 eval "use PDF::API2";
 $have_pdf_api = 1 unless (defined $@ && $@ ne '');
@@ -889,7 +888,7 @@ qq{<?xml version="1.0" encoding="$enc"?>
 <head>
 <title>$title</title>
 <meta http-equiv="Content-type" content="text/html; charset=$enc" />} . q{
-<meta name="Generator" content="$Id: \\dds\\src\\textproc\\bib2xhtml\\RCS\\bib2xhtml,v 2.38 2011/10/19 15:15:05 dds Exp $" />
+<meta name="Generator" content="http://www.spinellis.gr/sw/textproc/bib2xhtml/" />
 </head>
 <body>
 }
@@ -904,12 +903,12 @@ if ($opt_i && $updating) {
  loop:
   while (<OHTMLFILE>) {
     print HTMLFILE;
-    last loop if m/^$beginstring$/;
+    last loop if m/^$beginstring\s*$/;
   }
  loop:
   while (<OHTMLFILE>) {
     print HTMLFILE;
-    last loop if m/^$endstring$/;
+    last loop if m/^$endstring\s*$/;
     push(@citations, $2) if m/^([^\\]*)?(.+\})(.*)?$/;
   }
   push(@citations, "\\bibdata{$macrofile$bibfile}");
@@ -928,7 +927,7 @@ if (defined($citefile)) {
     $citefile .= ".aux";
     open(CITEFILE, "<$citefile") || die "error opening $citefile: $!\n";
     while (<CITEFILE>) {
-	print AUXFILE $_ if (m/^\\(citation|bibdata){/);
+	print AUXFILE $_ if (m/^\\(citation|bibdata)\{/);
     }
     close(CITEFILE);
 } elsif (@citations) {
@@ -975,12 +974,12 @@ $endstring = "<!-- END BIBLIOGRAPHY $delimiter -->";
 if ($updating) {
 loop:
     while (<OHTMLFILE>) {
-	last loop if m/^$beginstring$/;
+	last loop if m/^$beginstring\s*$/;
 	print HTMLFILE;
     }
 loop:
     while (<OHTMLFILE>) {
-	last loop if m/^$endstring$/;
+	last loop if m/^$endstring\s*$/;
     }
 }
 
@@ -1003,7 +1002,7 @@ $/ = "";
 # Make a first pass through the .bbl file, collecting citation/label pairs.
 $ntotent = 0;
 if (defined($opt_R)) {
-	open(BBLFILE, "<$t") || die "error opening $t: $!\n";
+	open(BBLFILE, "<:crlf", $t) || die "error opening $t: $!\n";
 	while (<BBLFILE>) {
 		($bcite, $blabel) = m+name=\"([^\"]*)\">\[([^\]]*)\]</a></dt><dd>+;
 		if ($bcite) {
@@ -1012,7 +1011,7 @@ if (defined($opt_R)) {
 	}
 	close(BBLFILE);
 }
-open(BBLFILE, "<$t") || die "error opening $t: $!\n";
+open(BBLFILE, "<:crlf", $t) || die "error opening $t: $!\n";
 $nentry = 0;
 loop:
 while (<BBLFILE>) {
@@ -1046,7 +1045,7 @@ $list_start = $list_start[$label_style];
 $list_end = $list_end[$label_style];
 
 if (defined($opt_t)) {
-    print HTMLFILE "$nentry references, last updated " . localtime . "<p />\n";
+    print HTMLFILE "$nentry references, last updated " . localtime() . "<p />\n";
 }
 
 print HTMLFILE "<$list_start>\n\n";
@@ -1055,7 +1054,7 @@ print HTMLFILE "<$list_start>\n\n";
 #    print "$key : $bibcite{$key}\n";
 #}
 
-open(BBLFILE, "<$t") || die "error opening $t: $!\n";
+open(BBLFILE, "<:crlf", $t) || die "error opening $t: $!\n";
 $nentry = 0;
 loop:
 while (<BBLFILE>) {
@@ -1076,7 +1075,7 @@ while (<BBLFILE>) {
     s/\\\$/\004/g;
     {
 	local ($c, $l, $z) = (0, 0, ());
-	s/([\{\}])/join("","\001",($1 eq "\{" ? $z[$l++]=$c++ : $z[--$l]),$1)/ge;
+	s/([\{\}])/join("","\001",($1 eq "\{" ? $z[$l++]=$c++ : $l > 0 ? $z[--$l] : $1),$1)/ge;
     }
 
     # bibtex sometimes breaks long lines by inserting "%\n".  We remove
