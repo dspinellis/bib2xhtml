@@ -300,12 +300,15 @@ sub html_ent {
 	s/\\\~([ANOano])/&$1tilde;/g;			# tilde \~x
 	s/\\\^(\001\d+)\{([AEIOUaeiou])\1\}/&$2circ;/gs;	# circumflex \^{x}
 	s/\\\^([AEIOUaeiou])/&$1circ;/g;		# circumflex \^x
-	s/\\c(\001\d+)\{([Cc])\1\}/&$2cedil;/gs;		# cedilla \c{x}
+	s/\\c(\001\d+)\{([Cc])\1\}/&$2cedil;/gs;	# cedilla \c{x}
+	s/\\r(\001\d+)\{([Aa])\1\}/&$2ring;/gs;		# ring accent \r{x}
+
 	# The following accents have no HTML equivalent.
 	# (This list is still not complete.)
+	s/\\r(\001\d+)\{(.)\1\}/$2/gs;			# ring accent \r{x}
 	s/\\u(\001\d+)\{(.)\1\}/$2/gs;			# breve accent \u{x}
 	s/\\v(\001\d+)\{(.)\1\}/$2/gs;			# hacek accent \v{x}
-	s/\\([lL])\b/$1/g;					# slashed l
+	s/\\([lL])\b/$1/g;				# slashed l
 	s/\\\=(\001\d+)\{(.)\1\}/$2/gs;			# macron \={x}
 	s/\\\=(.)/$1/g;					# macron accent \=x
 	s/\\\.(\001\d+)\{(.)\1\}/$2/gs;			# dot \.{x}
@@ -554,6 +557,36 @@ sub utf_ent {
 	s/\\H(\001\d+)\{o\1\}/ő/gs;
 	s/\\H(\001\d+)\{u\1\}/ű/gs;
 
+	# ring accent \r{x}
+	s/\\\r(\001\d+)\{A\1\}/Å/gs;
+	s/\\\r(\001\d+)\{D\1\}/D̊/gs;
+	s/\\\r(\001\d+)\{E\1\}/E̊/gs;
+	s/\\\r(\001\d+)\{G\1\}/G̊/gs;
+	s/\\\r(\001\d+)\{I\1\}/I̊/gs;
+	s/\\\r(\001\d+)\{J\1\}/J̊/gs;
+	s/\\\r(\001\d+)\{O\1\}/O̊/gs;
+	s/\\\r(\001\d+)\{Q\1\}/Q̊/gs;
+	s/\\\r(\001\d+)\{S\1\}/S̊/gs;
+	s/\\\r(\001\d+)\{U\1\}/Ů/gs;
+	s/\\\r(\001\d+)\{V\1\}/V̊/gs;
+	s/\\\r(\001\d+)\{W\1\}/W̊/gs;
+	s/\\\r(\001\d+)\{X\1\}/X̊/gs;
+	s/\\\r(\001\d+)\{Y\1\}/Y̊/gs;
+	s/\\\r(\001\d+)\{a\1\}/å/gs;
+	s/\\\r(\001\d+)\{d\1\}/d̊/gs;
+	s/\\\r(\001\d+)\{e\1\}/e̊/gs;
+	s/\\\r(\001\d+)\{g\1\}/g̊/gs;
+	s/\\\r(\001\d+)\{i\1\}/i̊/gs;
+	s/\\\r(\001\d+)\{j\1\}/j̊/gs;
+	s/\\\r(\001\d+)\{o\1\}/o̊/gs;
+	s/\\\r(\001\d+)\{q\1\}/q̊/gs;
+	s/\\\r(\001\d+)\{s\1\}/s̊/gs;
+	s/\\\r(\001\d+)\{u\1\}/ů/gs;
+	s/\\\r(\001\d+)\{v\1\}/v̊/gs;
+	s/\\\r(\001\d+)\{w\1\}/ẘ/gs;
+	s/\\\r(\001\d+)\{x\1\}/x̊/gs;
+	s/\\\r(\001\d+)\{y\1\}/ẙ/gs;
+
 	# breve accent \u{x}
 	s/\\u(\001\d+)\{A\1\}/Ă/gs;
 	s/\\u(\001\d+)\{E\1\}/Ĕ/gs;
@@ -623,7 +656,6 @@ sub utf_ent {
 	s/\\\.g/ġ/g;
 	s/\\\.l/ŀ/g;
 	s/\\\.z/ż/g;
-
 
 	# slashed l
 	s/\\l\b/ł/g;
