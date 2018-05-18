@@ -476,6 +476,9 @@ sub utf_ent {
 	s/\\c(\001\d+)\{N\1\}/\006Ŗ\006/gs;
 	s/\\c(\001\d+)\{n\1\}/\006ŗ\006/gs;
 
+	# Bar under letter; no canonical Unicode set, so remove it
+	s/\\b(\001\d+)\{(.)\1\}/\006$2\006/gs;#
+
 	# Dot under the letter
 	s/\\d(\001\d+)\{A\1\}/\006Ạ\006/gs;
 	s/\\d(\001\d+)\{a\1\}/\006ạ\006/gs;
