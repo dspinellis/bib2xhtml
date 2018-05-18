@@ -89,7 +89,7 @@ test: example static.html xhtml1-transitional.dtd
 	for i in *.html ; \
 	do \
 		xmlstarlet val -d ../xhtml1-transitional.dtd $$i 2>/dev/null ; \
-		../fold.sed $$i | diff -w ../test.ok/$$i - ; \
+		../fold.sed $$i | diff -w ../test.ok/$$i - || exit 1 ; \
 	done
 
 # Seed regression test files
