@@ -288,88 +288,6 @@ sub html_encode {
     $_;
 }
 
-# Convert $_ into an HTML entity representation
-sub html_ent {
-	# Accents.
-	s/\\i\b/i/g;					# dotless i.
-	s/\\\'(\001\d+)\{([AEIOUaeiou])\1\}/&$2acute;/gs;	# acute accent \'{x}
-	s/\\\'([AEIOUaeiou])/&$1acute;/g;			# acute accent \'x
-	s/\\\`(\001\d+)\{([AEIOUaeiou])\1\}/&$2grave;/gs;	# grave accent \`{x}
-	s/\\\`([AEIOUaeiou])/&$1grave;/g;			# grave accent \`x
-	s/\\\"(\001\d+)\{([AEIOUaeiouy])\1\}/&$2uml;/gs;	# umlaut \"{x}
-	s/\\\"([AEIOUaeiouy])/&$1uml;/g;			# umlaut \"x
-	s/\\\~(\001\d+)\{([ANOano])\1\}/&$2tilde;/gs;	# tilde \~{x}
-	s/\\\~([ANOano])/&$1tilde;/g;			# tilde \~x
-	s/\\\^(\001\d+)\{([AEIOUaeiou])\1\}/&$2circ;/gs;	# circumflex \^{x}
-	s/\\\^([AEIOUaeiou])/&$1circ;/g;		# circumflex \^x
-	s/\\c(\001\d+)\{([Cc])\1\}/&$2cedil;/gs;	# cedilla \c{x}
-	s/\\r(\001\d+)\{([Aa])\1\}/&$2ring;/gs;		# ring accent \r{x}
-
-	# The following accents have no HTML equivalent.
-	# (This list is still not complete.)
-	s/\\r(\001\d+)\{(.)\1\}/$2/gs;			# ring accent \r{x}
-	s/\\u(\001\d+)\{(.)\1\}/$2/gs;			# breve accent \u{x}
-	s/\\v(\001\d+)\{(.)\1\}/$2/gs;			# hacek accent \v{x}
-	s/\\([lL])\b/$1/g;				# slashed l
-	s/\\\=(\001\d+)\{(.)\1\}/$2/gs;			# macron \={x}
-	s/\\\=(.)/$1/g;					# macron accent \=x
-	s/\\\.(\001\d+)\{(.)\1\}/$2/gs;			# dot \.{x}
-	s/\\\.(.)/$1/g;					# dot accent \.x
-
-	# Other special characters.
-	s/\\([Oo])\b\s*/&$1slash;/g;	# \[Oo] -> &[Oo]slash;
-	s/\\AA\b\s*/&Aring;/g;		# \AA -> &Aring;
-	s/\\aa\b\s*/&aring;/g;		# \aa -> &aring;
-	s/\\AE\b\s*/&AElig;/g;		# \AE -> &AElig;
-	s/\\ae\b\s*/&aelig;/g;		# \ae -> &aelig;
-	s/\\ss\b\s*/&szlig;/g;		# \ss -> &szlig;
-	s/\\S\b\s*/&sect;/g;		# \S -> &sect;
-	s/\\P\b\s*/&para;/g;		# \P -> &para;
-	s/\\pounds\b\s*/&pound;/g;	# \pounds -> &pound;
-	s/\?\`/&iquest;/g;		# ?` -> &iquest;
-	s/\!\`/&iexcl;/g;		# !` -> &iexcl;
-
-	# Other special characters.
-	# Try to be careful to not change the dashes in HTML comments
-	# (<!-- comment -->) to &ndash;s.
-	s/\-\-\-/&mdash;/g;		# --- -> &mdash;
-	s/([^\!])\-\-([^\>])/$1&ndash;$2/g;	# -- -> &ndash;
-	#s/\-\-\-/\227/g;		# --- -> &mdash;
-	#s/([^\!])\-\-([^\>])/$1\226$2/g;	# -- -> &ndash;
-
-	# Upper and lower case greek
-	s/\\([aA]lpha)\b/&$1;/g;
-	s/\\([bB]eta)\b/&$1;/g;
-	s/\\([gG]amma)\b/&$1;/g;
-	s/\\([dD]elta)\b/&$1;/g;
-	s/\\varepsilon\b/&epsilon;/g;
-	s/\\([eE]psilon)\b/&$1;/g;
-	s/\\([zZ]eta)\b/&$1;/g;
-	s/\\([eE]ta)\b/&$1;/g;
-	s/\\([tT]heta)\b/&$1;/g;
-	s/\\vartheta\b/&theta;/g;
-	s/\\([iI]ota)\b/&$1;/g;
-	s/\\([kK]appa)\b/&$1;/g;
-	s/\\([lL]ambda)\b/&$1;/g;
-	s/\\([mM]u)\b/&$1;/g;
-	s/\\([nN]u)\b/&$1;/g;
-	s/\\([xX]i)\b/&$1;/g;
-	s/\\([oO]micron)\b/&$1;/g;
-	s/\\([pP]i)\b/&$1;/g;
-	s/\\varpi\b/&pi;/g;
-	s/\\([rR]ho)\b/&$1;/g;
-	s/\\varrho\b/&rho;/g;
-	s/\\([sS]igma)\b/&$1;/g;
-	s/\\varsigma\b/&sigmaf;/g;
-	s/\\([tT]au)\b/&$1;/g;
-	s/\\([uU]psilon)\b/&$1;/g;
-	s/\\([pP]hi)\b/&$1;/g;
-	s/\\varphi\b/&phi;/g;
-	s/\\([cC]hi)\b/&$1;/g;
-	s/\\([pP]si)\b/&$1;/g;
-	s/\\([oO]mega)\b/&$1;/g;
-}
-
 # Convert $_ into a UTF-8 character
 sub utf_ent {
 	# Use \006 to avoid characters coming together before TeX escapes
@@ -1196,10 +1114,10 @@ while (<BBLFILE>) {
     s/\\?&/&amp;/g;			# \& -> &amp; and & -> &amp;
     s/\005/&amp;/g;			# Restore original &amp; sequences
 
-    if ($opt_u) {
-        utf_ent();
-    } else {
-    	html_ent();
+    utf_ent();
+    if (!$opt_u) {
+	# Convert non-ASCII characters into numbered HTML entities
+	s/([[:^ascii:]])/sprintf('&#x%x;', ord($1))/gse;
     }
 
     # Handle \char123 -> &123;.
