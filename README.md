@@ -12,10 +12,6 @@ the [bib2xhtml home page](http://www.spinellis.gr/sw/textproc/bib2xhtml/).
 
 # Installation
 
-* The scripts should be able to find the location your Perl
-installation. If not, you need to update the first line of bib2xhtml
-and bibsearch to point to the location of perl on your local machine.
-
 * Run ./gen-bst.pl from the directory to generate the html-\*.bst style files.
 
 * Install html-\*.bst somewhere that bibtex can find them.  If you have

@@ -1,4 +1,4 @@
-#!/usr/bin/perl -p
+#!/usr/bin/env perl -p
 #
 # Add a URL field to books, based on their ISBN
 #

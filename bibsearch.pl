@@ -1,7 +1,5 @@
-#!/usr/bin/perl -T
+#!/usr/bin/env perl -T
 
-# $Id: bibsearch,v 1.20 1998/02/11 19:22:30 hull Exp hull $
-#
 # CGI script for search bibliographies.
 #
 # Copyright 1995, 1996 David Hull.
