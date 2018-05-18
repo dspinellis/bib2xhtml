@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/dspinellis/bib2xhtml.svg?branch=master)](https://travis-ci.org/dspinellis/bib2xhtml)
+
 # bib2xhtml - Convert BibTeX Files into HTML
 bib2xhtml is a program that converts BibTeX files into HTML
 (specifically XHTML 1.0).
@@ -60,7 +62,7 @@ maintenance effort was in 2004 (version 2.1). On March 2004 the program
 was renamed into bib2xhtml to avoid confusion with projects using the
 name bib2html .
 
-Changes Copyright 2002-2016, Diomidis Spinellis.
+Changes Copyright 2002-2018, Diomidis Spinellis.
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
