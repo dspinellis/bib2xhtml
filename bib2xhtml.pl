@@ -1224,6 +1224,7 @@ while (<BBLFILE>) {
     s/\\mathcal(\001\d+)\{(.*)\1\}/<i>$2<\/i>/gs;# \mathcal{text} -> <I>text</I>
     s/\\mathit(\001\d+)\{(.*)\1\}/<i>$2<\/i>/gs;	# \mathit{text} -> <I>text</I>
     s/\\mathtt(\001\d+)\{(.*)\1\}/<tt>$2<\/tt>/gs;# \mathtt{text} -> <TT>text</TT>
+    s/(\001\d+)\{\\sf\s+(.*)\1\}/<font face="serif">$2<\/font>/gs; # {\sf text} -> <font face="serif">text</font>
 
     # Custom highlighting for the -n option.
     s/\\bibxhtmlname(\001\d+)\{(.*)\1\}/&highlight_name($2)/ges;
