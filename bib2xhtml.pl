@@ -971,22 +971,11 @@ select(HTMLFILE);
 $| = 1; $| = 0;
 select(STDOUT);
 
-# We attempt to fork in order to redirect bibtex's stdout to stderr.
+# We redirect bibtex's stdout to stderr.
 # This is needed when bib2xhtml is generating its output on the
 # standard output.
-# The shell redirection syntax used in the system() alternative
-# is by no means portable.
-eval { fork || (open(STDOUT, ">&STDERR"),
-	# Handle leakage in Win32 prevents the final rename()
-	close(HTMLFILE),
-	close(OHTMLFILE),
-	exec($opt_B, (split(/\s+/, ($opt_b ? $opt_b : "")), $auxfile)));
-	wait; };
-# fork is not implemented on some non-Unix platforms.
-if ($@) {
-    # The fork failed (perhaps not implemented on this system).
-    system("$opt_B $opt_b $auxfile 1>&2");
-}
+$opt_b = '' unless defined($opt_b);
+system("$opt_B $opt_b $auxfile 1>&2");
 
 $beginstring = "<!-- BEGIN BIBLIOGRAPHY $delimiter -->";
 $endstring = "<!-- END BIBLIOGRAPHY $delimiter -->";
