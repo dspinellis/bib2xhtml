@@ -55,37 +55,38 @@ sub usage {
 usage: $program [-a] [-b bibtex-options] [-B bibtex-executable]
                 [-c] [-d delim] [-D mappings]
                 [-e extended-information] [-h heading] [-i] [-k]
-		[-m macro file] [-n name] [-r] [-R] [-s style] [-t] [-u] [-v]
-		sourcefile [htmlfile]
+                [-m macro file] [-n name] [-r] [-R] [-s style] [-t] [-u] [-U] [-v]
+                sourcefile [htmlfile]
 
     -a  Write abstract to htmlfile.
     -b bibtex-options
-	Options to pass to bibtex.
+        Options to pass to bibtex.
     -B bibtex executable name.
     -c Sort chronologically, by year, month, day, and then by author.
     -d delim
-	Specify bibliography delimiter.
+        Specify bibliography delimiter.
     -D mappings
-	Specify file path to URL mappings.
+        Specify file path to URL mappings.
     -e extended-information
-	Specify the extended metadata information (page count, size, PDF icon)
-	that will be included in each citation.
+        Specify the extended metadata information (page count, size, PDF icon)
+        that will be included in each citation.
     -h heading
-	String to use instead of default title when creating a new htmlfile.
-	If updating an existing htmlfile, this option is ignored.
+        String to use instead of default title when creating a new htmlfile.
+        If updating an existing htmlfile, this option is ignored.
     -i Use included citations
     -k In labeled styles append to the label of each entry its BibTeX key.
     -m macro file
-	Specify an additional macro file.
+        Specify an additional macro file.
     -n name
-	Highlight the specified author name in the output.
+        Highlight the specified author name in the output.
     -r Sort in reverse chronological order.
     -R Reference numbers increase from bottom to top, not from top to bottom.
     -s style
-	Control style of bibliography:
-	(empty, plain, alpha, named, paragraph, unsort, or unsortlist).
+        Control style of bibliography:
+        (empty, plain, alpha, named, paragraph, unsort, or unsortlist).
     -t  Write timestamp to htmlfile.
     -u  Output a Unicode-coded document.
+    -U  Treat input file as Unicode-coded document.
     -v  Report the version number.
 _EOF_
     exit(1);
@@ -199,7 +200,7 @@ papertype:
 
 	if (($url) = m/\<\!\-\- $paper:[\s\n]+(\S+)[\s\n]+\-\-\>/) {
 
-	    # If $url looks like a file (doesn't begin with http://, ftp://, 
+	    # If $url looks like a file (doesn't begin with http://, ftp://,
 	    # etc.), get more info.
 	    if ($paper ne 'DOI' && $url !~ m/^[^\:\/]+\:\//) {
 		local($file) = $url;
@@ -737,13 +738,13 @@ $opt_B = 'bibtex' unless defined($opt_B);
 # Prevent "identifier used only once" warnings.
 $opt_a = $opt_b = $opt_c = $opt_D = $opt_d = $opt_e = $opt_h = $opt_m =
 $opt_n = $opt_r = $opt_R = $opt_i = $opt_k = $opt_s = $opt_t = $opt_v =
-$opt_u = undef;
+$opt_u = $opt_U = undef;
 
 $macrofile = '';
 
 $command_line = &html_encode(join(' ', $0, @ARGV));
 
-getopts("aB:b:cd:D:e:h:ikm:n:rRs:tuv") || &usage;
+getopts("aB:b:cd:D:e:h:ikm:n:rRs:tuUv") || &usage;
 
 if (defined($opt_n)) {
     $highlighted_name = $opt_n;
@@ -1021,6 +1022,7 @@ if (defined($opt_R)) {
 	close(BBLFILE);
 }
 open(BBLFILE, "<:crlf", $t) || die "error opening $t: $!\n";
+binmode(BBLFILE, ":encoding(UTF-8)") if ($opt_U);
 $nentry = 0;
 loop:
 while (<BBLFILE>) {
@@ -1064,6 +1066,7 @@ print HTMLFILE "<$list_start>\n\n";
 #}
 
 open(BBLFILE, "<:crlf", $t) || die "error opening $t: $!\n";
+binmode(BBLFILE, ":encoding(UTF-8)") if ($opt_U);
 $nentry = 0;
 loop:
 while (<BBLFILE>) {
@@ -1121,7 +1124,7 @@ while (<BBLFILE>) {
 	# First try to combine a <a name=...></a> with a following <A ".
 	s+(name=\"[^\"]*\")></a><a\b+$1+
 	# If that doesn't work, try to swallow following word.
-	or s:(name=\"[^\"]*\">)</a>([\w]+):$1$2<\/a>:;	
+	or s:(name=\"[^\"]*\">)</a>([\w]+):$1$2<\/a>:;
     } elsif ($label_style == $LABEL_NUMBERED) {
 	s+(name=\"[^\"]*\">\[)[^\]]*(\]</a></dt><dd>)+$1$nentryp$2+;
     }
@@ -1148,7 +1151,7 @@ while (<BBLFILE>) {
 	$old =~ s/(\W)/\\$1/g;
 	s/\s*$old/$blabel/g;
     }
-    # In some styles crossrefs become something like 
+    # In some styles crossrefs become something like
     # "In Doe and Roe [Doe and Roe, 1995]."  Change this to
     # "In [Doe and Roe, 1995]." to remove the redundancy.
     s/In (<a href=\"[^\"]*\">)([^\[]+) \[(\2)/In $1\[$2/;
