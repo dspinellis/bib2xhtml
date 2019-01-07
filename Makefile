@@ -75,7 +75,7 @@ eg example: bib2xhtml.pl example.sh ${BSTFILES}
 	mkdir -p eg
 	-rm -f eg/*.html
 	cp v23n5.pdf eg
-	./example.sh
+	sh ./example.sh
 	touch example
 
 xhtml1-transitional.dtd:

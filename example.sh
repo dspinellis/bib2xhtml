@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 #
 # Create example and test files
 #
@@ -18,15 +18,15 @@ do
           do
             for R in '' -R
             do
-	      # Avoid -r -R clash in case insensitive filesystems
-	      if [ "x$R" = x-R ] ; then
-		ropt=-UCR
-	      else
-		ropt=''
-	      fi
-              perl ${NAME}.pl -s $style $n $u $c $r $k $R \
-		-h "Example: bib2xhtml -s $style $n $u $c $r $k $R" \
-		example.bib eg/${style}${nopt}${u}${c}${r}${k}${ropt}.html
+              # Avoid -r -R clash in case insensitive filesystems
+              if [ "x$R" = x-R ] ; then
+                ropt=-UCR
+              else
+                ropt=''
+              fi
+              perl ${NAME}.pl -s $style $n $u -U $c $r $k $R \
+                -h "Example: bib2xhtml -s $style $n $u -U $c $r $k $R" \
+                example.bib eg/${style}${nopt}${u}${c}${r}${k}${ropt}.html
             done
           done
         done
