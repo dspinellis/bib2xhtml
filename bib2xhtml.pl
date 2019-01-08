@@ -1194,6 +1194,8 @@ while (<BBLFILE>) {
     s/(\001\d+)\{\\rm\s+(.*)\1\}/$2/gs;		# {\rm text} -> text
     s/\\textrm(\001\d+)\{(.*)\1\}/$2/gs;		# \textrm{text} -> text
 
+    s/\\textsuperscript(\001\d+)\{(.*)\1\}/<sup>$2<\/sup>/gs; # \textsuperscript{text} -> <sup>text<\/sup>
+
     # This doesn't create correct HTML, because HTML doesn't allow nested
     # character style tags.  Oh well.
     s/(\001\d+)\{\\em\s+(.*)\1\}/<em>$2<\/em>/gs; # {\em text} -> <EM>text</EM>
