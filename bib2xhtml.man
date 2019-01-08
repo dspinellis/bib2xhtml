@@ -46,9 +46,11 @@ bib2xhtml \- BibTeX bibliography to XHTML converter
 ] [
 .B \-t
 ] [
-.B \-v
-] [
 .B \-u
+] [
+.B \-U
+] [
+.B \-v
 ]
 .I sourcefile
 [
@@ -486,15 +488,18 @@ Write a timestamp with the date at which the bibliography was
 updated to
 .IR htmlfile .
 .TP
-.B \-v
-Report version number on stderr.
-.TP
 .B \-u
 Convert LaTeX special characters into the corresponding
 Unicode characters, and output XML coded in UTF-8.
 The output produced by this option may be easier to parse and validate
 with some XML parsers.
 By default LaTeX special characters are converted into HTML character entities.
+.TP
+.B \-U
+Treat input file as Unicode-coded document.
+.TP
+.B \-v
+Report version number on stderr.
 .SH FILES
 .PD 0
 .TP 14
