@@ -1281,12 +1281,13 @@ sub domath {
         s/\\\,/ /g;				# \, thin space - &#x2009;
         s/\\ldots\b\s*/…/g;			# Horizontal ellipsis
         s/\\dots\b\s*/…/g;			# Horizontal ellipsis
+        s/\\textellipsis\b\s*/…/g;		# Horizontal ellipsis
     } else {
         s/([^\\])~/$1&nbsp;/g;			# ~  non-breaking space
         s/\\\,/&thinsp;/g;			# \, thin space
         s/\\ldots\b/&hellip;/g;			# Horizontal ellipsis
 	s/\\dots\b/&hellip;/g;			# Horizontal ellipsis
-
+        s/\\textellipsis\b/&hellip;/g;		# Horizontal ellipsis
     }
     s/\005/\~/g;				# Unescape tildes
     s/\\ / /g;					# \  (normal space)
