@@ -55,7 +55,8 @@ sub usage {
 usage: $program [-a] [-b bibtex-options] [-B bibtex-executable]
                 [-c] [-d delim] [-D mappings]
                 [-e extended-information] [-h heading] [-i] [-k]
-                [-m macro file] [-n name] [-r] [-R] [-s style] [-t] [-u] [-U] [-v]
+                [-m macro file] [-n name] [-o post-macro file]
+                [-r] [-R] [-s style] [-t] [-u] [-U] [-v]
                 sourcefile [htmlfile]
 
     -a  Write abstract to htmlfile.
@@ -79,6 +80,8 @@ usage: $program [-a] [-b bibtex-options] [-B bibtex-executable]
         Specify an additional macro file.
     -n name
         Highlight the specified author name in the output.
+    -o post-macro file
+        Specify an additional macro file to be included after the main bibliography file.
     -r Sort in reverse chronological order.
     -R Reference numbers increase from bottom to top, not from top to bottom.
     -s style
@@ -763,14 +766,14 @@ $opt_B = 'bibtex' unless defined($opt_B);
 
 # Prevent "identifier used only once" warnings.
 $opt_a = $opt_b = $opt_c = $opt_D = $opt_d = $opt_e = $opt_h = $opt_m =
-$opt_n = $opt_r = $opt_R = $opt_i = $opt_k = $opt_s = $opt_t = $opt_v =
+$opt_n = $opt_o = $opt_r = $opt_R = $opt_i = $opt_k = $opt_s = $opt_t = $opt_v =
 $opt_u = $opt_U = undef;
 
 $macrofile = '';
 
 $command_line = &html_encode(join(' ', $0, @ARGV));
 
-getopts("aB:b:cd:D:e:h:ikm:n:rRs:tuUv") || &usage;
+getopts("aB:b:cd:D:e:h:ikm:n:o:rRs:tuUv") || &usage;
 
 if (defined($opt_n)) {
     $highlighted_name = $opt_n;
@@ -806,6 +809,7 @@ $htmlfile = $ARGV[1] if ($#ARGV == 1);
 $delimiter = $opt_d if (defined($opt_d));
 $title = (defined($opt_h) ? $opt_h : "Bibliography generated from $ARGV[0]");
 $macrofile = "$opt_m," if (defined($opt_m));
+$postmacrofile = defined($opt_o) ? ",$opt_o" : '';
 
 $opt_s = 'empty' if (! defined $opt_s);
 style: {
@@ -958,7 +962,7 @@ if ($opt_i && $updating) {
     last loop if m/^$endstring\s*$/;
     push(@citations, $2) if m/^([^\\]*)?(.+\})(.*)?$/;
   }
-  push(@citations, "\\bibdata{$macrofile$bibfile}");
+  push(@citations, "\\bibdata{$macrofile$bibfile$postmacrofile}");
 }
 
 # Create an .aux file for bibtex to read.
@@ -982,7 +986,7 @@ if (defined($citefile)) {
     print AUXFILE "$citation\n";
   }
 } else {
-    print AUXFILE "\\citation{*}\n\\bibdata{$macrofile$bibfile}\n";
+    print AUXFILE "\\citation{*}\n\\bibdata{$macrofile$bibfile$postmacrofile}\n";
 }
 
 close(AUXFILE);

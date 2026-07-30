@@ -37,6 +37,9 @@ bib2xhtml \- BibTeX bibliography to XHTML converter
 .B \-n
 .I author-name
 ] [
+.B \-o
+.I post-macro-file
+] [
 .B \-r
 ] [
 .B \-R
@@ -421,6 +424,11 @@ Specify an author name to highlight.
 Any bibliography entry author names that match the name specified as a regular
 expression will be set in HTML \fIstrong\fP tags and will therefore
 be displayed in a bold (or similar) font.
+.TP
+.BI \-o " post-macro file"
+Specify an additional BibTeX macro file to supply after the main bibliography
+file.  This is useful for supplying cross-reference entries while allowing
+the main bibliography file to override its definitions.
 .TP
 .B -r
 Reverse the chronological sorting order.  Normally, the bibliography
