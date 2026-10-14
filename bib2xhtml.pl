@@ -758,6 +758,12 @@ sub utf_ent {
 	s/\\psi\b/\006ψ\006/gs;
 	s/\\omega\b/\006ω\006/gs;
 
+	# Quotes: at the end to avoid breaking them as part of escapes.
+	s/``/\006“\006/gs;
+	s/''/\006”\006/gs;
+	s/`/\006‘\006/gs;
+	s/'/\006’\006/gs;
+
 	# Now allow characters to come together
 	s/\006//gs;
 }
